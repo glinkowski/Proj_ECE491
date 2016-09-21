@@ -116,7 +116,9 @@ def Householder(B) :
 
 hilbert = createHilbertArray()
 
-testIdx = 6
+# Troubleshooting routines :
+
+# testIdx = 2
 
 # #print(hilbert[testIdx])
 
@@ -138,16 +140,16 @@ testIdx = 6
 # print(E)
 
 
-Q, R = origGramSchmidt(hilbert[testIdx])
-print(Q)
-print( np.dot( np.transpose(Q), Q ) )
-print(getError(Q))
+# Q, R = origGramSchmidt(hilbert[testIdx])
+# print(Q)
+# print( np.dot( np.transpose(Q), Q ) )
+# print(getError(Q))
 
-Q = Householder(hilbert[testIdx])
-print(Q)
-print( np.dot( np.transpose(Q), Q ) )
-E = getError(Q)
-print(E)
+# Q = Householder(hilbert[testIdx])
+# print(Q)
+# print( np.dot( np.transpose(Q), Q ) )
+# E = getError(Q)
+# print(E)
 
 
 
