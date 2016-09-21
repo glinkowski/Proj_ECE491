@@ -20,12 +20,10 @@ def createHilbertArray() :
 	return hilbert
 #end def ######## ####### #######
 
-def origGramSchmidt(A) :
+def origGramSchmidt(B) :
 
-	# numCols = A.shape[1]
-	# numRows = A.shape[0]
+	A = np.copy(B)
 	(numRows, numCols) = A.shape
-	print(numRows)
 
 	# The arrays to return
 	Q = np.zeros( A.shape, dtype=np.float64 )
@@ -48,9 +46,25 @@ def origGramSchmidt(A) :
 	return Q, R
 #end def ######## ####### #######
 
-#def modGramSchmidt(A) :
+def modGramSchmidt(B) :
 
+	A = np.copy(B)
+	(numRows, numCols) = A.shape
 
+	# The arrays to return
+	Q = np.zeros( A.shape, dtype=np.float64 )
+	R = np.zeros( A.shape, dtype=np.float64 )
+
+	for k in range(numCols) :
+		R[k,k] = np.linalg.norm(A[:,k])
+		Q[:,k] = np.divide(A[:,k], R[k,k])
+		for j in range( (k+1), numCols ) :
+			R[k,j] = np.dot(Q[:,k],A[:,j])
+			A[:,j] = np.subtract( A[:,j], np.multiply(R[k,j], Q[:,k]))
+	#end loop
+
+	return Q, R
+#end def ######## ####### #######
 
 
 
@@ -67,6 +81,9 @@ testIdx = 2
 Q, R = origGramSchmidt(hilbert[testIdx])
 print(Q)
 
+Q, R = modGramSchmidt(hilbert[testIdx])
+print(Q)
+
 Q1, R1 = np.linalg.qr(hilbert[testIdx])
 print(Q1)
 
@@ -77,4 +94,12 @@ print( np.dot( np.transpose(Q), Q ) )
 
 E = -1 * np.log10( np.linalg.norm(np.identity(testIdx + 2) - np.dot( np.transpose(Q), Q)))
 print(E)
+
+
+
+x = list()
+y_o = list()
+y_m = list()
+
+#for matrix in hilbert :
 
