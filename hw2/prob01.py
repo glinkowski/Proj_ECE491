@@ -29,7 +29,7 @@ b2 = np.dot(Pi, b)
 #print(b2)
 y = la.solve_triangular(L, b2, lower=True)
 sol1 = la.solve_triangular(U, y)
-#print(sol1)
+print(sol1)
 
 
 # Solve Ly=c and Ux=y (Note: permute c)
@@ -37,6 +37,7 @@ c2 = np.dot(Pi, c)
 #print(b2)
 y = la.solve_triangular(L, c2, lower=True)
 sol2 = la.solve_triangular(U, y)
+print(sol2)
 
 
 # Perterb A such that a_1,2 = 2
@@ -62,14 +63,15 @@ v = np.array( [0, 1, 0] )
 
 
 # solve Az = u
-temp = la.solve_triangular(L, u, lower=True)
+u2 = np.dot(Pi, u)
+temp = la.solve_triangular(L, u2, lower=True)
 z = la.solve_triangular(U, temp)
 #z.reshape(1,3)
-print(z)
+#print(z)
 # solve Ay = b
 temp = la.solve_triangular(L, b2, lower=True)
 y = la.solve_triangular(U, temp)
-print(y)
+#print(y)
 
 # find x
 denom = np.subtract(1, np.dot(v, z))
