@@ -1,0 +1,167 @@
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{bm} % for bold math symbols
+\usepackage{amstext} % for \text macro
+\usepackage{array}   % for \newcolumntype macro
+\newcolumntype{L}{>{$}l<{$}} % math-mode version of "l" column type
+\newcolumntype{C}{>{$}c<{$}} % math-mode version of "c" column type
+\newcolumntype{R}{>{$}r<{$}} % math-mode version of "r" column type
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{reflection}[2][Reflection]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\begin{document}
+
+
+
+\noindent
+\large\textbf{HW 3, Problem 02} \hfill \textbf{Gregory Linkowski} \\
+\normalsize CS 450 / ECE 491 \hfill linkows2 \\
+Michael Heath \hfill due 9/21/16 \\
+
+
+
+\vspace{5mm}
+Let	\[ \bm{A}=\begin{bmatrix}	1 & 4 \\ 1 & 1	\end{bmatrix}	\]  
+\vspace{5mm}
+
+\begin{exercise}{1}
+	What is the characteristic polynomial of $\bm{A}$?
+\end{exercise}
+\begin{proof}[]
+	\vspace{-8mm}
+	\begin{align*}
+		0 &= det(\bm{A} - \lambda \bm{I}) \\
+		&= det\left( \begin{bmatrix} 1-\lambda & 4 \\ 1 & 1-\lambda \\ \end{bmatrix} \right) \\
+		&= (1-\lambda)^2 - 4 \\
+		&= 1 - \lambda - \lambda + \lambda^2 - 4
+%		\boxed{ 0 &= \lambda - 2 \lambda - 3 } \\
+	\end{align*}
+	\[\boxed{ 0 = \lambda^2 - 2 \lambda - 3 }\] 
+\end{proof}
+
+\begin{exercise}{2}
+	What are the roots of the characteristic polynomial of $\bm{A}$?
+\end{exercise}
+\begin{proof}[]
+	\vspace{-8mm}
+	\begin{align*}
+		\lambda &= \frac{2 \pm \sqrt{4 + 12}}{2} \\
+		&= 1 \pm \frac{\sqrt{16}}{2} \\
+		&= 1 \pm 2 
+	\end{align*}
+	\[\boxed{ \lambda = 3, -1 }\] 
+\end{proof}
+\begin{exercise}{3}
+	What are the eigenvalues of $\bm{A}$?
+\end{exercise}
+\begin{proof}[]
+	\[\boxed{ \lambda_1 = 3, \; \lambda_2 = -1 }\] 	
+\end{proof}
+
+\pagebreak
+\begin{exercise}{4}
+	What are the eigenvectors of $\bm{A}$?
+\end{exercise}
+\begin{proof}[]
+	\vspace{-5mm}
+	\[ \bm{A v} = \lambda \bm{v} \implies (\bm{A} - \lambda\bm{I})\bm{v} = 0 \]
+	\vspace{-5mm}\\
+	\begin{center}
+	\begin{tabular}{ C c C }
+		(\bm{A} - 3\bm{I})\bm{v}_1 = 0 & \hspace{10mm} & (\bm{A} - (-1)\bm{I})\bm{v}_2 = 0 \\
+		\downarrow & & \downarrow \\
+		\begin{bmatrix}	-2 & 4 \\ 1 & -2 \end{bmatrix}\begin{bmatrix}	v_{1a} \\ v_{1b} \end{bmatrix} = 0 
+		 & & \begin{bmatrix}	2 & 4 \\ 1 & 2 \end{bmatrix}\begin{bmatrix}	v_{2a} \\ v_{2b} \end{bmatrix} \\
+		 \downarrow & & \downarrow \\
+		 \begin{cases} -2 v_a + 4 v_b = 0 \\ v_a - 2v_b = 0 \end{cases}
+		  & & \begin{cases} 2 v_a + 4 v_b = 0 \\ v_a + 2v_b = 0 \end{cases} \\
+		  \downarrow & & \downarrow \\
+		  v_a = 2 v_b & & v_a = -2 v_b \\
+		  \downarrow & & \downarrow \\
+		  \bm{v}_1 = \begin{bmatrix} 2 \\ 1 \end{bmatrix} 
+		  & & \bm{v}_2 = \begin{bmatrix} 2 \\ -1 \end{bmatrix}
+	\end{tabular}
+	\end{center}
+	Normalization results in:  $\quad \boxed{
+		\bm{v}_1 = \begin{bmatrix} \frac{2}{\sqrt{5}} \\ \frac{1}{\sqrt{5}} \end{bmatrix}
+			\approx \begin{bmatrix} 0.8944 \\ 0.4472 \end{bmatrix},
+		\quad \bm{v}_2 = \begin{bmatrix} \frac{2}{\sqrt{5}} \\ \frac{-1}{\sqrt{5}} \end{bmatrix}
+			\approx \begin{bmatrix} 0.8944 \\ -0.4472 \end{bmatrix}
+	} $
+\end{proof}
+\begin{exercise}{5}
+	Perform one iteration of power iteration on $\bm{A}$, using $\bm{x_0}=[1\;1]^T$ as starting vector.
+\end{exercise}
+\begin{proof}[]
+	\vspace{-10mm}
+	\begin{align*}
+		\bm{x}_1 &= \bm{A} \bm{x}_0 \\
+		&= \begin{bmatrix} 1 & 4 \\ 1 & 1 \end{bmatrix} \begin{bmatrix} 1 \\ 1 \end{bmatrix} = \begin{bmatrix} 5 \\ 2 \end{bmatrix}
+	\end{align*}
+	\[ \boxed{\bm{x}_1 = \begin{bmatrix} \frac{5}{\sqrt{29}} \\ \frac{2}{\sqrt{29}} \end{bmatrix} \approx  \begin{bmatrix} 0.9285 \\ 0.3714 \end{bmatrix}} \]
+\end{proof}
+\begin{exercise}{6}
+	To what eigenvector of $\bm{A}$ will power iteration ultimately converge?
+\end{exercise}
+\begin{proof}[]
+	\quote{The power iteration eventually converges to $\boxed{\bm{v}_1 \textnormal{, corresponding to }\lambda_1 = 3}$.}\\	
+	\vspace{-5mm}\\
+\end{proof}
+\begin{exercise}{7}
+	What eigenvalue estimate is given by the Rayleigh quotient, using the vector $\bm{x} = [1\;1]^T$?
+\end{exercise}
+\begin{proof}[]
+	\vspace{-7mm}
+	\[ \bm{x} \lambda \approx \bm{Ax} \implies \lambda = \frac{\bm{x}^T \bm{A x}}{\bm{x}^T \bm{x}} \]
+	\begin{align*}
+		\lambda =
+			\frac{\begin{bmatrix} 1 & 1 \end{bmatrix} \begin{bmatrix} 1 & 4 \\ 1 & 1 \end{bmatrix} \begin{bmatrix} 1 \\ 1 \end{bmatrix}}{\begin{bmatrix} 1 & 1 \end{bmatrix} \begin{bmatrix}1 \\ 1 \end{bmatrix}}
+		= \frac{7}{2} \implies \boxed{\lambda = 3.5}
+	\end{align*}
+\end{proof}
+
+\pagebreak
+\begin{exercise}{8}
+	To what eigenvector of $\bm{A}$ would the inverse iteration ultimately converge?
+\end{exercise}
+\begin{proof}[]
+	\vspace{-5mm}
+	\[\begin{cases}
+		\bm{A y}_k &= \bm{x}_{k-1} \\ \bm{x}_k &= \frac{\bm{y}_k}{||\bm{y}_k||_\infty}
+	\end{cases} \]
+	\vspace{-5mm} \\
+	\quote{The inverse iteration converges to $\boxed{\bm{v}_2 \textnormal{, corresponding to }\lambda = -1}$.}
+	
+\end{proof}
+\begin{exercise}{9}
+	What eigenvalue of $\bm{A}$ would be obtained if inverse iteration were used with shift $\sigma = 2$?
+\end{exercise}
+\begin{proof}[]
+	\quote{After shift, the inverse iteration converges to $\boxed{\lambda = 3}$. This is because the matrix has been shifted, such that the largest $\lambda$ is the one closest to $0$.}
+\end{proof}
+\begin{exercise}{10}
+	If QR iteration were applied to $\bm{A}$, to what form would it converge: diagonal or triangular? Why?
+\end{exercise}
+\begin{proof}[]
+	\quote{QR factorization results in an upper-triangular $\bm{R}$ and a symmetric $\bm{Q}$. If $\bm{A}$ is a diagonal matrix, then both $\bm{Q}$ and $\bm{R}$ will be diagonal matricies. In this case, $\bm{A}$ is not diagonal, so in $\bm{R} \times \bm{Q}$, the sub-diagonal zeros in $\bm{R}$ gradually force the sub-diagonal entries of $\bm{A}_k$ to approach zero.}
+\end{proof}
+
+
+
+\end{document}

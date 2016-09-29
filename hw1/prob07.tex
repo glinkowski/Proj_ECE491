@@ -1,0 +1,140 @@
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{bm} % for bold math symbols
+\usepackage{amstext} % for \text macro
+\usepackage{array}   % for \newcolumntype macro
+\newcolumntype{L}{>{$}l<{$}} % math-mode version of "l" column type
+\newcolumntype{C}{>{$}c<{$}} % math-mode version of "c" column type
+\newcolumntype{R}{>{$}r<{$}} % math-mode version of "r" column type
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{reflection}[2][Reflection]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\begin{document}
+
+
+
+\noindent
+\large\textbf{HW 1, Problem 07} \hfill \textbf{Gregory Linkowski} \\
+\normalsize CS 450 / ECE 491 \hfill linkows2 \\
+Michael Heath \hfill due 9/7/16 \\
+
+
+
+\begin{exercise}{1} 
+	What is the determinant of $\bm{A} = 
+	\begin{bmatrix}
+		1 & 1 + \epsilon \\
+		1 - \epsilon & 1\\
+	\end{bmatrix} $ ?
+\end{exercise}
+
+\begin{proof}[]
+	\begin{align*}
+		det(\bm{A}) &= (1 \times 1) - (1-\epsilon)(1+\epsilon) \\
+			&= 1 - (1 - \epsilon + \epsilon - \epsilon^2) \\
+			&= \epsilon^2
+	\end{align*}
+\end{proof}
+
+
+\begin{exercise}{2} 
+	In floating-point arithmetic, for what range of values of $\epsilon$ will the computed value of the determinant be zero?
+\end{exercise}
+
+\begin{proof}[]
+	\quote{First, (assuming rounding to nearest) if \\
+		$|\epsilon| \leq \frac{1}{2}\epsilon_{mach}$, then $\bm{A} = 
+		\begin{bmatrix}
+		1 & 1 \\
+		1 & 1 \\
+		\end{bmatrix}$ and $det(\bm{A}) = 0$.} \\
+	\vspace{2mm} \\
+	Second, if there is no gradual underflow, such that UFL $\geq \epsilon_{mach}$, \\
+	then $det(\bm{A}) = 0$ when (assuming rounding to nearest):
+	\begin{align*}
+		\epsilon^2 &\leq \frac{1}{2}\beta^L \\
+		|\epsilon| &\leq \frac{1}{4}\sqrt{\beta^L} \\
+	\end{align*}
+	That is, if $|\epsilon^2|$ is less than half of the lowest positive number represented, then the answer will be rounded to zero. \\
+\end{proof}
+
+
+\begin{exercise}{3} 
+	What is the LU factorization of $\bm{A}$?
+\end{exercise}
+
+\begin{proof}[]
+	\begin{align*}
+		\bm{MA} &= 
+			\begin{bmatrix}
+				1 & 0 \\
+				m & 1 \\
+			\end{bmatrix}
+			\begin{bmatrix}
+				1 & 1 + \epsilon \\
+				1 - \epsilon & 1 \\
+			\end{bmatrix} \\
+		&= \begin{bmatrix}
+				1 & 1 + \epsilon \\
+				m + (1 - \epsilon) & m(1 + \epsilon) + 1 \\
+			\end{bmatrix} \\
+		&= \begin{bmatrix}
+			1 & 1+\epsilon \\
+			0 & \epsilon^2 \\
+		\end{bmatrix} = \bm{U}
+	\end{align*} \\
+	\quote{Let $m = (-1 + \epsilon)$, then: 
+		$ \bm{M} = \begin{bmatrix}
+			1 & 0 \\
+			(-1 + \epsilon) & 1 \\
+		\end{bmatrix} $ }\\
+	\begin{align*}
+		\textnormal{and} \qquad \bm{A} &= \bm{LU} \\
+		\bm{MA} &= \bm{U} \\
+		\bm{L^{-1}A} &= \bm{L^{-1}LU} \\
+		\bm{L} &= \bm{M^{-1}} \\
+		\textnormal{thus} \qquad \bm{L} &= 
+			\begin{bmatrix}
+				1 & 0 \\
+				1-\epsilon & 1 \\ 
+			\end{bmatrix} \\
+	\end{align*} \\
+\end{proof}
+
+
+\begin{exercise}{4} 
+	In floating-point arithmetic, for what range of values of $\epsilon$ will the computed value of $\bm{U}$ be singular?
+\end{exercise}
+
+\begin{proof}[]
+	Where $\bm{U} = 
+		\begin{bmatrix}
+			1 & 1+\epsilon \\
+			0 & \epsilon^2 \\
+		\end{bmatrix} $\\
+	\quote{We want $det(\bm{U}) = \epsilon^2 = 0$. } \\
+	\quote{Assuming a floating-point system with gradual underflow and rounding to nearest, then:} \\
+	\begin{align*}
+		\epsilon^2 &< \frac{1}{2}\epsilon_{mach} \\
+		|\epsilon| &< \frac{1}{4}\sqrt{\epsilon_{mach}}
+	\end{align*}
+\end{proof}
+
+
+\end{document}

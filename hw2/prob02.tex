@@ -1,0 +1,67 @@
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{bm} % for bold math symbols
+\usepackage{amstext} % for \text macro
+\usepackage{array}   % for \newcolumntype macro
+\newcolumntype{L}{>{$}l<{$}} % math-mode version of "l" column type
+\newcolumntype{C}{>{$}c<{$}} % math-mode version of "c" column type
+\newcolumntype{R}{>{$}r<{$}} % math-mode version of "r" column type
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{reflection}[2][Reflection]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\begin{document}
+
+
+
+\noindent
+\large\textbf{HW 2, Problem 02} \hfill \textbf{Gregory Linkowski} \\
+\normalsize CS 450 / ECE 491 \hfill linkows2 \\
+Michael Heath \hfill due 9/21/16 \\
+
+
+
+\begin{exercise}{1} 
+	Set up the linear least squares system $A \bm{x} \cong b$ for fitting the model function  $f(t,\bm{x}) = x_1 t + x_2 e^t$  to the data points (1,2), (2,3), (3,5). \\ 
+\end{exercise}
+
+\begin{proof}[]
+	\begin{align*}
+		A \bm{x} &\cong b \\ 
+		\begin{bmatrix}
+			1 & e^1 \\
+			2 & e^2 \\
+			3 & e^3 \\
+		\end{bmatrix} 
+		\begin{bmatrix}
+			x_1 \\
+			x_2 \\
+		\end{bmatrix} 
+		&\cong
+		\begin{bmatrix}
+			2 \\
+			3 \\
+			5 \\
+		\end{bmatrix}
+	\end{align*}
+\end{proof}
+
+
+
+
+\end{document}

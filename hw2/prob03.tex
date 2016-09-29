@@ -1,0 +1,90 @@
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{bm} % for bold math symbols
+\usepackage{amstext} % for \text macro
+\usepackage{array}   % for \newcolumntype macro
+\newcolumntype{L}{>{$}l<{$}} % math-mode version of "l" column type
+\newcolumntype{C}{>{$}c<{$}} % math-mode version of "c" column type
+\newcolumntype{R}{>{$}r<{$}} % math-mode version of "r" column type
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{reflection}[2][Reflection]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\begin{document}
+
+
+
+\noindent
+\large\textbf{HW 2, Problem 03} \hfill \textbf{Gregory Linkowski} \\
+\normalsize CS 450 / ECE 491 \hfill linkows2 \\
+Michael Heath \hfill due 9/21/16 \\
+
+
+
+\begin{exercise}{1} 
+	How many Householder transformations are required? \\ 
+\end{exercise}
+
+\begin{proof}[]
+	Three transformations are required. \\
+\end{proof}
+
+
+\begin{exercise}{2} 
+	What does the first column of $\bm{A}$ become as a result of applying the first Householder transformation? \\ 
+\end{exercise}
+
+\begin{proof}[]
+	$\bm{H}_1 \bm{A} = 
+	\begin{bmatrix}
+		-2 & -5 & -15 \\
+		0 & 0 & -\frac{4}{3} \\
+		0 & 1 & \frac{11}{3} \\
+		0 & 2 & \frac{32}{3} \\
+	\end{bmatrix} $
+	such that the first column is 
+	$ \begin{bmatrix}
+		-2 \\ 0 \\ 0 \\ 0 \\
+	\end{bmatrix} $ \\
+\end{proof}
+
+
+\begin{exercise}{3} 
+	What does the first column then become as a result of applying the second Householder transformation? \\ 
+\end{exercise}
+
+\begin{proof}[]
+	The first column remains unchanged:  
+	$ \begin{bmatrix}
+	-2 \\ 0 \\ 0 \\ 0 \\
+	\end{bmatrix} $ \\
+\end{proof}
+
+
+\begin{exercise}{4} 
+	How many Givens rotations would be required to compute the QR factorization of $\bm{A}$? \\ 
+\end{exercise}
+
+\begin{proof}[]
+	Givens rotations introduce zeros one at a time, requiring six rotations. \\
+\end{proof}
+
+
+
+
+\end{document}
