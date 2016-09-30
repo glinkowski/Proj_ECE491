@@ -3,6 +3,11 @@
 #.gitignore
 
 
+# Sublime files #
+#################
+*.sublime-*
+
+
 # LaTeX related files #
 #######################
 *.aux
