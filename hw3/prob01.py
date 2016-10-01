@@ -42,7 +42,7 @@ print('eigen value: {}'.format(eigval))
 
 # Get the numpy-computed eigval & eigvec
 eigTrueSol = np.linalg.eig(A)
-diff = 100
+diff = np.inf
 keepIdx = -1
 for vi in range(len(eigTrueSol[0])) :
 	newDiff = abs(eigTrueSol[0][vi] - eigval)
