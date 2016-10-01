@@ -4,12 +4,13 @@ import matplotlib.pyplot as pt
 
 # the min/max size of the matrices to examine
 minSize = 2
-maxSize = 24
+maxSize = 31
 
 
 # Create a bunch of matrices
 #	maList size = (index + 2)
 maList = list()
+maxSize += 1
 for size in range(minSize, maxSize) :
 	# main diag is all 1, upper = -1, lower = 0
 	matrix = np.triu( np.multiply(-1, np.ones((size,size))), k=1 )
@@ -34,6 +35,19 @@ for matrix in maList :
 
 # Plot the results
 pt.plot(xVals, yVals)
-
-
+pt.title('Change in sigma ratio as function of matrix size\n--LOG SCALE--')
+pt.xlabel('matrix dimensions (n x n)')
+pt.ylabel('Log10( sigma max / min )')
+pt.xlim((minSize-1, maxSize+1))
+pt.yscale('log')
 pt.show()
+
+
+# Answer: What conclusions can be drawn from this graph?
+print("\nAs can be seen, as the size of the matrix gets bigger,")
+print("sigma max grows larger while sigma min approaches zero,")
+print("causing the ratio between them to grow logrithmically. ")
+print("The sigmas represent the scaling that will be applied by")
+print("the original matrix. Thus, as the eigenvalue multiplicity")
+print("grows, the resulting scaling along the corresponding axis")
+print("is magnified, while it is reduced along others.")
