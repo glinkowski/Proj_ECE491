@@ -72,7 +72,7 @@ print("")
 
 
 # Store the convergence error over 10 iterations
-trials = np.array( range(1, numIters+1), dtype=np.int)
+trials = np.arange(1, numIters+1)
 err1 = np.zeros( (numIters) )
 err2 = np.zeros( (numIters) )
 err3 = np.zeros( (numIters) )
