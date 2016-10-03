@@ -91,27 +91,7 @@ xVals = np.array( [startVal, startVal, startVal, startVal, startVal], dtype=np.f
 
 # Perform the iterations
 for i in range(numIters) :
-
-	# fY = f(xVals[1])
-	# gY = g1(xVals[1])
-	# xVals[1] = gY
-	# err1[i] = abs( (fY - gY) / fY )
-
-	# fY = f(xVals[2])
-	# gY = g2(xVals[2])
-	# xVals[2] = gY
-	# err1[i] = abs( (fY - gY) / fY )
-
-	# fY = f(xVals[3])
-	# gY = g3(xVals[3])
-	# xVals[3] = gY
-	# err1[i] = abs( (fY - gY) / fY )
-
-	# fY = f(xVals[4])
-	# gY = g4(xVals[4])
-	# xVals[4] = gY
-	# err1[i] = abs( (fY - gY) / fY )
-
+	
 	gY = g1(xVals[1])
 	xVals[1] = gY
 	err1[i] = abs( (trueVal - gY) / trueVal )
