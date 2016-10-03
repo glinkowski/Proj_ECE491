@@ -19,23 +19,18 @@ trueVal = 2.0
 # 	the f(x) & the four g-functions
 
 def f(x) :
-	y = (x * x) - (3 * x) + 2
-	return y
+	return (x * x) - (3 * x) + 2
 #end def ####### ######## ########
 
 def g1(x) :
-	y = (x * x) + 2
-	y = y / 3
-	return y
+	return ((x * x) + 2) / 3
 #end def ####### ######## ########
 def g1p(x) :
 	return (2/3) * x
 #end def ####### ######## ########
 
 def g2(x) :
-	y = (3*x) - 2
-	y = ma.sqrt(y)
-	return y
+	return ma.sqrt((3*x) - 2)
 #end def ####### ######## ########
 def g2p(x) :
 	return (3/2) / ma.sqrt((3*x) - 2)
@@ -43,19 +38,16 @@ def g2p(x) :
 
 def g3(x) :
 	if x != 0 :
-		y = 3 - (2 / x)
+		return 3 - (2 / x)
 	else :
-		x = np.inf
-	return y
+		return np.inf
 #end def ####### ######## ########
 def g3p(x) :
 	return 2 / (x*x)
 #end def ####### ######## ########
 
 def g4(x) :
-	y = (x * x) - 2
-	y = y / ((2 * x) - 3)
-	return y
+	return ((x * x) - 2) / ((2 * x) - 3)
 #end def ####### ######## ########
 def g4p(x) :
 	return 2 * ((x*x) - (3*x) + 2) / ma.pow( ((2*x) - 3), 2 )
@@ -91,7 +83,7 @@ xVals = np.array( [startVal, startVal, startVal, startVal, startVal], dtype=np.f
 
 # Perform the iterations
 for i in range(numIters) :
-	
+
 	gY = g1(xVals[1])
 	xVals[1] = gY
 	err1[i] = abs( (trueVal - gY) / trueVal )
@@ -115,11 +107,24 @@ print("  g1 = {:3.3e};  g2 = {:0.5f};  g3 = {:0.5f};  g4 = {:0.5f}".format(
 	xVals[1], xVals[2], xVals[3], xVals[4]))
 
 
+# Plot the results as two plots on the same figure
+fig = pt.figure(figsize=(6,8))
+pt1 = fig.add_subplot(2,1,1)
+pt2 = fig.add_subplot(2,1,2)
+
 # Plot the resulting convergence errors
-pt.plot(trials, err1, trials, err2, trials, err3, trials, err4)
-pt.yscale('log')
-pt.title('Convergence rate of four g(x) functions')
-pt.xlabel('iterations')
-pt.ylabel('Log10( relative error )')
-pt.legend(['g1(x)', 'g2(x)', 'g3(x)', 'g4(x)'], loc=0)
+pt1.plot(trials, err1, trials, err2, trials, err3, trials, err4)
+pt1.set_yscale('log')
+pt1.set_title('Convergence error of four g(x) functions')
+pt1.set_ylabel('Log10( relative error )')
+pt1.legend(['g1(x)', 'g2(x)', 'g3(x)', 'g4(x)'], loc=0)
+
+# Exclude divergent results
+pt2.plot(trials, err2, trials, err3, trials, err4)
+pt2.set_yscale('log')
+pt2.set_title('Error of non-divergent g(x) functions')
+pt2.set_xlabel('iterations')
+pt2.set_ylabel('Log10( relative error )')
+pt2.legend(['g2(x)', 'g3(x)', 'g4(x)'], loc=4)
+
 pt.show()
