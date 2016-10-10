@@ -55,9 +55,8 @@ def iterBroyden(xk, Bk) :
 	sk = la.solve( Bk, -f(xk) )
 	xk1 = xk + sk
 	yk = f(xk1) - f(xk)
+
 	Btemp = np.subtract(yk, np.dot(Bk, sk))
-#	Bnumer = np.array( 	[ [Btemp[0] * sk[0], Btemp[0] * sk[1]],
-#							[Btemp[1] * sk[0], Btemp[1] * sk[1]] ] )
 	stemp = np.dot(sk, sk)
 
 	# catch a divide-by-zero error
@@ -65,11 +64,7 @@ def iterBroyden(xk, Bk) :
 		Bk1 = np.add(Bk, np.inf)
 	else :
 		Bnumer = np.multiply(Btemp.reshape((2,1)), sk.reshape((1,2)))
-	#	sdenom = np.array( [[stemp, stemp],
-	#							[stemp, stemp]] )
-	#	Bk1 = Bk + np.divide( Bnumer, sdenom )
 		Bk1 = Bk + np.divide( Bnumer, stemp )
-	#	Bk1 = Bk + np.divide( bt, stemp )
 	#end if
 
 	return xk1, Bk1
