@@ -75,8 +75,6 @@ eN = list()
 eB = list()
 
 
-eThresh = 60
-
 # Newton Method: first iteration
 i = 1
 xNew = iterNewton(x0)
@@ -86,8 +84,10 @@ iN.append(i)
 eN.append(err)
 
 # Newton method: successive iterations
-while(err > eThresh) :
+errPrev = 0.0
+while(err != errPrev) :
 	i += 1
+	errPrev = err
 
 	xNew = iterNewton(xNew)
 #	err = math.sqrt( math.pow( (xNew - xstar), 2) )
@@ -95,8 +95,8 @@ while(err > eThresh) :
 	iN.append(i)
 	eN.append(err)
 
-	print("||{0} - {1}|| = {2:1.3f} < {3}".format(xNew, xstar, err, eThresh))
+	print("||{} - {}|| = {:1.3e}".format(xNew, xstar, err))
 #end loop
 
-print("||{} - {}|| = {:1.3f} < {}".format(xNew, xstar, err, eThresh))
+print("||{} - {}|| = {:1.3e}".format(xNew, xstar, err))
 print("{} iterations".format(i))
