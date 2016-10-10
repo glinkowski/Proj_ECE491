@@ -1,6 +1,7 @@
 import math
 import numpy as np
 import numpy.linalg as la
+import matplotlib.pyplot as pt
 
 
 ######## ######## ####### #######
@@ -24,7 +25,7 @@ def f(x) :
 #end def ####### ####### ########
 
 # The Jacobian matrix of f(x)
-def JacobianF(x) :
+def Jf(x) :
 	# row 1
 	J11 = math.pow(x[1], 3) - 7
 	J12 = 3 * math.pow(x[1], 2) * (x[0] + 3)
@@ -39,7 +40,7 @@ def JacobianF(x) :
 
 # Newton Method: one iteration
 def iterNewton(xk) :
-	sk = la.solve( JacobianF(xk), -f(xk) )
+	sk = la.solve( Jf(xk), -f(xk) )
 	xk1 = np.add(xk, sk)
 
 	return xk1
@@ -47,14 +48,29 @@ def iterNewton(xk) :
 
 # Broyden Method: initial B0
 def initBroyden(x0) :
-	return JacobianF(x0)
+	return Jf(x0)
 
 # Broyden Method: one iteration
 def iterBroyden(xk, Bk) :
 	sk = la.solve( Bk, -f(xk) )
 	xk1 = xk + sk
 	yk = f(xk1) - f(xk)
-	Bk1 = Bk + ( (yk - np.dot(Bk, sk)) ) / np.dot(sk, sk)
+	Btemp = np.subtract(yk, np.dot(Bk, sk))
+#	Bnumer = np.array( 	[ [Btemp[0] * sk[0], Btemp[0] * sk[1]],
+#							[Btemp[1] * sk[0], Btemp[1] * sk[1]] ] )
+	stemp = np.dot(sk, sk)
+
+	# catch a divide-by-zero error
+	if stemp == 0 :
+		Bk1 = np.add(Bk, np.inf)
+	else :
+		Bnumer = np.multiply(Btemp.reshape((2,1)), sk.reshape((1,2)))
+	#	sdenom = np.array( [[stemp, stemp],
+	#							[stemp, stemp]] )
+	#	Bk1 = Bk + np.divide( Bnumer, sdenom )
+		Bk1 = Bk + np.divide( Bnumer, stemp )
+	#	Bk1 = Bk + np.divide( bt, stemp )
+	#end if
 
 	return xk1, Bk1
 #end def ####### ####### ########
@@ -69,7 +85,6 @@ print("")
 # The iterations for Newton/Broyden (x-axis of plot)
 iN = list()
 iB = list()
-
 # The error for Newton/Broyden (y-axis of plot)
 eN = list()
 eB = list()
@@ -78,25 +93,63 @@ eB = list()
 # Newton Method: first iteration
 i = 1
 xNew = iterNewton(x0)
-#err = math.sqrt( math.pow( (xNew - xstar), 2) )
 err = la.norm( np.subtract(xNew, xstar), ord=2)
 iN.append(i)
 eN.append(err)
 
-# Newton method: successive iterations
+# Newton Method: successive iterations
 errPrev = 0.0
 while(err != errPrev) :
+	# print("||{} - {}|| = {:1.3e}".format(xNew, xstar, err))
 	i += 1
 	errPrev = err
 
 	xNew = iterNewton(xNew)
-#	err = math.sqrt( math.pow( (xNew - xstar), 2) )
 	err = la.norm( np.subtract(xNew, xstar), ord=2)
 	iN.append(i)
 	eN.append(err)
-
-	print("||{} - {}|| = {:1.3e}".format(xNew, xstar, err))
 #end loop
 
-print("||{} - {}|| = {:1.3e}".format(xNew, xstar, err))
-print("{} iterations".format(i))
+# print("||{} - {}|| => error = {:1.3e}".format(xNew, xstar, err))
+# print("{} iterations".format(i))
+
+
+# Broyden Method: initialization
+BNew = initBroyden(x0)
+xNew = x0
+
+i = 0
+errPrev = 0.0
+err = 1
+while(err != errPrev) :
+	# print("||{} - {}|| = {:1.3e}".format(xNew, xstar, err))
+	i += 1
+	errPrev = err
+
+	xNew, BNew = iterBroyden(xNew, BNew)
+	err = la.norm( np.subtract(xNew, xstar), ord=2)
+	iB.append(i)
+	eB.append(err)
+
+	if i > 15 :
+		break
+#end loop
+
+# print("||{} - {}|| => error = {:1.3e}".format(xNew, xstar, err))
+# print("{} iterations".format(i))
+
+
+# Printed output
+print("Iterations until error converges...")
+print("Newton:  {:2d} iterations; error = {:.3e}".format(len(eN), eN[len(eN)-1]))
+print("Broyden: {:2d} iterations; error = {:.3e}".format(len(eB), eB[len(eB)-1]))
+
+
+# Plot the error vs iterations
+pt.plot(iN, eN, iB, eB)
+pt.legend( ['Newton method', 'Broyden method'] )
+pt.title('Error convergence of Newton & Broyden methods')
+pt.ylabel('log10( error )')
+pt.xlabel('iterations')
+pt.yscale('log')
+pt.show()
