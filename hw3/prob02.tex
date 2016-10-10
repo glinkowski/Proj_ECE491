@@ -114,7 +114,8 @@ Let	\[ \bm{A}=\begin{bmatrix}	1 & 4 \\ 1 & 1	\end{bmatrix}	\]
 		\bm{x}_1 &= \bm{A} \bm{x}_0 \\
 		&= \begin{bmatrix} 1 & 4 \\ 1 & 1 \end{bmatrix} \begin{bmatrix} 1 \\ 1 \end{bmatrix} = \begin{bmatrix} 5 \\ 2 \end{bmatrix}
 	\end{align*}
-	\[ \boxed{\bm{x}_1 = \begin{bmatrix} \frac{5}{\sqrt{29}} \\ \frac{2}{\sqrt{29}} \end{bmatrix} \approx  \begin{bmatrix} 0.9285 \\ 0.3714 \end{bmatrix}} \]
+	L2 Normalization results in: $ \boxed{\bm{x}_1 = \begin{bmatrix} \frac{5}{\sqrt{29}} \\ \frac{2}{\sqrt{29}} \end{bmatrix} \approx  \begin{bmatrix} 0.9285 \\ 0.3714 \end{bmatrix}} $ \vspace{2mm} \\
+	NOTE: If this were to be followed by another iteration, we would normalize $\lambda_1$ such that $x_1 = \begin{bmatrix} 1.0 & 0.4 \end{bmatrix}^T$ to prevent over-/under-flow in subsequent calculations.
 \end{proof}
 \begin{exercise}{6}
 	To what eigenvector of $\bm{A}$ will power iteration ultimately converge?
@@ -123,6 +124,8 @@ Let	\[ \bm{A}=\begin{bmatrix}	1 & 4 \\ 1 & 1	\end{bmatrix}	\]
 	\quote{The power iteration eventually converges to $\boxed{\bm{v}_1 \textnormal{, corresponding to }\lambda_1 = 3}$.}\\	
 	\vspace{-5mm}\\
 \end{proof}
+
+\pagebreak
 \begin{exercise}{7}
 	What eigenvalue estimate is given by the Rayleigh quotient, using the vector $\bm{x} = [1\;1]^T$?
 \end{exercise}
@@ -135,8 +138,6 @@ Let	\[ \bm{A}=\begin{bmatrix}	1 & 4 \\ 1 & 1	\end{bmatrix}	\]
 		= \frac{7}{2} \implies \boxed{\lambda = 3.5}
 	\end{align*}
 \end{proof}
-
-\pagebreak
 \begin{exercise}{8}
 	To what eigenvector of $\bm{A}$ would the inverse iteration ultimately converge?
 \end{exercise}
@@ -159,7 +160,8 @@ Let	\[ \bm{A}=\begin{bmatrix}	1 & 4 \\ 1 & 1	\end{bmatrix}	\]
 	If QR iteration were applied to $\bm{A}$, to what form would it converge: diagonal or triangular? Why?
 \end{exercise}
 \begin{proof}[]
-	\quote{QR factorization results in an upper-triangular $\bm{R}$ and a symmetric $\bm{Q}$. If $\bm{A}$ is a diagonal matrix, then both $\bm{Q}$ and $\bm{R}$ will be diagonal matricies. In this case, $\bm{A}$ is not diagonal, so in $\bm{R} \times \bm{Q}$, the sub-diagonal zeros in $\bm{R}$ gradually force the sub-diagonal entries of $\bm{A}_k$ to approach zero.}
+	\quote{QR factorization results in an upper-triangular $\bm{R}$ and a symmetric $\bm{Q}$. If $\bm{A}$ is a diagonal matrix, then both $\bm{Q}$ and $\bm{R}$ will be diagonal matricies. In this case, $\bm{A}$ is not diagonal, so in $\bm{R} \times \bm{Q}$, the sub-diagonal zeros in $\bm{R}$ gradually force the sub-diagonal entries of $\bm{A}_k$ to approach zero. \\
+	That is, $\bm{A}_k$ is \underline{triangular}.}
 \end{proof}
 
 
