@@ -1,0 +1,95 @@
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{bm} % for bold math symbols
+\usepackage{amstext} % for \text macro
+\usepackage{array}   % for \newcolumntype macro
+\newcolumntype{L}{>{$}l<{$}} % math-mode version of "l" column type
+\newcolumntype{C}{>{$}c<{$}} % math-mode version of "c" column type
+\newcolumntype{R}{>{$}r<{$}} % math-mode version of "r" column type
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{reflection}[2][Reflection]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\begin{document}
+
+
+
+\noindent
+\large\textbf{HW 4, Problem 03} \hfill \textbf{Gregory Linkowski} \\
+\normalsize CS 450 / ECE 491 \hfill linkows2 \\
+Michael Heath \hfill due 10/19/16 \\
+
+
+\vspace{5mm}
+For each of the following, determine the critical point(s) and characterize as min, max, saddle. Also, determine if the func has a global min/max on $\mathbb{R}^2$. \\
+%\vspace{5mm} \\
+
+\begin{exercise}{1}
+	\[ f(x,y) = x^2 - 4xy + y^2 \]
+\end{exercise}
+\begin{proof}[]
+	\begin{align*}
+		\nabla f(x,y) = \bm{0} &= \begin{bmatrix} 2x - 4y \\ -4x + 2y \end{bmatrix} \Rightarrow
+		 \begin{cases} 0 = 2x - 4y \\ 0 = -4x + 2y \end{cases} \Rightarrow
+		 \begin{cases} x = 2y \\ 0 = -6y \end{cases} \\
+%
+		 & \textnormal{Critical point at: } (x,y) = (0,0) \\[15pt]
+%
+		 H_f(x,y) &= \begin{bmatrix} 2 & -4 \\ -4 & 2 \end{bmatrix} \\[15pt]
+%
+%		 H_f(0,0) &= \begin{bmatrix} 2 & -4 \\ -4 & 2 \end{bmatrix} \\
+%		 det(\lambda I - H_f(0,0)) &= det\left( \begin{bmatrix} \lambda - 2 & 4 \\ 4 & \lambda - 2 \end{bmatrix} \right) \\
+		 H_f(0,0) &= \begin{bmatrix} 2 & -4 \\ -4 & 2 \end{bmatrix} \; \Rightarrow \; det\left( \begin{bmatrix} \lambda - 2 & 4 \\ 4 & \lambda - 2 \end{bmatrix} \right) = 0 \\
+		 0 &= \lambda^2 - 4 \lambda + 4 - 4 \\
+		 \lambda &= \left\lbrace -2, 2 \right\rbrace \\
+		 & H_f(0,0) \textnormal{ is indefinite } \Rightarrow (0,0) \textnormal{ is a saddle point} \\[15pt]
+%
+	\end{align*} %\\ %\vspace{-15mm} 
+	\textbf{Answer 1.} \vspace{-5mm} \\
+	\begin{quote}
+		Critical point(s): $ \begin{cases}
+			(0,0) & \Rightarrow \textnormal{ saddle point}
+		\end{cases}	$ \\
+		$f(x,y)$ has \underline{no global extrema} in $\mathbb{R}^2$.
+	\end{quote}
+\end{proof}
+
+\pagebreak
+\begin{exercise}{2}
+	\[ f(x,y) = x^4 - 4xy + y^4 \]
+\end{exercise}
+\begin{proof}[]
+\end{proof}
+
+\pagebreak
+\begin{exercise}{3}
+\[ f(x,y) = 2x^3 - 3x^2 - 6xy(x - y - 1) \]
+\end{exercise}
+\begin{proof}[]
+\end{proof}
+
+\pagebreak
+\begin{exercise}{4}
+\[ f(x,y) = (x - y)^4 + x^2 - y^2 - 2x + 2y + 1 \]
+\end{exercise}
+\begin{proof}[]
+\end{proof}
+
+
+
+\end{document}
