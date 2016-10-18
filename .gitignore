@@ -10,6 +10,7 @@
 
 # LaTeX related files #
 #######################
+*.asv
 *.aux
 *.log
 *.synctex.gz
