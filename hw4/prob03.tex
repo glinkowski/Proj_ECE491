@@ -48,7 +48,7 @@ For each of the following, determine the critical point(s) and characterize as m
 		 \begin{cases} 0 = 2x - 4y \\ 0 = -4x + 2y \end{cases} \Rightarrow
 		 \begin{cases} x = 2y \\ 0 = -6y \end{cases} \\
 %
-		 & \textnormal{Critical point at: } (x,y) = (0,0) \\[15pt]
+		 & \textnormal{Critical point(s) at: } (x,y) = (0,0) \\[15pt]
 %
 		 H_f(x,y) &= \begin{bmatrix} 2 & -4 \\ -4 & 2 \end{bmatrix} \\[15pt]
 %
@@ -74,20 +74,120 @@ For each of the following, determine the critical point(s) and characterize as m
 	\[ f(x,y) = x^4 - 4xy + y^4 \]
 \end{exercise}
 \begin{proof}[]
+	\begin{align*}
+		\nabla f(x,y) = \bm{0} &= \begin{bmatrix} 4x^3 - 4y \\ -4x + 4y^3 \end{bmatrix} \Rightarrow
+		\begin{cases} 0 = 4x^3 - 4y \\ 0 = -4x + 4y^3 \end{cases} \Rightarrow
+		\begin{cases} y = x^3 \\ x = y^3 \end{cases} \\
+		%
+		& \textnormal{Critical point(s) at: } (x,y) = (0,0), (-1, -1), (1, 1) \\[15pt]
+		%
+		H_f(x,y) &= \begin{bmatrix} 12x^2 & -4 \\ -4 & 12y^2 \end{bmatrix} \\[15pt]
+		%
+		H_f(0,0) &= \begin{bmatrix} 0 & -4 \\ -4 & 0 \end{bmatrix} \; \Rightarrow \; det\left( \begin{bmatrix} \lambda & 4 \\ 4 & \lambda \end{bmatrix} \right) = 0 \\
+		0 &= \lambda^2 - 16 \\
+		\lambda &= \left\lbrace -4, 4 \right\rbrace \\
+		& H_f(0,0) \textnormal{ is indefinite } \Rightarrow (0,0) \textnormal{ is a saddle point} \\[15pt]
+		%
+		H_f(-1, -1) &= \begin{bmatrix} 12 & -4 \\ -4 & 12 \end{bmatrix} \; \Rightarrow \; det\left( \begin{bmatrix} \lambda - 12 & 4 \\ 4 & \lambda - 12 \end{bmatrix} \right) = 0 \\
+		0 &= \lambda^2  - 24 \lambda + 144 - 16 \\
+		 &= \lambda^2  - 24 \lambda + 128 \\
+		 &= (\lambda - 16) (\lambda - 8) \\
+		\lambda &= \left\lbrace 8, 16 \right\rbrace \\
+		& H_f(-1, -1) \textnormal{ is positive definite } \Rightarrow (-1, -1) \textnormal{ is a minimum} \\[15pt]
+		%
+		H_f(1, 1) &= \begin{bmatrix} 12 & -4 \\ -4 & 12 \end{bmatrix} \; \Rightarrow \; det\left( \begin{bmatrix} \lambda - 12 & 4 \\ 4 & \lambda - 12 \end{bmatrix} \right) = 0 \\
+		0 &= \lambda^2  - 24 \lambda + 144 - 16 \\
+		\lambda &= \left\lbrace 8, 16 \right\rbrace \\
+		& H_f(1, 1) \textnormal{ is positive definite } \Rightarrow (1, 1) \textnormal{ is a minimum} \\[15pt]
+	\end{align*} \vspace{-5mm}
+	\textbf{Answer 2.} \vspace{-5mm} \\
+	\begin{quote}
+		Critical point(s): $ \begin{cases}
+		(0,0) & \Rightarrow \textnormal{ saddle point} \\
+		(-1, -1) & \Rightarrow \textnormal{ minimum} \\
+		(1, 1) & \Rightarrow \textnormal{ minimum}
+	\end{cases}	$ \\
+		$f(x,y)$ has \underline{no global extrema} in $\mathbb{R}^2$. \\
+		Note, however, that (-1,-1) \& (1,1) are both absolute minimum solutions to the function.
+	\end{quote}
 \end{proof}
 
 \pagebreak
 \begin{exercise}{3}
-\[ f(x,y) = 2x^3 - 3x^2 - 6xy(x - y - 1) \]
+	\begin{align*}
+		f(x,y) &= 2x^3 - 3x^2 - 6xy(x - y - 1) \\
+		 &= 2x^3 - 3x^2 - 6x^2y + 6xy^2 + 6xy
+	\end{align*}
 \end{exercise}
 \begin{proof}[]
+	\begin{align*}
+		\nabla f(x,y) = \bm{0} &= \begin{bmatrix} 6x^2 - 6x - 12xy + 6y^2 + 6y \\ - 6x^2 + 12xy + 6x \end{bmatrix} \Rightarrow
+		\begin{cases} 0 = 6x^2 - 6x - 6x^2 + 6x + 6(\frac{1}{2}x - \frac{1}{2})^2 + (3x - 3) \\ y = \frac{6x^2 - 6x}{12x} = \frac{1}{2}x - \frac{1}{2} \end{cases} \\
+		& \Rightarrow
+		\begin{cases} 0 = 6(\frac{1}{4}x^2 - \frac{1}{2}x + \frac{1}{4}) + (3x - 3) \\ y = \frac{1}{2}x - \frac{1}{2} \end{cases}
+		\Rightarrow
+		\begin{cases} 0 = \frac{3}{2}x^2 - \frac{3}{2} \\ y = \frac{1}{2}x - \frac{1}{2} \end{cases} 
+		\Rightarrow
+		\begin{cases} x^2 = 1 \\ y = \frac{1}{2}x - \frac{1}{2} \end{cases} \\
+		%
+		& \textnormal{Critical point(s) at: } (x,y) = (-1, -1), (1, 0) \\[15pt]
+		%
+		H_f(x,y) &= \begin{bmatrix} 12x - 6 -12y & -12x + 12y + 6 \\ -12x + 12y + 6 & 12x \end{bmatrix} \\[15pt]
+		%
+		H_f(-1, -1) &= \begin{bmatrix} -6 & 6 \\ 6 & -12 \end{bmatrix} \; \Rightarrow \; det\left( \begin{bmatrix} \lambda + 6 & 6 \\ 6 & \lambda + 12 \end{bmatrix} \right) = 0 \\
+		0 &= \lambda^2 + 18\lambda + 72 + 36 \\
+		 &= \lambda^2 + 18\lambda + 108 \\
+		\lambda &= \left\lbrace -15.7, -2.29 \right\rbrace \\
+		& H_f(-1, -1) \textnormal{ is negative definite } \Rightarrow (-1, -1) \textnormal{ is a maximum} \\[15pt]
+		%
+		H_f(1, 0) &= \begin{bmatrix} 6 & -6 \\ -6 & 12 \end{bmatrix} \; \Rightarrow \; det\left( \begin{bmatrix} \lambda - 6 & - 6 \\ - 6 & \lambda - 12 \end{bmatrix} \right) = 0 \\
+		0 &= \lambda^2 - 18\lambda + 72 + 36 \\
+		\lambda &= \left\lbrace 2.29, 15.7 \right\rbrace \\
+		& H_f(1, 0) \textnormal{ is positive definite } \Rightarrow (1, 0)  \textnormal{ is a minimum} \\[15pt]
+	\end{align*}
+	\textbf{Answer 3.} \vspace{-5mm} \\
+	\begin{quote}
+		Critical point(s): $ \begin{cases}
+		(-1, -1) & \Rightarrow \textnormal{ maximum} \\
+		(1, 0) & \Rightarrow \textnormal{ minimum}
+		\end{cases}	$ \\
+		$f(x,y)$ has \underline{no global extrema} in $\mathbb{R}^2$.
+	\end{quote}
 \end{proof}
 
 \pagebreak
 \begin{exercise}{4}
-\[ f(x,y) = (x - y)^4 + x^2 - y^2 - 2x + 2y + 1 \]
+	\begin{align*}
+		f(x,y) &= (x - y)^4 + x^2 - y^2 - 2x + 2y + 1 \\
+		 &= x^4 - 4x^3y + 6x^2y^2 - 4xy^3 + y^4 + x^2 - y^2 - 2x + 2y + 1 \\
+	\end{align*}
 \end{exercise}
 \begin{proof}[]
+	\begin{align*}
+		\nabla f(x,y) = \bm{0} &= \begin{bmatrix} 4x^3 - 12x^2y + 12xy^2 - 4y^3 + 2x - 2 \\ -4x^3 + 12x^2y - 12xy^2 + 4y^3 - 2y + 2 \end{bmatrix} \\
+		&\Rightarrow
+		\begin{cases} 0 = (-2y) + 2x \\ (4x^3 - 12x^2y + 12xy^2 - 4y^3 - 2) = -2y \end{cases} \\
+		& \Rightarrow
+		\begin{cases} y = x \\ 4x^3 - 12x^3 + 12x^3 - 4x^3 - 2 = -2x\end{cases}
+		\Rightarrow
+		\begin{cases} y = x \\ x = 1 \end{cases}  \\
+		%
+		& \textnormal{Critical point(s) at: } (x,y) = (1, 1) \\[15pt]
+		%
+		H_f(x,y) &= \begin{bmatrix} 12x^2 - 24xy + 12y^2 + 2 & -12x^2 + 24xy - 12y^2 \\ -12x^2 + 24xy - 12y^2 & 12x^2 - 24xy + 12y^2 - 2 \end{bmatrix} \\[15pt]
+		%
+		H_f(1, 1) &= \begin{bmatrix} 2 & 0 \\ 0 & -2 \end{bmatrix} \; \Rightarrow \; det\left( \begin{bmatrix} \lambda -2 & 0 \\ 0 & \lambda + 2 \end{bmatrix} \right) = 0 \\
+		0 &= \lambda^2 - 4 \\
+		\lambda &= \left\lbrace -2, 2 \right\rbrace \\
+		& H_f(1, 1) \textnormal{ is indefinite } \Rightarrow (-1, -1) \textnormal{ is a saddle point} \\[15pt]
+	\end{align*}
+	\textbf{Answer 4.} \vspace{-5mm} \\
+	\begin{quote}
+		Critical point(s): $ \begin{cases}
+		(1, 1) & \Rightarrow \textnormal{ saddle point} \\
+		\end{cases}	$ \\
+		$f(x,y)$ has \underline{no global extrema} in $\mathbb{R}^2$.
+	\end{quote}
 \end{proof}
 
 
