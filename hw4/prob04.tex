@@ -1,0 +1,105 @@
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{bm} % for bold math symbols
+\usepackage{amstext} % for \text macro
+\usepackage{array}   % for \newcolumntype macro
+\newcolumntype{L}{>{$}l<{$}} % math-mode version of "l" column type
+\newcolumntype{C}{>{$}c<{$}} % math-mode version of "c" column type
+\newcolumntype{R}{>{$}r<{$}} % math-mode version of "r" column type
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{reflection}[2][Reflection]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\begin{document}
+
+
+
+\noindent
+\large\textbf{HW 4, Problem 04} \hfill \textbf{Gregory Linkowski} \\
+\normalsize CS 450 / ECE 491 \hfill linkows2 \\
+Michael Heath \hfill due 10/19/16 \\
+
+
+\vspace{5mm}
+Consider the function $f : \mathbb{R}^2 \rightarrow \mathbb{R}$ defined by
+\[ f(x) = \frac{1}{2}\left( x_1^2 - x_2 \right) ^2 + \frac{1}{2} \left( 1 - x_1 \right) ^2 \] 
+\vspace{-2mm} \\
+
+\begin{exercise}{1}
+	At what point does $f$ attain a minumum?
+\end{exercise} \vspace{-10mm}
+\begin{proof}[]
+	\begin{align*}
+		f(x) &= \frac{1}{2}\left( x_1^4 - 2 x_1^2 x_2 + x_2^2 \right) + \frac{1}{2}\left( 1 - 2 x_1 + x_1^2 \right) \\
+		 &= \frac{1}{2} x_1^4 + \frac{1}{2} x_1^2 - x_1 - x_1^2 x_2 + \frac{1}{2} x_2^2 + \frac{1}{2} \\[15pt]
+		 %
+		\nabla f(x) = \bm{0} &= \begin{bmatrix} 2x_1^3 + x_1 - 1 - 2 x_1 x_2 \\ -x_1^2 + x_2 \end{bmatrix} \\
+		 &\Rightarrow \begin{cases} 0 = 2 x_1^3 + x_1 - 1 - 2 x^3 \\ x_2 = x_1^2 \end{cases} \\
+		 &\Rightarrow \begin{cases} x_1 = 1 \\ x_2 = x_1^2 \end{cases}
+	\end{align*}
+	\textbf{Answer 1.} \vspace{-7mm} \\
+	\begin{quote}
+		The function $f(x)$ has a minimum at $(x,y) = (1,1)$.
+	\end{quote}
+\end{proof}
+
+\pagebreak
+\begin{exercise}{2}
+	Perform one iteration of Newton's method for minimizing $f$ using as starting point $x_0 = [2 \; 2]^T$.
+\end{exercise} \vspace{-10mm}
+\begin{proof}[]
+	\begin{align*}
+		H_f(x) &= \begin{bmatrix} 6x_1 + 1 - 2x_2 & 2x_1 \\ -2x_1 & 1 \end{bmatrix} \quad \Rightarrow \quad
+		H_f(x_0) = \begin{bmatrix} 9 & 4 \\ -4 & 1 \end{bmatrix} \\[15pt]
+		%
+		\textnormal{Newton iteration: } &\begin{cases} H_f(x_k) s_k = - \nabla f(x_k) \\ x_{k+1} = x_k + s_k \end{cases} \\[15pt]
+		%
+		H_f(x_0) s = - \nabla f(x_0) &\Rightarrow \begin{cases} -9 = 9s_1 + 4s_2 \\ 2 = -4s_1 + s_2 \end{cases} \\
+		&\Rightarrow \begin{cases} -9 = 9s_1 + 16s_1 + 8 \\ s_2 = 4s_1 + 2 \end{cases}
+			\Rightarrow \begin{cases} s_1 = -\frac{17}{25} &= -0.68 \\ s_2 = 4s_1 + 2 &= -0.72 \end{cases} \\[15pt]
+		%
+		x_{1} = x_0 + s &\Rightarrow \begin{bmatrix} 1.32 \\ 1.28 \end{bmatrix}
+	\end{align*}
+	\textbf{Answer 2.} \vspace{-7mm} \\
+	\begin{quote}
+		$x_1 = [1.32 \; \; 1.28]^T = [\frac{33}{25} \; \frac{32}{25}]^T$
+	\end{quote}
+\end{proof}
+
+%\pagebreak
+\begin{exercise}{3} In what sense is this a good step?
+\end{exercise} \vspace{-10mm}
+\begin{proof}[] \textnormal{ } \\
+	\textbf{Answer 3.} \vspace{-7mm} \\
+	\begin{quote}
+		The iteration brings $x_k$ closer to the expected value of $(1,1)$; it is moving in the right \textit{direction}.
+	\end{quote}
+\end{proof}
+
+%\pagebreak
+\begin{exercise}{4} In what sense is this a bad step?
+\end{exercise} \vspace{-10mm}
+\begin{proof}[] \textnormal{ } \\
+	\textbf{Answer 4.} \vspace{-7mm} \\
+	\begin{quote}
+		The step remains far from the expected value after one iteration, indicating the \textit{length} could be improved.
+	\end{quote}
+\end{proof}
+
+
+\end{document}
