@@ -1,5 +1,4 @@
 import numpy as np
-import math
 
 
 ######## ######## ####### #######
@@ -44,6 +43,18 @@ def applyJf(t,x) :
 	return J
 #end def ####### ####### ########
 
+def fLog(t,x) :
+	y = np.log(x[0]) + x[1] * t
+	return y
+#end def ####### ####### ########
+def applyfLog(t,x) :
+	fv = np.zeros( (len(t), 1) )
+	for i in range(len(t)) :
+		fv[i,:] = fLog(t[i], x)
+	#end loop
+	return fv
+#end def ####### ####### ########
+
 
 
 ######## ######## ####### #######
@@ -54,7 +65,7 @@ print("")
 # print(applyJf(t,x0))
 # print(applyf(t,x0))
 
-
+# The NON-Linear implementation, using QR factorization
 xk = x0
 diff = 1
 # for r in range(1) :
@@ -95,4 +106,29 @@ while diff > 0 :
 #end loop
 nl_x = np.array( [xk1[0], xk1[1]] )
 
-print(nl_x)
+print("Non-Linear solution: {}".format(nl_x))
+
+
+# The Log-Linearized least squares calculation
+# b = np.log(y)
+# A = np.ones( (len(t), 2) )
+# A[:,1] = t
+# # print(A)
+# # print(b)
+# # xLog = np.linalg.solve(A, b)
+# # print(xLog)
+# q, r = np.linalg.qr(A)
+# xLog = np.linalg.solve(r, np.dot( np.transpose(q), b))
+# l_x = np.exp(xLog)
+# l_x = np.array( [ np.exp(xLog[0]), np.exp(xLog[1])])
+# print(xLog)
+# print("Linear log solution: {}".format(l_x))
+
+
+b = np.log(y)
+A = np.ones( (len(t), 2) )
+A[:,1] = t
+xLog = np.linalg.lstsq(A, b)[0]
+l_x = np.array( [np.exp(xLog[0]), xLog[1]] )
+print(xLog)
+print("Linear log solution: {}".format(l_x))
