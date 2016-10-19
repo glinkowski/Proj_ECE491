@@ -48,3 +48,10 @@ def Jf1(x) :
 
 	return np.array( [ [j11, j12], [j21, j22] ] )
 #end def ####### ####### ########
+
+
+
+######## ######## ####### #######
+# PRIMARY FUNCTION
+
+print("")
