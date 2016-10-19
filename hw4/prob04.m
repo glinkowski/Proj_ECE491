@@ -21,7 +21,7 @@ surf(Z)
 
 syms x1 x2;
 gradF(x1, x2) = [ (2*x1^3 + x1 - 1 - 2*x1*x2) ; (-x1^2 + x2) ];
-Hf(x1, x2) = [(6*x1 + 1 - 2*x2), 2*x1; -2*x1, 1];
+Hf(x1, x2) = [(6*x1^2 + 1 - 2*x2), -2*x1; -2*x1, 1];
 
 x0 = [2;2];
 x1 = x0 - inv( Hf(x0(1), x0(2)) )*gradF(x0(1),x0(2));
@@ -31,9 +31,10 @@ s = linsolve( Hf(x0(1), x0(2)), -gradF(x0(1),x0(2)) );
 xk = x0 + s;
 double(xk)
 
-for n = 1:10
+for n = 1:4
     s = linsolve( Hf(xk(1), xk(2)), -gradF(xk(1),xk(2)) );
     xk = xk + s;
+%    double(xk)
 end
 double(xk)
 

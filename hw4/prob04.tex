@@ -64,20 +64,20 @@ Consider the function $f : \mathbb{R}^2 \rightarrow \mathbb{R}$ defined by
 \end{exercise} \vspace{-10mm}
 \begin{proof}[]
 	\begin{align*}
-		H_f(x) &= \begin{bmatrix} 6x_1 + 1 - 2x_2 & 2x_1 \\ -2x_1 & 1 \end{bmatrix} \quad \Rightarrow \quad
-		H_f(x_0) = \begin{bmatrix} 9 & 4 \\ -4 & 1 \end{bmatrix} \\[15pt]
+		H_f(x) &= \begin{bmatrix} 6x_1^2 + 1 - 2x_2 & -2x_1 \\ -2x_1 & 1 \end{bmatrix} \quad \Rightarrow \quad
+		H_f(x_0) = \begin{bmatrix} 21 & -4 \\ -4 & 1 \end{bmatrix} \\[15pt]
 		%
 		\textnormal{Newton iteration: } &\begin{cases} H_f(x_k) s_k = - \nabla f(x_k) \\ x_{k+1} = x_k + s_k \end{cases} \\[15pt]
 		%
-		H_f(x_0) s = - \nabla f(x_0) &\Rightarrow \begin{cases} -9 = 9s_1 + 4s_2 \\ 2 = -4s_1 + s_2 \end{cases} \\
-		&\Rightarrow \begin{cases} -9 = 9s_1 + 16s_1 + 8 \\ s_2 = 4s_1 + 2 \end{cases}
-			\Rightarrow \begin{cases} s_1 = -\frac{17}{25} &= -0.68 \\ s_2 = 4s_1 + 2 &= -0.72 \end{cases} \\[15pt]
+		H_f(x_0) s = - \nabla f(x_0) &\Rightarrow \begin{cases} -9 = 21s_1 - 4s_2 \\ 2 = -4s_1 + s_2 \end{cases} \\
+		&\Rightarrow \begin{cases} -9 = 21s_1 - 16s_1 - 8 \\ s_2 = 4s_1 + 2 \end{cases}
+			\Rightarrow \begin{cases} s_1 = -\frac{1}{5} &= -0.2 \\ s_2 = 4s_1 + 2 &= 1.2 \end{cases} \\[15pt]
 		%
-		x_{1} = x_0 + s &\Rightarrow \begin{bmatrix} 1.32 \\ 1.28 \end{bmatrix}
+		x_{1} = x_0 + s &\Rightarrow \begin{bmatrix} 1.8 \\ 3.2 \end{bmatrix}
 	\end{align*}
 	\textbf{Answer 2.} \vspace{-7mm} \\
 	\begin{quote}
-		$x_1 = [1.32 \; \; 1.28]^T = [\frac{33}{25} \; \frac{32}{25}]^T$
+		$x_1 = [1.8 \; \; 3.2]^T = [\frac{9}{5} \; \frac{16}{5}]^T$
 	\end{quote}
 \end{proof}
 
@@ -87,7 +87,8 @@ Consider the function $f : \mathbb{R}^2 \rightarrow \mathbb{R}$ defined by
 \begin{proof}[] \textnormal{ } \\
 	\textbf{Answer 3.} \vspace{-7mm} \\
 	\begin{quote}
-		The iteration brings $x_k$ closer to the expected value of $(1,1)$; it is moving in the right \textit{direction}.
+		The first iteration brings the first entry of $x_k$ closer to the expected value of 1 (moving in the right \textit{direction}), while the second entry is farther from the expected value. \\
+		Note that the method does converge within 4 steps.
 	\end{quote}
 \end{proof}
 
@@ -97,7 +98,7 @@ Consider the function $f : \mathbb{R}^2 \rightarrow \mathbb{R}$ defined by
 \begin{proof}[] \textnormal{ } \\
 	\textbf{Answer 4.} \vspace{-7mm} \\
 	\begin{quote}
-		The step remains far from the expected value after one iteration, indicating the \textit{length} could be improved.
+		After the first iteration, the second entry of $x_k$ is farther from the expected value of 1 (moving in the wrong \textit{direction}). It also moves farther in the wrong direction than the amount by which the first entry converges.
 	\end{quote}
 \end{proof}
 
