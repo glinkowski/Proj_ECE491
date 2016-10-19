@@ -107,8 +107,7 @@ For each of the following, determine the critical point(s) and characterize as m
 		(-1, -1) & \Rightarrow \textnormal{ minimum} \\
 		(1, 1) & \Rightarrow \textnormal{ minimum}
 	\end{cases}	$ \\
-		$f(x,y)$ has \underline{no global extrema} in $\mathbb{R}^2$. \\
-		Note, however, that (-1,-1) \& (1,1) are both absolute minimum solutions to the function.
+		$f(x,y)$ has \underline{two global extrema} in $\mathbb{R}^2$: $f(-1, -1) = f(1, 1) = -2$.
 	\end{quote}
 \end{proof}
 
@@ -130,9 +129,12 @@ For each of the following, determine the critical point(s) and characterize as m
 		\Rightarrow
 		\begin{cases} x^2 = 1 \\ y = \frac{1}{2}x - \frac{1}{2} \end{cases} \\
 		%
-		& \textnormal{Critical point(s) at: } (x,y) = (-1, -1), (1, 0) \\[15pt]
+		& \textnormal{Critical point(s) at: } (x,y) = (0,0), (-1, -1), (1, 0), (0, -1) \\[15pt]
 		%
 		H_f(x,y) &= \begin{bmatrix} 12x - 6 -12y & -12x + 12y + 6 \\ -12x + 12y + 6 & 12x \end{bmatrix} \\[15pt]
+		%
+		H_f(0,0) &= \begin{bmatrix} -6 & 6 \\ 6 & 0 \end{bmatrix} \; \Rightarrow \; det\left( \begin{bmatrix} \lambda + 6 & 6 \\ 6 & \lambda \end{bmatrix} \right) = 0 \\
+		& H_f(0, 0) \textnormal{ is indefinite } \Rightarrow (0,0) \textnormal{ is a saddle point} \\[15pt]
 		%
 		H_f(-1, -1) &= \begin{bmatrix} -6 & 6 \\ 6 & -12 \end{bmatrix} \; \Rightarrow \; det\left( \begin{bmatrix} \lambda + 6 & 6 \\ 6 & \lambda + 12 \end{bmatrix} \right) = 0 \\
 		0 &= \lambda^2 + 18\lambda + 72 + 36 \\
@@ -144,12 +146,14 @@ For each of the following, determine the critical point(s) and characterize as m
 		0 &= \lambda^2 - 18\lambda + 72 + 36 \\
 		\lambda &= \left\lbrace 2.29, 15.7 \right\rbrace \\
 		& H_f(1, 0) \textnormal{ is positive definite } \Rightarrow (1, 0)  \textnormal{ is a minimum} \\[15pt]
-	\end{align*}
+	\end{align*} \vspace{-10mm} \\
 	\textbf{Answer 3.} \vspace{-5mm} \\
 	\begin{quote}
 		Critical point(s): $ \begin{cases}
+		(0, 0) & \Rightarrow \textnormal{ saddle point} \\
 		(-1, -1) & \Rightarrow \textnormal{ maximum} \\
-		(1, 0) & \Rightarrow \textnormal{ minimum}
+		(1, 0) & \Rightarrow \textnormal{ minimum} \\
+		(0, -1) & \Rightarrow \textnormal{ saddle point}
 		\end{cases}	$ \\
 		$f(x,y)$ has \underline{no global extrema} in $\mathbb{R}^2$.
 	\end{quote}
@@ -179,7 +183,7 @@ For each of the following, determine the critical point(s) and characterize as m
 		H_f(1, 1) &= \begin{bmatrix} 2 & 0 \\ 0 & -2 \end{bmatrix} \; \Rightarrow \; det\left( \begin{bmatrix} \lambda -2 & 0 \\ 0 & \lambda + 2 \end{bmatrix} \right) = 0 \\
 		0 &= \lambda^2 - 4 \\
 		\lambda &= \left\lbrace -2, 2 \right\rbrace \\
-		& H_f(1, 1) \textnormal{ is indefinite } \Rightarrow (-1, -1) \textnormal{ is a saddle point} \\[15pt]
+		& H_f(1, 1) \textnormal{ is indefinite } \Rightarrow (1, 1) \textnormal{ is a saddle point} \\[15pt]
 	\end{align*}
 	\textbf{Answer 4.} \vspace{-5mm} \\
 	\begin{quote}
