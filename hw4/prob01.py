@@ -10,6 +10,8 @@ x0 = np.array( [-0.5, 1.4] )
 	# starting point
 xstar = np.array( [0, 1] )
 	# the exact solution
+errTol = 1*(10**(-15))
+	# stopping criteria
 ######## ######## ####### #######
 
 
@@ -94,7 +96,8 @@ eN.append(err)
 
 # Newton Method: successive iterations
 errPrev = 0.0
-while(err != errPrev) :
+#while(err != errPrev) :
+while(err > errTol) :
 	# print("||{} - {}|| = {:1.3e}".format(xNew, xstar, err))
 	i += 1
 	errPrev = err
@@ -116,7 +119,9 @@ xNew = x0
 i = 0
 errPrev = 0.0
 err = 1
-while(err != errPrev) :
+#while(err != errPrev) :
+while(err > errTol) :
+	pass
 	# print("||{} - {}|| = {:1.3e}".format(xNew, xstar, err))
 	i += 1
 	errPrev = err
