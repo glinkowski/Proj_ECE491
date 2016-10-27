@@ -46,10 +46,14 @@ def applyBasis(t, subVal, divVal) :
 def applyHorners(xVals, coeff) :
 	yVals = np.zeros( (len(xVals)), dtype=np.float64)
 
+	# reverse the coefficient order
 	revCoeff = coeff[::-1]
 
+	# calculate at each x value
 	for ix in range(len(xVals)) :
 		x = xVals[ix]
+
+		#each round = (next_coeff + x*(prev_value))
 		temp = revCoeff[0]
 		for ic in range(1, len(revCoeff)) :
 			temp = revCoeff[ic] + (x * temp)
@@ -65,13 +69,13 @@ def applyHorners(xVals, coeff) :
 
 print("")
 
+
 # 1) Create matrices from defined basis functions
 mat1 = applyBasis(year, 0, 1)
 mat2 = applyBasis(year, 1900, 1)
 mat3 = applyBasis(year, 1940, 1)
 mat4 = applyBasis(year, 1940, 40)
 
-# print(mat1[0:2,0:2])
 
 # 2) Comput condition number of each matrix
 cond1 = np.linalg.cond(mat1)
@@ -84,70 +88,39 @@ print("Condition numbers: {:.3e}, {:.3e}, {:.3e}, {:.3e}".format(
 print("Using matrix 'mat4'...")
 #Note: use mat4 for the following ...
 
-# 3) compute & plot polynomial interpolant
+
+# 3) Evaluate interpolant using Horner's
 coeffs = np.linalg.solve(mat4, pop)
 # print(coeffs)
 
 # Define the range of years (x-axis)
 pStart = year[0]# - 1
 pStop = year[len(year)-1]# + 1
-plotX = np.linspace(pStart, pStop, (pStop - pStart + 1))
-# plotX = year
-plotX = np.divide( np.subtract(plotX, 1940), float(40))
-# plotX = year
-# year = np.divide( np.subtract(year, 1940), float(40))
-# plotY = np.zeros( (plotX.shape), dtype=np.float64 )
-
-# print(plotX)
-# print(year)
-
-# # troubleshoot horners
-# coeffs = [3, 2, 1]
-# plotX = [-1, 0, 1, 2]
-# plotY = np.zeros( (len(plotX)) )
-
-# calculate the corresponding populations (y-axis)
-# revCoeff = coeffs[::-1]
-# print(revCoeff)
-# for ix in range(len(plotX)) :
-# # for ix in range(1,2) :
-# 	x = plotX[ix]
-# 	# print(x)
-# 	temp = revCoeff[0]
-# 	for ic in range(1, len(revCoeff)) :
-# 		temp = revCoeff[ic] + (x * temp)
-# 		# print("  {}, {}".format(revCoeff[ic], temp))
-# 	plotY[ix] = temp
-# #end loop
-
-# plotX = year
+plotXa = np.linspace(pStart, pStop, (pStop - pStart + 1))
+# scale the years before evaluating
+plotXa = np.divide( np.subtract(plotXa, 1940), float(40))
 
 # Use Horner's Nested evaluation scheme
-plotY = applyHorners(plotX, coeffs)
-# print(plotY)
-plotX = np.add( np.multiply(plotX, 40), 1940)
+plotY = applyHorners(plotXa, coeffs)
+# un-scale the years
+plotXa = np.add( np.multiply(plotXa, 40), 1940)
 
 
-# for ix in range(len(plotX)) :
-# 	temp = coeffs[0]
-# 	for ic in range(1, len(coeffs)) :
-# 		temp = temp + (coeffs[ic] * math.pow(plotX[ix], ic))
-# 	plotY[ix] = temp
-# #end loop
-# print(plotY)
+
+
+
+
+
 
 
 # Plot the interpolant function w/ data
-pt.plot(plotX, plotY)
-#pt.scatter(year, pop)
+pt.plot(plotXa, plotY)
 pt.plot(year, pop, 'sr')
+
 pt.legend(['interpolant', 'original data'])
-# pt.plot(plotX, plotY)
-# pt.plot(year, pop)
+
 pt.title('Plotting the Interpolant')
 pt.ylabel('population')
 pt.xlabel('year')
 pt.xticks(year, year)
-# xlabels = pt.get_xticklabels()
-# print(xlabels)
 pt.show()
