@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as pt
-import math
+# import scipy as sc
+import scipy.interpolate as si
 
 
 
@@ -96,30 +97,57 @@ coeffs = np.linalg.solve(mat4, pop)
 # Define the range of years (x-axis)
 pStart = year[0]# - 1
 pStop = year[len(year)-1]# + 1
-plotXa = np.linspace(pStart, pStop, (pStop - pStart + 1))
+plotX = np.linspace(pStart, pStop, (pStop - pStart + 1))
 # scale the years before evaluating
-plotXa = np.divide( np.subtract(plotXa, 1940), float(40))
+plotXScaled = np.divide( np.subtract(plotX, 1940), float(40))
 
 # Use Horner's Nested evaluation scheme
-plotY = applyHorners(plotXa, coeffs)
-# un-scale the years
-plotXa = np.add( np.multiply(plotXa, 40), 1940)
+plotYa = applyHorners(plotXScaled, coeffs)
+# # un-scale the years
+# plotX = np.add( np.multiply(plotX, 40), 1940)
 
 
+# 4) monotone Hermite cubic interpolant
+pchip = si.PchipInterpolator(year, pop, extrapolate=True)
+plotYb = pchip.__call__(plotX)
 
 
+# 5) cubic spline interpolant
+unvspline = si.UnivariateSpline(year, pop)
+plotYc = unvspline.__call__(plotX)
 
+
+# 6) Extrapolate each method to 1990, get error
+exYear = 1990
+exPop = 248709873
+popa = applyHorners( [((exYear - 1940) / float(40))], coeffs)[0]
+popb = pchip.__call__(exYear)
+popc = unvspline.__call__(exYear)
+print("Projected to 1990: {:,.0f}; {:,.0f}; {:,.0f}".format(
+	popa, float(popb), float(popc)))
+
+err_polynomial = np.abs(popa - exPop) / exPop
+err_hermite = np.abs(popb - exPop) / exPop
+err_spline = np.abs(popc - exPop) / exPop
+print("Relative error: {:.3f}; {:.3f}; {:.3f}".format(
+	err_polynomial, err_hermite, err_spline))
+
+
+# 7) Round the data & get resulting error
 
 
 
 
 # Plot the interpolant function w/ data
-pt.plot(plotXa, plotY)
+pt.plot(plotX, plotYa)
+pt.plot(plotX, plotYb)
+pt.plot(plotX, plotYc)
 pt.plot(year, pop, 'sr')
 
-pt.legend(['interpolant', 'original data'])
+pt.legend(['scaled monotonic', 'Hermite cubic',
+	'cubic spline', 'original data'], loc=0)
 
-pt.title('Plotting the Interpolant')
+pt.title('Plotting the Interpolants')
 pt.ylabel('population')
 pt.xlabel('year')
 pt.xticks(year, year)
