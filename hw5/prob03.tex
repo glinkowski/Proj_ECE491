@@ -1,0 +1,62 @@
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{bm} % for bold math symbols
+\usepackage{amstext} % for \text macro
+\usepackage{array}   % for \newcolumntype macro
+\newcolumntype{L}{>{$}l<{$}} % math-mode version of "l" column type
+\newcolumntype{C}{>{$}c<{$}} % math-mode version of "c" column type
+\newcolumntype{R}{>{$}r<{$}} % math-mode version of "r" column type
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{reflection}[2][Reflection]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\begin{document}
+
+
+
+\noindent
+\large\textbf{HW 5, Problem 03} \hfill \textbf{Gregory Linkowski} \\
+\normalsize CS 450 / ECE 491 \hfill linkows2 \\
+Michael Heath \hfill due 11/2/16 \\
+
+
+\vspace{5mm}
+In general, is it possible to interpolate $n$ data points by a piecewise quadratic polynomial, with knots at the given data points, such that the interpolant is:
+\vspace{-2mm} \\
+
+\begin{exercise}{1}
+	Once continuously differentiable?
+\end{exercise} %\vspace{-10mm}
+\begin{proof}[]
+	\textbf{Answer 1.} %\vspace{-7mm} \\
+	\begin{quote}
+		Yes. For $n$ points, there will be $n-1$ quadratic interpolants, each requiring $3$ parameters (where the interpolant is of the form $ax^2 + bx + c$), giving a total of $3n-3$ parameters which can be set. Requiring the interpolants to match at each knot results in $2(n-1)$ equations; requiring the first derivative to be continuous at each non-endpoint knot results in $(n-2)$ equations, for a total of $3n-4$ parameters to determine, leaving 1 free parameter.
+	\end{quote}
+\end{proof}
+
+\begin{exercise}{2}
+	Twice continuously differentiable?
+\end{exercise} %\vspace{-10mm}
+\begin{proof}[]
+	\textbf{Answer 2.} %\vspace{-7mm} \\
+	\begin{quote}
+		No, not generally. Requiring the second derivative to be continuous at each non-endpoint knot adds an additional $(n-2)$ equations, for a total of $4n-6$ equations. However, there are $3n-3$ parameters that can be set. So if we set the number of equations equal to the number of parameters ($4n-6 = 3n-3$), we find that we can still force the interpolant to have a continuous second derivative for up to $\boxed{n=3}$ data points.
+	\end{quote}
+\end{proof}
+
+\end{document}
