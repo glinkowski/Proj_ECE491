@@ -134,8 +134,12 @@ print("Relative error: {:.3f}; {:.3f}; {:.3f}".format(
 
 
 # 7) Round the data & get resulting error
+popRound = np.round( np.divide(pop, 1e6), decimals=0 )
+popRound = np.multiply( popRound, 1e6 )
 
-
+coefRound = np.linalg.solve(mat4, popRound)
+err_coeffs = np.abs(np.divide( np.subtract(coefRound, coeffs), coeffs))
+print("Ceoff error after rounding: {}".format(err_coeffs))
 
 
 # Plot the interpolant function w/ data
