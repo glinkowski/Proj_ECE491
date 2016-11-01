@@ -71,87 +71,48 @@ for ih in range(len(h)) :
 
 
 
-# # Implement Romberg method
-# hR = 2 * float(b - a)	# the step size (will halve each time)
-# numIters = 8
-# evaluations = np.zeros( (numIters, numIters) )
-# i = -1
-# for step in range(numIters) :
-# 	i += 1
-# 	hR = hR / 2.0
-# 	points = np.arange(a, (b+hR), hR)
+# Implement Romberg method
 
-# 	for ip in range(len(points)) :
-
-
-
-# # try again
-# numIters = 4
-# evaluations = np.zeros( (numIters, numIters) )
-# rh = 2 * (b - a)
-# for rn in range(numIters) :
-# 	rh = rh / float(2)
-
-# 	if rn == 0 :
-
-# 	for j in range(rn) :
-# ###
-
-
-def f2(x) :
-	return f(x)
-	# return 1 / float(x)
-##########
-# a = 1
-# b = 2
-
-
-
-# try again
+# create arrays to hold data
 numIters = 8
 R = np.zeros( (numIters, numIters) )
 RNRange = np.zeros( (numIters+1) )
 RHRange = np.zeros( (numIters+1) )
+
+# calculate first cell
 RNRange[1] = 2
 RHRange[1] = (b - a) / RNRange[1]
-R[0,0] = RHRange[1] * ( f2(a) + f2(b) )
+R[0,0] = RHRange[1] * ( f(a) + f(b) )
+
+# calc successive rows
 for i in range(1, numIters) :
 	RNRange[i+1] = RNRange[i] * 2
 	RHRange[i+1] = RHRange[i] / float(2)
 
-	# RZSum = 0
-	# for z in range(1, int(math.pow(2, (i-1)))) :
-	# 	RZSum += f2(a + (RHRange[i] * ((2*z) - 1)))
-	# R[i,0] = (0.5 * R[(i-1),0]) + (RHRange[i] * RZSum)
-
+	# first col: half of prev cell + trap rule on intermediate points
 	RZSum = 0
-	print("1 to 2^n-1 ... {}".format(RNRange[i]))
+	# sum rule over intermed pts, ie: (.25, .75), (.125, .375, .625, .875), ...
 	for z in range(1, int(RNRange[i])) :
 		point = a + (2*z-1) * RHRange[i]
 		if point > b :
 			break
-		RZSum += f2(point)
-		print(point)
+		RZSum += f(point)
+		# print(point)
 	# print(RZSum)
 	# print((R[(i-1),0] / 2) + RZSum / 2)
 	R[i,0] = (R[(i-1),0] / 2) + RZSum * RHRange[i]
-	# R[i,0] = (R[(i-1),0] / 2) + RZSum * RHRange[i+1]
 
-
+	# calc rest of row, based on previous cells
 	for j in range(1, (i+1)) :
 		R[i,j] = R[i,(j-1)]
 		R[i,j] += (R[i,(j-1)] - R[(i-1),(j-1)]) / (math.pow(4, j) - 1)
-
 #end loop
 RFinals = np.diag(R)
 
-
-print(R[numIters-1,numIters-1])
-print(R)
-print(RNRange)
-print(RHRange)
-
-
+# print(R[numIters-1,numIters-1])
+# print(R)
+# print(RNRange)
+# print(RHRange)
 
 
 # Calculate the relative error of each Quadrature rule
@@ -164,14 +125,10 @@ Rerr = np.abs(np.divide( np.subtract(RFinals, truAns), truAns))
 
 
 # Plot the error of each approach
-# pt.plot(stepSize, Merr, stepSize, Terr, stepSize, Serr)
-# pt.plot(h, Merr, h, Terr, h, Serr)
-# pt.legend(['Midpoint', 'Trapezoid', 'Simpson'], loc=1)
 pt.plot(h, Merr, h, Terr, h, Serr, RNRange[1:len(RNRange)], Rerr)
 pt.legend(['Midpoint', 'Trapezoid', 'Simpson', 'Romberg'], loc=1)
 pt.title('Error of quadrature functions')
 pt.xlabel('number of intervals')
-# pt.xlabel('step size')
 pt.ylabel('log10( relative error )')
 pt.yscale('log')
 pt.show()
