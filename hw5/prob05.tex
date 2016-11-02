@@ -1,0 +1,78 @@
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{bm} % for bold math symbols
+\usepackage{amstext} % for \text macro
+\usepackage{array}   % for \newcolumntype macro
+\newcolumntype{L}{>{$}l<{$}} % math-mode version of "l" column type
+\newcolumntype{C}{>{$}c<{$}} % math-mode version of "c" column type
+\newcolumntype{R}{>{$}r<{$}} % math-mode version of "r" column type
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{reflection}[2][Reflection]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\begin{document}
+
+
+
+\noindent
+\large\textbf{HW 5, Problem 05} \hfill \textbf{Gregory Linkowski} \\
+\normalsize CS 450 / ECE 491 \hfill linkows2 \\
+Michael Heath \hfill due 11/2/16 \\
+
+
+\vspace{5mm}
+Newton-Cotes quadrature rules are derived by fixing the nodes and then determining the corresponding weights by the method of undetermined coefficients so that the degree is maximized for the given nodes. The opposite approach could also be taken, with the weights constrained and the nodes to be determined. In a \textit{Chebyshev} quadrature rule, for example, all of the weights are taken to have the same value, $w$, thereby eliminating $n$ multiplications in evaluating the resulting quadrature rule, since the single weight can be factored out of the summation.
+\vspace{-2mm} \\
+
+\begin{exercise}{1}
+	Use the method of undetermined coefficients to determine the nodes and weight for a three-point Chebyshev quadrature rule on the interval $[-1,1]$.
+\end{exercise} \vspace{-10mm}
+\begin{proof}[]
+	\begin{align*}
+		G_3(f) &= w f(x_1) + w f(x_2) + w f(w_3) \\[10pt]
+		w + w + w &= \int_{-1}^{1} 1 dx = x|_{-1}^{1} = 2 \\
+		w x_1 + w x_2 + w x_3 &= \int_{-1}^{1} x dx = \frac{1}{2}x^2|_{-1}^{1} = 0 \\
+		w x_1^2 + w x_2^2 + w x_3^2 &= \int_{-1}^{1} x^2 dx = \frac{1}{3}x^3|_{-1}^{1} = \frac{2}{3} \\
+		w x_1^3 + w x_2^3 + w x_3^3 &= \int_{-1}^{1} x^3 dx = \frac{1}{4}x^4|_{-1}^{1} = 0 \\[15pt]
+		\begin{cases}
+			w = \frac{2}{3} \\
+			x_2 = - x_1 - x_3 \\
+			x_3 = \sqrt{1 - x_2^2 - x_1^2} \\
+			x_2 = \sqrt[3]{- x_1^3 - x_3^3}
+		\end{cases}
+		& \Rightarrow \begin{cases}
+			w = \frac{2}{3} \\
+			x_2 = 0 \\
+			2 x_3^2 = 1 &\rightarrow x_3 = \frac{1}{\sqrt{2}} = \frac{\sqrt{2}}{2} \\
+			x_1 = - x_3 &\rightarrow x_1 = -\frac{1}{\sqrt{2}} = -\frac{\sqrt{2}}{2}\\
+		\end{cases}
+	\end{align*}
+	\textbf{Answer 1.} %\vspace{-7mm} \\
+	\[ G_3(f) = \frac{2}{3} \left( f\left( -\frac{\sqrt{2}}{2}\right)  +  f(0) + f\left( \frac{\sqrt{2}}{2}\right) \right)   \]
+\end{proof}
+
+\begin{exercise}{2}
+	What is the degree of the resulting rule?
+\end{exercise} %\vspace{-10mm}
+\begin{proof}[]
+	\textbf{Answer 2.} %\vspace{-7mm} \\
+	\begin{quote}
+	\end{quote}
+\end{proof}
+
+\end{document}
