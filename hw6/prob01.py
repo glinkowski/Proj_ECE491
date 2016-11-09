@@ -33,17 +33,7 @@ numGrid = 32
 ######## ######## ####### #######
 # ANCILLARY FUNCTIONS
 
-# # the function being integrated
-# def f(xHat, yHat, x, y) :
-
-# 	arg1 = math.pow( (xHat - x), 2)
-# 	arg2 = math.pow( (yHat - y), 2)
-# 	final = math.pow( (arg1 + arg2), -0.5)
-
-# 	return final
-# #end def ####### ####### ########
-
-# the function being integrated
+# the function being integrated at point (10,10)
 def f10(x, y) :
 
 	arg1 = math.pow( (10 - x), 2)
@@ -77,19 +67,8 @@ def phiMonteCarlo(xHat, yHat, MCAccuracy) :
 
 print("")
 
-
-# pot_10_10 = phiMonteCarlo(10, 10, numMPOne)
-# print("Expected phi(10,10) = 0.28308")
-# sigFigs = - np.log10( np.abs( (pot_10_10 - 0.28308) / 0.28308 ) )
-# print("  Calculated: {},   significant digits: {:.0f}".format(pot_10_10, sigFigs))
-
-
-# print( dblquad(f10, intgXA, intgXB, lambda x:intgYA, lambda x:intgYB) )
-
-
 # Calculate phi(10,10) using built-in library
 pot_10_10 = dblquad(f10, intgXA, intgXB, lambda x:intgYA, lambda x:intgYB)[0]
-
 
 # Create the grid over which to plot phi(x,y)
 xPoints = np.linspace(2, 10, numGrid)
@@ -104,7 +83,6 @@ for xi in range(len(xPoints)) :
 #end with
 print("phi(10,10) using scipy library: {:.6f}".format(pot_10_10))
 print("phi(10,10) w/ loose Monte Carlo: {:.6f}".format(phiVals[len(xPoints)-1,len(yPoints)-1]))
-
 
 # Plot the function phi over X, Y
 fig = pt.figure()
