@@ -91,5 +91,6 @@ ax.plot_surface(X, Y, phiVals)
 ax.set_xlabel('x-axis')
 ax.set_ylabel('y-axis')
 ax.set_zlabel('phi(x,y)')
+ax.set_title('surface of Phi, y=(2,10), x=(2,10)')
 
 pt.show()
