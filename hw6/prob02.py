@@ -1,6 +1,7 @@
 from scipy.integrate import ode
 from scipy.integrate import odeint
 import numpy as np
+import matplotlib.pyplot as pt
 
 
 
@@ -20,12 +21,9 @@ yinits = [y10, y20, y30]
 
 t0 = 0
 tf = 1
+tInval = 0.005
+tArray = np.arange(t0, tf+tInval, tInval)
 	# integration range
-
-y1 = np.zeros( (3,) )
-	# output array
-y = [y10, y20, y30]
-
 
 ######## ######## ####### #######
 
@@ -50,9 +48,24 @@ def fsys(y, t, params) :
 ######## ######## ####### #######
 # PRIMARY FUNCTION
 
-
-tArray = np.arange(t0, tf, 0.05)
-
+# Apply the ode solver to the equations
 solution = odeint(fsys, yinits, tArray, args=(params,))
+lenArray = len(tArray)
 
-print(solution)
+# print(solution)
+# print(tArray)
+
+# The final solution at t=1
+y1 = solution[lenArray-1, :]
+print("At time t=1, solution: {}".format(y1))
+
+# Draw the plots
+fig = pt.figure()
+ax = fig.add_subplot(111)
+ax.plot(tArray, solution[:,0], tArray, solution[:,1], tArray, solution[:,2])
+ax.set_xlabel('time')
+ax.set_ylabel('solutions to y')
+ax.set_title('the Kermack-McKendrick model')
+ax.legend(['sol. of y1', 'sol. of y2', 'sol. of y3'])
+
+pt.show()
