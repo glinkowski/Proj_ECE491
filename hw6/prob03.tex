@@ -1,0 +1,93 @@
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{bm} % for bold math symbols
+\usepackage{amstext} % for \text macro
+\usepackage{array}   % for \newcolumntype macro
+\newcolumntype{L}{>{$}l<{$}} % math-mode version of "l" column type
+\newcolumntype{C}{>{$}c<{$}} % math-mode version of "c" column type
+\newcolumntype{R}{>{$}r<{$}} % math-mode version of "r" column type
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{reflection}[2][Reflection]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\begin{document}
+
+
+
+\noindent
+\large\textbf{HW 6, Problem 03} \hfill \textbf{Gregory Linkowski} \\
+\normalsize CS 450 / ECE 491 \hfill linkows2 \\
+Michael Heath \hfill due 11/14/16 \\
+
+
+\vspace{5mm}
+Write each of the following ODEs as an equivalent first-order system of ODEs:
+\vspace{-2mm} \\
+
+\begin{exercise}{1}
+	Van der Pol eq: $\quad y'' = y'(1-y^2) - y$
+\end{exercise} \vspace{-10mm}
+\begin{proof}[]
+	\begin{align*}
+		\begin{cases} x_1 = y \\ x_2 = y' \end{cases}
+		& \Rightarrow \begin{cases}
+			\dot{x_1} = x_2 \\
+			\dot{x_2} = x_2 - x_2 x_1^2 - x_1
+		\end{cases}
+	\end{align*}
+	\textbf{Answer 1.} \vspace{-7mm} \\
+		\[ \boxed{  } \]
+\end{proof}
+
+\begin{exercise}{2}
+	Blasius eq: $\quad y'''  = -y y''$
+\end{exercise} \vspace{-10mm}
+\begin{proof}[]
+	\begin{align*}
+	\begin{cases} x_1 = y \\ x_2 = y' \\ x_3 = y'' \end{cases}
+	& \Rightarrow \begin{cases}
+	\dot{x_1} = x_2 \\
+	\dot{x_2} = x_3 \\
+	\dot{x_3} = - x_1 x_3
+	\end{cases}
+	\end{align*}
+	\textbf{Answer 2.} \vspace{-7mm} \\
+	\[ \boxed{  } \]
+\end{proof}
+
+\begin{exercise}{3}
+	Newton's Second Law of Motion for two-body problem:
+	\[ 	y_1'' = \frac{- G M y_1}{(y_1^2 + y_2^2)^\frac{3}{2}} \quad
+		y_2'' = \frac{- G M y_2}{(y_1^2 + y_2^2)^\frac{3}{2}} \] 
+\end{exercise} \vspace{-10mm}
+\begin{proof}[]
+	\begin{align*}
+	\begin{cases} x_1 = y_1 \\ x_2 = y_1' \\ x_3 = y_3 \\ x_4 = y_3' \end{cases}
+	& \Rightarrow \begin{cases}
+	\dot{x_1} = x_2 \\
+	\dot{x_2} = - G M x_1 / (x_1^2 + x_3^2)^\frac{3}{2} \\
+	\dot{x_3} = x_4 \\
+	\dot{x_4} = - G M x_3 / (x_1^2 + x_3^2)^\frac{3}{2}
+	\end{cases}
+	\end{align*}
+	\textbf{Answer 3.} \vspace{-7mm} \\
+	\[ \boxed{  } \]
+\end{proof}
+
+
+\end{document}
