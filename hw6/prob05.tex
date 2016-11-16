@@ -36,7 +36,7 @@ Michael Heath \hfill due 11/14/16 \\
 
 
 \vspace{5mm}
-Consider the ODE $y′=−5y$ with initial condition $y(0)=1$ We will solve this ODE numerically using a step size of $h=0.5$.
+Consider the ODE $y′= -5y$ with initial condition $y(0)=1$ We will solve this ODE numerically using a step size of $h=0.5$.
 \vspace{-2mm} \\
 
 \vspace{10mm}
@@ -54,7 +54,7 @@ Consider the ODE $y′=−5y$ with initial condition $y(0)=1$ We will solve this
 \end{exercise} 
 \begin{proof}[] \vspace{-2mm}
 	\textbf{Answer 2.} \\ % \vspace{-7mm} \\
-	\underline{No}. Since $h=0.5$, then the growth factor $|1 + h \lambda | = |1 + 2.5| = 1.5 > 1$. 
+	\underline{No}. Since $h=0.5$, then the growth factor $|1 + h \lambda | = |1 - 2.5| = 1.5 > 1$. 
 \end{proof}
 
 \vspace{10mm}
@@ -79,7 +79,7 @@ Consider the ODE $y′=−5y$ with initial condition $y(0)=1$ We will solve this
 \end{exercise} 
 \begin{proof}[] \vspace{-2mm}
 	\textbf{Answer 4.} \\ % \vspace{-7mm} \\
-	\underline{Yes}. Since $h=0.5$, then the growth factor $|\frac{1}{1 - h \lambda} | = |\frac{1}{3.5}| = \frac{5}{7} < 1$. 
+	\underline{Yes}. Since $h=0.5$, then the growth factor $|\frac{1}{1 - h \lambda} | = |\frac{1}{3.5}| = \frac{2}{7} < 1$. 
 \end{proof}
 
 \vspace{10mm}
@@ -92,12 +92,12 @@ Consider the ODE $y′=−5y$ with initial condition $y(0)=1$ We will solve this
 		y_{k+1} &= y_k + h * y_{k+1}' \\
 		y_{k+1} &= y_k + h * (\lambda \, y_{k+1}) \\
 		y_{k+1} &= y_k \frac{1}{1 - h \, \lambda}\\
-		y_{k+1} &= y_k \, \frac{5}{7}\\
+		y_{k+1} &= y_k \, \frac{2}{7}\\
 		\textnormal{for } h = 0.5, \quad y(0.5) &= y_1 \\
-		y_1 &= \frac{5}{7} y_0
+		y_1 &= \frac{2}{7} y_0
 	\end{align*}
 	\textbf{Answer 5.}  \vspace{-7mm} \\
-	\[ \boxed{ y(0.5) = \frac{5}{7} \approx 0.7143  } \]
+	\[ \boxed{ y(0.5) = \frac{2}{7} \approx 0.2857  } \]
 \end{proof}
 
 
