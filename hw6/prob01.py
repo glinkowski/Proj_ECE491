@@ -42,6 +42,15 @@ def f10(x, y) :
 
 	return final
 #end def ####### ####### ########
+# the function being integrated at point (2,2)
+def f2(x, y) :
+
+	arg1 = math.pow( (2 - x), 2)
+	arg2 = math.pow( (2- y), 2)
+	final = math.pow( (arg1 + arg2), -0.5)
+
+	return final
+#end def ####### ####### ########
 
 # Monte Carlo applied to the integral
 def phiMonteCarlo(xHat, yHat, MCAccuracy) :
@@ -69,11 +78,14 @@ print("")
 
 # Calculate phi(10,10) using built-in library
 pot_10_10 = dblquad(f10, intgXA, intgXB, lambda x:intgYA, lambda x:intgYB)[0]
+# pot_2_2 = dblquad(f2, intgXA, intgXB, lambda x:intgYA, lambda x:intgYB)[0]
+
 
 # Create the grid over which to plot phi(x,y)
 xPoints = np.linspace(2, 10, numGrid)
 yPoints = np.linspace(2, 10, numGrid)
 X, Y = np.meshgrid(xPoints, yPoints)
+
 
 # Calculate phi values using Monte Carlo method
 phiVals = np.zeros( (len(xPoints), len(yPoints)) )
@@ -84,13 +96,22 @@ for xi in range(len(xPoints)) :
 print("phi(10,10) using scipy library: {:.6f}".format(pot_10_10))
 print("phi(10,10) w/ loose Monte Carlo: {:.6f}".format(phiVals[len(xPoints)-1,len(yPoints)-1]))
 
+
 # Plot the function phi over X, Y
-fig = pt.figure()
-ax = fig.add_subplot(111, projection='3d')
-ax.plot_surface(X, Y, phiVals)
-ax.set_xlabel('x-axis')
-ax.set_ylabel('y-axis')
-ax.set_zlabel('phi(x,y)')
-ax.set_title('surface of Phi, y=(2,10), x=(2,10)')
+fig = pt.figure(figsize=(8,12))
+ax1 = fig.add_subplot(211, projection='3d')
+ax1.plot_surface(X, Y, phiVals)
+ax1.set_xlabel('x-axis')
+ax1.set_ylabel('y-axis')
+ax1.set_zlabel('phi(x,y)')
+ax1.set_title('surface of Phi, y=(2,10), x=(2,10)')
+
+ax2 = fig.add_subplot(212)
+cax = ax2.imshow(phiVals, extent=(2,10,10,2))
+ax2.set_xlabel('y-axis')
+ax2.set_ylabel('x-axis')
+ax2.set_title('surface of Phi, y=(2,10), x=(2,10)')
+cbar = fig.colorbar( cax,
+	ticks=np.linspace(np.amin(phiVals), np.amax(phiVals), 9) )
 
 pt.show()
