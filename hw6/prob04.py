@@ -4,7 +4,6 @@ import matplotlib.pyplot as pt
 import math
 
 
-
 ######## ######## ####### #######
 # PARAMETERS
 
@@ -100,6 +99,7 @@ ax11 = fig.add_subplot(431)
 ax11.plot(tArray, sol0[:,0])
 ax11.set_title('x position, e = 0.0')
 ax11.set_ylabel('x')
+ax11.set_ylim([-2, 1.5])
 ax11.set_xlabel('time')
 ax11.set_xlim([0, tf])
 # First row: y vs t
@@ -107,6 +107,7 @@ ax12 = fig.add_subplot(432)
 ax12.plot(tArray, sol0[:,2])
 ax12.set_title('y position, e = 0.0')
 ax12.set_ylabel('y')
+ax12.set_ylim([-1, 1])
 ax12.set_xlabel('time')
 ax12.set_xlim([0, tf])
 # First row: x vs t
@@ -124,6 +125,7 @@ ax21 = fig.add_subplot(434)
 ax21.plot(tArray, sol1[:,0])
 ax21.set_title('x position, e = 0.5')
 ax21.set_ylabel('x')
+ax21.set_ylim([-2, 1.5])
 ax21.set_xlabel('time')
 ax21.set_xlim([0, tf])
 # Second row: y vs t
@@ -131,6 +133,7 @@ ax22 = fig.add_subplot(435)
 ax22.plot(tArray, sol1[:,2])
 ax22.set_title('y position, e = 0.5')
 ax22.set_ylabel('y')
+ax22.set_ylim([-1, 1])
 ax22.set_xlabel('time')
 ax22.set_xlim([0, tf])
 # Second row: x vs t
@@ -148,6 +151,7 @@ ax31 = fig.add_subplot(437)
 ax31.plot(tArray, sol2[:,0])
 ax31.set_title('x position, e = 0.9')
 ax31.set_ylabel('x')
+ax31.set_ylim([-2, 1.5])
 ax31.set_xlabel('time')
 ax31.set_xlim([0, tf])
 # Third row: y vs t
@@ -155,6 +159,7 @@ ax32 = fig.add_subplot(438)
 ax32.plot(tArray, sol2[:,2])
 ax32.set_title('y position, e = 0.9')
 ax32.set_ylabel('y')
+ax32.set_ylim([-1, 1])
 ax32.set_xlabel('time')
 ax32.set_xlim([0, tf])
 # Third row: x vs t
