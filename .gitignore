@@ -23,6 +23,11 @@
 *.png
 
 
+# Other details #
+#################
+*the_problems/*
+
+
 # Compiled source #
 ###################
 *.com
