@@ -5,6 +5,7 @@ import numpy as np
 from scipy import linalg as sl
 from scipy.sparse import linalg as spl
 import matplotlib.pyplot as pt
+import matplotlib.lines as mlines
 
 
 
@@ -165,10 +166,94 @@ for k in range(1, 6) :
 # Part D ######## ####### #######
 print("\n>>>> Part D >>>>")
 
-U, s, V = np.linalg.svd(mxA)
+U, s, Vt = np.linalg.svd(mxA, full_matrices=True)
 print("Resulting eigen values: {}".format(s))
-# print(U)
-# print(s)
-# print(V)
+# print(U.shape)
+# print(s.shape)
+# print(Vt.shape)
+V = np.transpose(Vt)
+sigma = np.zeros( (10, 5) )
+sigmaInv = np.zeros( (5, 10) )
+for i in range(len(s)) :
+	sigma[i,i] = s[i]
+	sigmaInv[i,i] = 1 / s[i]
+# print(sigma)
+# print(sigmaInv)
+Ut = np.transpose(U)
 
 
+
+# Part E ######## ####### #######
+print("\n>>>> Part E >>>>")
+
+# for kRange in range(1,6) :
+
+# 	pmX = np.zeros( (mxA.shape[1],5) )
+# 	for k in range(kRange) :
+# 		temp = np.dot(U[:,k], mxB)
+# 		temp = np.divide(temp, s[k])
+# 		temp = np.multiply(temp, V[:,k])
+# 		# print(temp)
+# 		pmX[:,k] = np.add(pmX[:,k], temp)
+# 	#end loop
+# 	# print(pmX)
+# #end loop
+
+# # for k in range(1,6) :
+# # 	print(V[:,0:k])
+# # 	print(sigmaInv[0:k])
+# # 	temp = np.dot( V[:,0:k], sigmaInv[0:k])
+# # 	print(temp)
+# # 	pmX[k] = np.dot( temp, np.transpose(U[:,0:k]))
+# # 	print(pmX)
+# # #end loop
+
+pmX = np.zeros( (mxA.shape[1],5) )
+for k in range(5) :
+	tSigInv = np.zeros( (5, 10) )
+	for i in range(k+1) :
+		# print(i)
+		# print(sigmaInv[i,i])
+		tSigInv[i,i] = sigmaInv[i,i]
+	# print(tSigInv)
+	temp = np.dot( V, tSigInv )
+	# print(temp)
+	pseudoInvA = np.dot( temp, Ut )
+	# print(pmX)
+	pmX[:,k] = np.dot(pseudoInvA, mxB)
+	# print(pmX)
+#end loop
+
+fige = pt.figure()
+ax = fige.add_subplot(111)
+ax.contour(x, y, (X - Y), [0], colors='b')
+
+
+x = np.linspace(-10, 10, 200)
+y = np.linspace(-10, 10, 200)
+x, y = np.meshgrid(x, y)
+useColors = ['c', 'y', 'g', 'm', 'r']
+for i in range(5) :
+	pmA, pmB, pmC, pmD, pmE = pmX[:,i]
+	print("Parameters for k={}:\n   a={:.5}, b={:.5}, c={:.5}, d={:.5}, e={:.5}".format(
+		i+1, pmA, pmB, pmC, pmD, pmE))
+
+	Ye = pmA * np.power(y, 2) + (pmB * x * y) + (pmC * x) + (pmD * y) + pmE
+	Xe = np.power(x, 2)
+	ax.contour(x, y, (Xe - Ye), [0], colors=useColors[i])
+ax.scatter(xPos, yPos, c='b', marker='o')
+legData = ([ mlines.Line2D([], [], color='c', label='k = 1'),
+	mlines.Line2D([], [], color='y', label='k = 2'),
+	mlines.Line2D([], [], color='g', label='k = 3'),
+	mlines.Line2D([], [], color='m', label='k = 4'),
+	mlines.Line2D([], [], color='r', label='k = 5'),
+	mlines.Line2D([], [], color='b', marker='o', label='original data')
+	])
+ax.legend(handles=legData)
+ax.set_xlabel('x position')
+ax.set_xlim([-5, 5])
+ax.set_ylabel('y position')
+ax.set_ylim([-1, 7])
+ax.set_title('Q 3.5, part E -- orbit from SVD')
+fige.savefig('figs/p01_ptE.png')
+# pt.show()
