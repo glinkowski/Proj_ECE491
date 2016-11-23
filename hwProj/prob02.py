@@ -151,9 +151,4 @@ for xjOrig in xjList :
 
 #end loop
 
-
-
-
-
-#TODO: repeat
-xjOrig = np.random.uniform(0, 2, n)
+print("\nDone.\n")
