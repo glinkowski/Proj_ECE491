@@ -21,6 +21,7 @@
 # Program output #
 ##################
 *.png
+*/figs/*
 
 
 # Other details #
