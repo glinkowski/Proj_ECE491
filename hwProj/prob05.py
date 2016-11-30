@@ -14,7 +14,7 @@ import numpy.linalg as npl
 #TODO: verify the input data (poor image)
 
 # input data
-v0Vals = [0.024, 0.035, 0.053, 0.060, 0.064]
+v0Vals = [0.024, 0.036, 0.053, 0.060, 0.064]
 sVals = [2.5, 5.0, 20.0, 15.0, 20.0]
 
 ######## ######## ####### #######
@@ -114,6 +114,13 @@ def Jf_v0ofX(fx) :
 	return Jf
 #end def ####### ####### ########
 
+# Calculate relative error
+def getRelErr(base, value) :
+	err = np.abs( np.divide( np.subtract(base, value), base))
+	return err
+#end def ####### ####### ########
+
+
 
 
 ######## ######## ####### #######
@@ -127,8 +134,8 @@ print("\nNewton results -----------------------")
 xFinal = solveNewton(f_residual_v0ofS, Jf_v0ofX, x0)
 v0_approx = f_v0ofS(xFinal)
 print("  using x0 = {}".format(x0))
-print("  found x  = [{:.4f}, {:.4f}]".format(xFinal[0], xFinal[1]))
-# print("  result f(x) = [{:.4f}, {:.4f}, {:.4f}]".format(fx[0], fx[1], fx[2]))
+print("  found x  = [{:.5f}, {:.5f}]".format(xFinal[0], xFinal[1]))
+# print("  result f(x) = [{:.5f}, {:.5f}, {:.5f}]".format(fx[0], fx[1], fx[2]))
 print("  final v0(S) = {}".format(v0_approx))
 print("  diff b/t this and expected: {:.3e}".format(
 	npl.norm( np.subtract(v0_approx, v0Vals), ord=2) ))
@@ -146,8 +153,7 @@ print("final:\n  V = {}\n Km = {}".format(xFinal[0], xFinal[1]))
 
 print("\n\n>>>> Part B >>>>")
 
-# The Limeweaver & Burk approximation
-#TODO: Don't forget to invert x[0] = 1/V
+# The Lineweaver & Burk approximation
 bLB = np.divide(1.0, v0Vals)
 ALB = np.ones( (len(v0Vals), 2) )
 ALB[:,1] = np.divide(1.0, sVals)
@@ -156,8 +162,13 @@ xlstsq = npl.lstsq(ALB, bLB)
 xLB = xlstsq[0]
 VLB = 1.0 / xLB[0]
 KmLB = xLB[1] / xLB[0]
-print(VLB)
-print(KmLB)
+# print(VLB)
+# print(KmLB)
+
+print("\nLineweaver & Burk rearrangement --------")
+print("  V = {:.5f},  error = {:.2e}".format(VLB, getRelErr(xFinal[0], VLB)))
+print(" Km = {:.5f},  error = {:.2e}".format(KmLB, getRelErr(xFinal[0], KmLB)))
+
 
 # The Dixon approximation
 bDx = np.divide(sVals, v0Vals)
@@ -168,8 +179,13 @@ xlstsq = npl.lstsq(ADx, bDx)
 xDx = xlstsq[0]
 VDx = 1.0 / xDx[1]
 KmDx = xDx[0] / xDx[1]
-print(VDx)
-print(KmDx)
+# print(VDx)
+# print(KmDx)
+
+print("\nDixon rearrangement --------------------")
+print("  V = {:.5f},  error = {:.2e}".format(VDx, getRelErr(xFinal[0], VDx)))
+print(" Km = {:.5f},  error = {:.2e}".format(KmDx, getRelErr(xFinal[0], KmDx)))
+
 
 # The Eadie & Hofstee approximation
 bEH = v0Vals
@@ -180,5 +196,12 @@ xlstsq = npl.lstsq(AEH, bEH)
 xEH = xlstsq[0]
 VEH = xEH[0]
 KmEH = xEH[1]
-print(VEH)
-print(KmEH)
+# print(VEH)
+# print(KmEH)
+
+print("\nEadie & Hofstee rearrangement ----------")
+print("  V = {:.5f},  error = {:.2e}".format(VEH, getRelErr(xFinal[0], VEH)))
+print(" Km = {:.5f},  error = {:.2e}".format(KmEH, getRelErr(xFinal[0], KmEH)))
+
+
+print("\n")
