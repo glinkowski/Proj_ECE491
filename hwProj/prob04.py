@@ -3,7 +3,8 @@
 import math
 import numpy as np
 import numpy.linalg as npl
-from scipy.optimize import root
+# from scipy.optimize import root
+# from scipy.optimize import broyden1
 # import matplotlib.pyplot as pt
 
 
@@ -11,8 +12,8 @@ from scipy.optimize import root
 # PARAMETERS
 
 # stopping criteria
-errTol = 1e-10
-numIters = 32
+errTol = 1e-15
+numIters = 64
 
 ######## ######## ####### #######
 
@@ -74,8 +75,12 @@ def Jf2(x) :
 
 # Newton Method: one iteration
 def iterNewton(bf, bJf, xk) :
-	sklstsq = npl.lstsq( bJf(xk), -bf(xk) )
-	sk = sklstsq[0]
+	# sklstsq = npl.lstsq( bJf(xk), -bf(xk) )
+	# sk = sklstsq[0]
+
+	q, r = npl.qr( bJf(xk) )
+	sk = npl.solve(r, np.dot( np.transpose(q), -bf(xk)) )
+	
 	xk1 = np.add(xk, sk)
 
 	return xk1
@@ -105,7 +110,7 @@ def solveNewton(bf, bJf, x0) :
 		# err = la.norm( np.subtract(xNew, xstar), ord=2)
 		# iN.append(i)
 		# eN.append(err)
-		if i > numIters :
+		if i >= numIters :
 			break
 	#end loop
 
@@ -168,7 +173,7 @@ def solveBroyden( bf, bJf, bx0 ) :
 		# # eB.append(err)
 
 		# print((i, xDiff))
-		if i > numIters :
+		if i >= numIters :
 			break
 	#end loop
 
@@ -181,37 +186,81 @@ def solveBroyden( bf, bJf, bx0 ) :
 ######## ######## ####### #######
 # PRIMARY FUNCTION
 
-print("")
+print("\n\n>>>> Part A >>>>")
 
 x0 = [2, 2]
-# xFinal = solveBroyden(f1, Jf1, x0)
+print("\nBroyden results ---------------------")
+xFinal = solveBroyden(f1, Jf1, x0)
 # print( (xFinal, f1(xFinal)) )
+fx = f1(xFinal)
+print("  using x0 = {}".format(x0))
+print("  found x = [{:.4f}, {:.4f}]".format(xFinal[0], xFinal[1]))
+print("  result f(x) = [{:.4f}, {:.4f}, {:.4f}]".format(fx[0], fx[1], fx[2]))
 
+print("\nNewton results ---------------------")
 xFinal = solveNewton(f1, Jf1, x0)
-print( (xFinal, f1(xFinal)) )
+# print( (xFinal, f1(xFinal)) )
+fx = f1(xFinal)
+print("  using x0 = {}".format(x0))
+print("  found x = [{:.4f}, {:.4f}]".format(xFinal[0], xFinal[1]))
+print("  result f(x) = [{:.4f}, {:.4f}, {:.4f}]".format(fx[0], fx[1], fx[2]))
+
 
 x0 = [-1, -1]
-# xFinal = solveBroyden(f1, Jf1, x0)
+print("\nBroyden results ---------------------")
+xFinal = solveBroyden(f1, Jf1, x0)
 # print( (xFinal, f1(xFinal)) )
+fx = f1(xFinal)
+print("  using x0 = {}".format(x0))
+print("  found x = [{:.4f}, {:.4f}]".format(xFinal[0], xFinal[1]))
+print("  result f(x) = [{:.4f}, {:.4f}, {:.4f}]".format(fx[0], fx[1], fx[2]))
 
+print("\nNewton results ---------------------")
 xFinal = solveNewton(f1, Jf1, x0)
-print( (xFinal, f1(xFinal)) )
-
-print("")
-x0 = [2, 2]
-# xFinal = solveBroyden(f2, Jf2, x0)
 # print( (xFinal, f1(xFinal)) )
+fx = f1(xFinal)
+print("  using x0 = {}".format(x0))
+print("  found x = [{:.4f}, {:.4f}]".format(xFinal[0], xFinal[1]))
+print("  result f(x) = [{:.4f}, {:.4f}, {:.4f}]".format(fx[0], fx[1], fx[2]))
 
+
+print("\n\n>>>> Part B >>>>")
+
+x0 = [2, 2]
+print("\nBroyden results ---------------------")
+xFinal = solveBroyden(f2, Jf2, x0)
+fx = f1(xFinal)
+print("  using x0 = {}".format(x0))
+print("  found x = [{:.4f}, {:.4f}]".format(xFinal[0], xFinal[1]))
+print("  result f(x) = [{:.4f}, {:.4f}, {:.4f}]".format(fx[0], fx[1], fx[2]))
+
+print("\nNewton results ---------------------")
 xFinal = solveNewton(f2, Jf2, x0)
-print( (xFinal, f1(xFinal)) )
+fx = f1(xFinal)
+print("  using x0 = {}".format(x0))
+print("  found x = [{:.4f}, {:.4f}]".format(xFinal[0], xFinal[1]))
+print("  result f(x) = [{:.4f}, {:.4f}, {:.4f}]".format(fx[0], fx[1], fx[2]))
+
 
 x0 = [1, -1]
+print("\nBroyden results ---------------------")
 xFinal = solveBroyden(f2, Jf2, x0)
-print( (xFinal, f1(xFinal)) )
+fx = f1(xFinal)
+print("  using x0 = {}".format(x0))
+print("  found x = [{:.4f}, {:.4f}]".format(xFinal[0], xFinal[1]))
+print("  result f(x) = [{:.4f}, {:.4f}, {:.4f}]".format(fx[0], fx[1], fx[2]))
 
+print("\nNewton results ---------------------")
 xFinal = solveNewton(f2, Jf2, x0)
-print( (xFinal, f1(xFinal)) )
+fx = f1(xFinal)
+print("  using x0 = {}".format(x0))
+print("  found x = [{:.4f}, {:.4f}]".format(xFinal[0], xFinal[1]))
+print("  result f(x) = [{:.4f}, {:.4f}, {:.4f}]".format(fx[0], fx[1], fx[2]))
+
 
 # xFinal = root(f1, x0, method='broyden1', jac=Jf1)
 # print( (xFinal, f1(xFinal)) )
 
+# x0 = [2, 2, 0]
+# xFinal = broyden1( f1, x0 )
+# print( (xFinal, f1(xFinal)) )
