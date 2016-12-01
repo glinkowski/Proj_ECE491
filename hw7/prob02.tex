@@ -1,0 +1,77 @@
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{bm} % for bold math symbols
+\usepackage{amstext} % for \text macro
+\usepackage{array}   % for \newcolumntype macro
+\newcolumntype{L}{>{$}l<{$}} % math-mode version of "l" column type
+\newcolumntype{C}{>{$}c<{$}} % math-mode version of "c" column type
+\newcolumntype{R}{>{$}r<{$}} % math-mode version of "r" column type
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{reflection}[2][Reflection]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\begin{document}
+
+
+
+\noindent
+\large\textbf{HW 7, Problem 02} \hfill \textbf{Gregory Linkowski} \\
+\normalsize CS 450 / ECE 491 \hfill linkows2 \\
+Michael Heath \hfill due 12/7/16 \\
+
+
+\vspace{5mm}
+Consider the two-point BVP
+\[ u'' = u^3 + t, \quad a < t < b \]
+with boundary conditions
+\[ u(a) = \alpha, \quad u(b) = \beta \] \\
+To use the shooting method ... starting guess for ... $u'(a)$ ... single step of Euler's method with $h = b - a$.
+\vspace{-2mm} \\
+
+\vspace{5mm}
+\begin{exercise}{1}
+	Using this approach, write out the resulting algebraic equation for the initial slope.
+\end{exercise} % \vspace{-10mm}
+\begin{proof}[]
+	Suppose $u' = \lambda u$ \\
+	Applying Euler's method:
+	\begin{align*}
+		u_k+1 &= u_k + h(\lambda \, u_k) \\
+		u_b &= u_a + (b - a) (\lambda \, u_a) \\
+		\beta &= \alpha + (b - a) (\lambda \, \alpha) \\
+		\frac{\beta}{\alpha} &= 1 + \lambda (b - a) \\
+		\lambda &= \frac{\frac{\beta}{\alpha} - 1}{b - a} \\
+		\lambda = \frac{\beta - \alpha}{\alpha (b - a)}
+	\end{align*}
+	\textbf{Answer 1.} \vspace{-7mm} \\
+		\[ u'(a) = \lambda \, u(a) = \lambda \, \alpha \Rightarrow \boxed{ u'(a) = \frac{\beta - \alpha}{b - a} } \]
+\end{proof}
+
+\vspace{5mm}
+\begin{exercise}{2}
+	What starting value for the initial slope results from this approach?
+\end{exercise} \vspace{-10mm}
+\begin{proof}[]
+	\begin{align*}
+	\end{align*}
+	%	\textbf{Answer 2.} \vspace{-7mm} \\
+	%		\[ \boxed{  } \]
+\end{proof}
+
+
+\end{document}
