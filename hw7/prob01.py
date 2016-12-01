@@ -2,7 +2,6 @@ import numpy as np
 from scipy.optimize import fsolve
 from scipy.optimize import root
 import matplotlib.pyplot as pt
-# import math
 
 
 ######## ######## ####### #######
@@ -19,7 +18,6 @@ uofb = 1
 # desired n values
 nValsFD = [1, 3, 7, 15]
 nValsCo = [3, 4, 5, 6]
-
 ######## ######## ####### #######
 
 
@@ -58,8 +56,6 @@ def f_FinDif(fu, ft, h) :
 	f_ut[0] = 0
 	f_ut[len(f_ut)-1] = 0
 
-	# print(f_ut)
-
 	return f_ut
 #end def ####### ####### ########
 
@@ -78,103 +74,29 @@ def getVofXT(fx, ft) :
 	A = np.zeros( (len(ft), len(fx)) )
 	for col in range(len(fx)) :
 		A[:,col] = np.power(ft, col)
-	# print("v_xt")
+
 	v_xt = np.dot(A, fx)
-
-	# # Force boundary conditions on u(t)
-	# v_xt[0] = uofa
-	# # v_xt[len(v_xt)-1] = uofb
-	# v_xt[len(v_xt)-1] = np.linalg.norm(fx)
-
-	# print(A)
-	# print(v_xt)
 
 	return v_xt
 #end def ####### ####### ########
 
-# def f_Colloc(fx, ft) :
-# 	# know the first element of x
-# 	fx[0] = uofa
-# 	# fx[len(fx)-1] = 1
-
-# 	v_xt = getVofXT(fx, ft)
-
-# 	# # Force boundary conditions on u(t)
-# 	v_xt[0] = uofa
-# 	v_xt[len(v_xt)-1] = uofb
-# 	# v_xt[len(v_xt)-1] = np.linalg.norm(fx, ord=1)
-
-# 	# Get u''(t)
-# 	B = np.zeros( (len(ft), len(ft)) )
-# 	for col in range(2, len(ft)) :
-# 		B[:,col] = np.multiply( np.math.factorial(col), np.power(t, col-2))
-# 	fu_dp = np.dot(B, fx)
-
-# 	# print(B)
-# 	# print(fu_dp)
-
-# 	# Calculate solution to equation
-# 	# print(v_xt)
-# 	f_ut = np.subtract(fu_dp, np.multiply(3.0, v_xt))
-# 	# print(f_ut)
-# 	f_ut = np.subtract(f_ut, np.multiply(10.0, np.power(v_xt, 3.0)))
-# 	# print(f_ut)
-# 	f_ut = np.subtract(f_ut, np.power(ft, 2.0))
-# 	# print(f_ut)
-
-# 	# Force the endpoints = 0
-# 	#	b/c looking for where solution is a zero vector
-# 	#	and can't determine endpoints w/o +1/-1 data points
-# 	f_ut[0] = 0
-# 	f_ut[len(f_ut)-1] = 0
-
-# 	return f_ut
-# #end def ####### ####### ########
-
 def f_Colloc(fx, ft) :
-	# know the first element of x
+	# first element of x is known
 	fx[0] = uofa
-	# fx[len(fx)-1] = 1
 
 	v_xt = getVofXT(fx, ft)
 
 	# Force boundary conditions on u(t)
-	# v_xt[0] = uofa
-	# v_xt[len(v_xt)-1] = uofb
-	# # v_xt[len(v_xt)-1] = np.linalg.norm(fx, ord=1)
-
-	# resid = np.linalg.norm( np.subtract(
-	# 	[v_xt[0], v_xt[len(v_xt)-1]], [uofa, uofb] ) )
-	# errStop = 1e-8
-	# count = 0
-	# while resid > errStop :
-	# 	if count >= 5 :
-	# 		break
-	# 	count += 1
-	# 	# Force boundary conditions on u(t)
-	# 	v_xt[0] = uofa
-	# 	v_xt[len(v_xt)-1] = uofb
-	# 	# Back-solve for new array of x
-	# 	A = np.zeros( (len(ft), len(fx)) )
-	# 	for col in range(len(fx)) :
-	# 		A[:,col] = np.power(ft, col)
-	# 	result = np.linalg.lstsq(A, v_xt)
-	# 	fx = result[0]
-	# 	v_xt = getVofXT(fx, ft)
-	# 	resid = np.linalg.norm( np.subtract(
-	# 		[v_xt[0], v_xt[len(v_xt)-1]], [uofa, uofb] ) )
-	# 	print((count,resid))
-	# #end loop
-
-	# Force boundary conditions on u(t)
 	v_xt[0] = uofa
 	v_xt[len(v_xt)-1] = uofb
+
 	# Back-solve for new x vector
 	A = np.zeros( (len(ft), len(fx)) )
 	for col in range(len(fx)) :
 		A[:,col] = np.power(ft, col)
 	result = np.linalg.lstsq(A, v_xt)
 	fx = result[0]
+
 	v_xt = getVofXT(fx, ft)
 
 	# Get u''(t)
@@ -183,17 +105,11 @@ def f_Colloc(fx, ft) :
 		B[:,col] = np.multiply( np.math.factorial(col), np.power(t, col-2))
 	fu_dp = np.dot(B, fx)
 
-	# print(B)
-	# print(fu_dp)
 
 	# Calculate solution to equation
-	# print(v_xt)
 	f_ut = np.subtract(fu_dp, np.multiply(3.0, v_xt))
-	# print(f_ut)
 	f_ut = np.subtract(f_ut, np.multiply(10.0, np.power(v_xt, 3.0)))
-	# print(f_ut)
 	f_ut = np.subtract(f_ut, np.power(ft, 2.0))
-	# print(f_ut)
 
 	# Force the endpoints = 0
 	#	b/c looking for where solution is a zero vector
@@ -208,7 +124,6 @@ def f_Colloc(fx, ft) :
 
 ######## ######## ####### #######
 # PRIMARY FUNCTION
-
 print("")
 
 
@@ -219,23 +134,14 @@ for n in nValsFD :
 	t, h = createTHforFiniteDiff(n)
 	y0 = np.copy(t)
 
-	# y0[1] = 0.313026
-	# print(y0)
-	# fofyt = f_FinDif(y0, t, h)
-	# print(fofyt)
-
+	# use solver with finite diff function
 	uSol = fsolve(f_FinDif, y0, args=(t, h))
-	# print(uSol)
 	fofyt = f_FinDif(uSol, t, h)
-	# print("  {}".format(fofyt))
 	print("n = {:2d}, accuracy at t_i = {:.2e}".format( n,
 		np.linalg.norm(np.subtract(np.zeros(len(fofyt)), fofyt))))
 
 	# store results to plot
 	plotFD.append( (t, uSol) )
-
-	# uSol = root(f_FinDif, y0, args=(t, h))
-	# print(uSol.x)
 #end loop
 print("")
 
@@ -247,31 +153,16 @@ for n in nValsCo :
 	t, h = createTHforFCollocation(n)
 	x0 = np.copy(t)
 
-	# print(t)
-	# print(h)
-
-	# fofut = f_Colloc(x0, t)
-	# print((x0, fofut))
-
-	# # x0 = np.zeros(len(t))
-	# xSol = np.divide(xSol, np.linalg.norm(xSol))
-	# print(xSol)
-
+	# use solver with collocation function
 	xSol = fsolve(f_Colloc, x0, args=(t))
 	fofut = f_Colloc(xSol, t)
-	# fofut, xSol = f_Colloc(x0, t)
-
-	# print("  {}".format(fofyt))
 	print("n = {:2d}, accuracy at t_i = {:.2e}".format( n,
 		np.linalg.norm(np.subtract(np.zeros(len(fofut)), fofut))))
 
 	# store results to plot
 	delta = 0.01
 	tPlot = np.arange(a, b+delta, delta)
-	# print(len(tPlot))
 	uSol = getVofXT(xSol, tPlot)
-	# print(len(uSol))
-	# print(uSol[len(uSol)-1])
 	plotCo.append( (tPlot, uSol, n) )
 #end loop
 
@@ -279,6 +170,7 @@ for n in nValsCo :
 # Plot the desired figures
 fig = pt.figure(figsize=(8, 12))
 
+# Figure 1: Finite Diff plots
 ax1 = fig.add_subplot(211)
 legendHandles = list()
 for item in plotFD[::-1] :
@@ -289,6 +181,7 @@ ax1.set_xlabel("time (t)")
 ax1.set_ylabel("u(t)")
 ax1.legend( legendHandles, loc=0 )
 
+# Figure 2: Collocation plots
 ax2 = fig.add_subplot(212)
 legendHandles = list()
 for item in plotCo :
@@ -298,9 +191,10 @@ ax2.set_title("using Collocation")
 ax2.set_xlabel("time (t)")
 ax2.set_xlim([a,b])
 ax2.set_ylabel("u(t)")
-# ax2.set_ylim([a,b])
 legendHandles.append('u(t) = 1')
 ax2.plot( item[0], np.ones(len(item[0])), ':k' )
 ax2.legend( legendHandles, loc=0 )
 
 pt.show()
+
+print("\n")
