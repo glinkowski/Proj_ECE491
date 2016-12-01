@@ -1,12 +1,6 @@
 # QUESTION 3.13
 
 import numpy as np
-# import scipy as sp
-# from scipy import linalg as spl
-# from scipy.sparse import linalg as spl
-# import matplotlib.pyplot as pt
-# import matplotlib.lines as mlines
-# import sys
 
 
 ######## ######## ####### #######
@@ -33,11 +27,7 @@ eps = np.array([
 	# 0.000005
 	],
 	dtype=np.float64)
-
-# print(np.power(base, 1-precision))
-# sys.exit()
 ######## ######## ####### #######
-
 
 
 ######## ######## ####### #######
@@ -55,6 +45,7 @@ def createSystemMatrices(fe) :
 	return fA, fB
 #end def ####### ####### ########
 
+# for Part C
 def getHouseholderQR(fA) :
 
 	R0 = np.copy(fA)
@@ -98,6 +89,7 @@ def getHouseholderQR(fA) :
 	return Q1, R
 #end def ######## ####### #######
 
+# for Part D & F
 def origGramSchmidt(fA) :
 
 	A = np.copy(fA)
@@ -124,6 +116,7 @@ def origGramSchmidt(fA) :
 	return Q[:,0:numCols], R[0:numCols,:]
 #end def ######## ####### #######
 
+# for Part E
 def modGramSchmidt(fA) :
 
 	A = np.copy(fA)
@@ -231,6 +224,13 @@ for e in eps :
 #TODO: this
 	errGivens = 0
 
+
+
+
+
+
+
+
 	# e) Classical G-S
 	cgsQ, cgsR = origGramSchmidt(mxA)
 	# print((cgsQ.shape, cgsR.shape))
@@ -318,4 +318,5 @@ for e in eps :
 
 #end loop
 
-print("\nDone.\n")
+
+print("\n")

@@ -11,7 +11,6 @@ import numpy.linalg as npl
 # input data
 v0Vals = [0.024, 0.036, 0.053, 0.060, 0.064]
 sVals = [2.5, 5.0, 20.0, 15.0, 20.0]
-
 ######## ######## ####### #######
 
 
@@ -96,9 +95,9 @@ def getRelErr(base, value) :
 #end def ####### ####### ########
 
 
+
 ######## ######## ####### #######
 # PRIMARY FUNCTION
-
 
 print("\n\n>>>> Part A >>>>")
 
@@ -108,6 +107,7 @@ x0 = [2, 2]
 print("\nNewton results -----------------------")
 xFinal = solveNewton(f_residual_v0ofS, Jf_v0ofX, x0)
 v0_approx = f_v0ofS(xFinal)
+
 # Display and compare results
 print("  using x0 = {}".format(x0))
 print("  found x  = [{:.5f}, {:.5f}]".format(xFinal[0], xFinal[1]))
@@ -120,45 +120,51 @@ print("final:\n  V = {}\n Km = {}".format(xFinal[0], xFinal[1]))
 
 print("\n\n>>>> Part B >>>>")
 
-# The Lineweaver & Burk approximation
+# The Lineweaver & Burk approximation ------------
 bLB = np.divide(1.0, v0Vals)
 ALB = np.ones( (len(v0Vals), 2) )
 ALB[:,1] = np.divide(1.0, sVals)
+
 # solve linear system
 xlstsq = npl.lstsq(ALB, bLB)
 xLB = xlstsq[0]
 VLB = 1.0 / xLB[0]
 KmLB = xLB[1] / xLB[0]
+
 # display results
 print("\nLineweaver & Burk rearrangement --------")
 print("  V = {:.5f},  error = {:.2e}".format(VLB, getRelErr(xFinal[0], VLB)))
 print(" Km = {:.5f},  error = {:.2e}".format(KmLB, getRelErr(xFinal[0], KmLB)))
 
 
-# The Dixon approximation
+# The Dixon approximation ------------------------
 bDx = np.divide(sVals, v0Vals)
 ADx = np.ones( (len(v0Vals), 2) )
 ADx[:,1] = sVals
+
 # solve linear system
 xlstsq = npl.lstsq(ADx, bDx)
 xDx = xlstsq[0]
 VDx = 1.0 / xDx[1]
 KmDx = xDx[0] / xDx[1]
+
 # display results
 print("\nDixon rearrangement --------------------")
 print("  V = {:.5f},  error = {:.2e}".format(VDx, getRelErr(xFinal[0], VDx)))
 print(" Km = {:.5f},  error = {:.2e}".format(KmDx, getRelErr(xFinal[0], KmDx)))
 
 
-# The Eadie & Hofstee approximation
+# The Eadie & Hofstee approximation --------------
 bEH = v0Vals
 AEH = np.ones( (len(v0Vals), 2) )
 AEH[:,1] = -np.divide(v0Vals, sVals)
+
 # solve linear system
 xlstsq = npl.lstsq(AEH, bEH)
 xEH = xlstsq[0]
 VEH = xEH[0]
 KmEH = xEH[1]
+
 # display results
 print("\nEadie & Hofstee rearrangement ----------")
 print("  V = {:.5f},  error = {:.2e}".format(VEH, getRelErr(xFinal[0], VEH)))

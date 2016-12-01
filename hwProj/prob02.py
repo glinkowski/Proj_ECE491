@@ -1,12 +1,7 @@
 # QUESTION 3.8
 
 import numpy as np
-# import scipy as sp
 from scipy import linalg as spl
-# from scipy.sparse import linalg as spl
-# import matplotlib.pyplot as pt
-# import matplotlib.lines as mlines
-
 
 
 ######## ######## ####### #######
@@ -16,9 +11,7 @@ from scipy import linalg as spl
 m = 21
 n = 12
 eps = 1e-6
-
 ######## ######## ####### #######
-
 
 
 ######## ######## ####### #######
@@ -76,7 +69,6 @@ def perturbY(fy, fe) :
 	yp = np.add(fy, yAdd)
 	return yp
 #end def ####### ####### ########
-
 
 
 
@@ -151,4 +143,5 @@ for xjOrig in xjList :
 
 #end loop
 
-print("\nDone.\n")
+
+print("\n")

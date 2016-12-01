@@ -1,13 +1,11 @@
 # QUESTION 3.5
 
 import numpy as np
-# import scipy as sp
 from scipy import linalg as sl
 from scipy import optimize as so
 from scipy.sparse import linalg as spl
 import matplotlib.pyplot as pt
 import matplotlib.lines as mlines
-
 
 
 ######## ######## ####### #######
@@ -20,11 +18,8 @@ yPos = np.array(
 	[0.39, 0.32, 0.27, 0.22, 0.18, 0.15, 0.13, 0.12, 0.13, 0.15] )
 
 # amount by which to perturb data
-ptbRange = 0.005
-#NOTE: suggested range = 0.005
-
+ptbRange = 0.005	# suggested = 0.005
 ######## ######## ####### #######
-
 
 
 ######## ######## ####### #######
@@ -46,8 +41,6 @@ def createABMatrices(xCoords, yCoords) :
 
 ######## ######## ####### #######
 # PRIMARY FUNCTION
-
-
 
 # Part A ######## ####### #######
 print("\n>>>> Part A >>>>")
@@ -296,3 +289,6 @@ ax.set_ylim([-1, 7])
 ax.set_title('Q 3.5, part F -- perturbed orbit from SVD')
 figf.savefig('figs/p01_ptF.png')
 pt.show()
+
+
+print("\n")

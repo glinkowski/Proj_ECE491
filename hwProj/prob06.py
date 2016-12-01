@@ -3,11 +3,10 @@
 import math
 import numpy as np
 import numpy.linalg as npl
-# from scipy.optimize import minimize
 import scipy.optimize as sco
-import scipy.misc as scm
+import scipy.misc as scm	
+import warnings
 
-#TODO: suppress warnings from scipy
 
 ######## ######## ####### #######
 # PARAMETERS
@@ -15,7 +14,6 @@ import scipy.misc as scm
 # input data
 tVals = [0.00, 0.25, 0.50, 0.75, 1.00, 1.25, 1.50, 1.75, 2.00]
 yVals = [20.00, 51.58, 68.73, 75.46, 74.36, 67.09, 54.73, 37.98, 17.28]
-
 ######## ######## ####### #######
 
 
@@ -30,29 +28,22 @@ def f(fx, ft) :
 	fA[:,3] = np.exp( np.multiply(fx[4], ft), dtype=np.float64 )
 
 	fy = np.dot(fA, fx[0:4])
-
 	return fy
 #end def ####### ####### ########
 
 # Residual defined as (y_true - f(x))
 def f_residual(fx, ft, fy) :
 	fr = np.subtract(fy, f(fx, ft))
-
 	return fr
 #end def ####### ####### ########
 
-# objective function for
-#	multidimensional unconstrained minimalization
+# objective function for multidimensional unconstrained
+#	minimalization (convert residual to scalar value)
 def g(fx, ft, fy) :
 	fr = f_residual(fx, ft, fy)
 
-	# print(fx)
-
 	fg = np.dot(fr, fr)
 	fg = np.multiply(0.5, fg)
-
-	# print(fg)
-
 	return fg
 #end def ####### ####### ########
 
@@ -71,7 +62,6 @@ def g_gradient(fx, ft, fy) :
 
 		# print((f(fxPlus, ft), f(fxMinus, ft)))
 		grad[i] = (g(fxPlus, ft, fy) - g(fxMinus, ft, fy)) / (2*delta)
-
 	#end loop
 
 	# print(grad)
@@ -85,6 +75,7 @@ def solve_partB(fx, ft, fy) :
 	return np.abs(deriv)
 #end def ####### ####### ########
 
+# for Part C ### ####### ######## ########
 # Solve with linear least squares for x[0:4], given x[4]
 def f_linearLstsqSolve(fx5, ft, fy) :
 	fA = np.ones( (len(ft), 4) )
@@ -103,30 +94,18 @@ def f_linearLstsqSolve(fx5, ft, fy) :
 
 # The function to minimize for part C
 def solve_PartC(fx5, ft, fy) :
-	# get full x vector from fx5
+	# solve for full x vector from fx5
 	fx = f_linearLstsqSolve(fx5, ft, fy)
 
 	# return the one-dimension residual
-	# fr = f_residual(fx, ft, fy)
 	fg = g(fx, ft, fy)
-
 	return fg
 #end def ####### ####### ########
 
-# Newton Method: one iteration
-def iterNewton(bfr, bJf, xk) :
-	q, r = npl.qr( bJf(xk) )
-	sk = npl.solve(r, np.dot( np.transpose(q), bfr(xk)) )
-
-	xk1 = np.add(xk, sk)
-
-	return xk1
-#end def ####### ####### ########
-
+# for Part E ### ####### ######## ########
 # Residual defined as (y_true - f(x))
 def f_residual_hardcode(fx) :
 	fr = np.subtract(yVals, f(fx, tVals))
-
 	return fr
 #end def ####### ####### ########
 
@@ -172,11 +151,9 @@ def iterNewton(bfr, bJf, xk) :
 #end def ####### ####### ########
 
 def solveNewton(bfr, bJf, x0) :
-
 	# stopping criteria
 	errTol = 1e-15
 	numIters = 32
-	numIters = 4
 
 	# Newton Method: first iteration
 	i = 0
@@ -200,7 +177,7 @@ def solveNewton(bfr, bJf, x0) :
 	return xNew
 #end def ####### ####### ########
 
-
+# general use ## ####### ######## ########
 # Calculate relative error
 def getMaxRelErr(base, value) :
 	err = np.abs( np.divide( np.subtract(base, value), base))
@@ -241,31 +218,44 @@ def printOutput(fx0, xFound, ft, yOrig) :
 	return
 #end def ####### ####### ########
 
+# to suppress warnings thrown up by scipy
+def warfunc():
+	warnings.warn("deprecated", DeprecationWarning)
+	warnings.warn("runtime", RuntimeWarning)
+	return
+#end def ####### ####### ########
+
+
 
 ######## ######## ####### #######
 # PRIMARY FUNCTION
 
-
 print("\n\n>>>> Part A >>>>")
 
-# x0 = [1, 2, 3, 4, 5]
-x0 = [5, 4, 3, 2, 1]
+# scipy throws up a runtime warning for certain x0
+with warnings.catch_warnings():
+	warnings.simplefilter("ignore")
+	warfunc()
 
-result = sco.minimize(g, x0, args=(tVals, yVals))
-x_partA = result.x
-# y_partA = f(x_partA, tVals)
-# print(x_partA)
-# print(f(result.x, tVals))
-print("\nwith objective function g(x) ------------------------")
-# print("  using x0 = {}".format(x0))
-# print("  found x  = [{:.2f}, {:.2f}, {:.2f}, {:.2f}, {:.2f}]".format(
-# 	x_partA[0], x_partA[1], x_partA[2], x_partA[3], x_partA[4]))
-# print("  final y = f(t,x) = {}".format(y_partA))
-# # print("  norm diff b/t this and expected: {:.3e}".format(
-# # 	npl.norm( np.subtract(yVals, y_partA), ord=2) ))
-# print("  max relative error (y, f(t,x)):  {:.3e}".format(
-# 	getMaxRelErr(yVals, y_partA) ))
-printOutput(x0, x_partA, tVals, yVals)
+	# x0 = [1, 2, 3, 4, 5]
+	x0 = [5, 4, 3, 2, 1]
+
+	result = sco.minimize(g, x0, args=(tVals, yVals))
+	x_partA = result.x
+	# y_partA = f(x_partA, tVals)
+	# print(x_partA)
+	# print(f(result.x, tVals))
+	print("\nwith objective function g(x) ------------------------")
+	# print("  using x0 = {}".format(x0))
+	# print("  found x  = [{:.2f}, {:.2f}, {:.2f}, {:.2f}, {:.2f}]".format(
+	# 	x_partA[0], x_partA[1], x_partA[2], x_partA[3], x_partA[4]))
+	# print("  final y = f(t,x) = {}".format(y_partA))
+	# # print("  norm diff b/t this and expected: {:.3e}".format(
+	# # 	npl.norm( np.subtract(yVals, y_partA), ord=2) ))
+	# print("  max relative error (y, f(t,x)):  {:.3e}".format(
+	# 	getMaxRelErr(yVals, y_partA) ))
+	printOutput(x0, x_partA, tVals, yVals)
+#end with
 
 
 print("\n\n>>>> Part B >>>>")
@@ -322,3 +312,6 @@ result = solveNewton(f_residual_hardcode, Jf_hardcode, x0)
 x_partE = result
 print("\nby Gauss-Newton method ------------------------------")
 printOutput(x0, x_partE, tVals, yVals)
+
+
+print("\n")

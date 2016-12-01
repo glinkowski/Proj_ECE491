@@ -3,9 +3,7 @@
 import math
 import numpy as np
 import numpy.linalg as npl
-# from scipy.optimize import root
-# from scipy.optimize import broyden1
-# import matplotlib.pyplot as pt
+import scipy.optimize as sco
 
 
 ######## ######## ####### #######
@@ -14,7 +12,6 @@ import numpy.linalg as npl
 # stopping criteria
 errTol = 1e-15
 numIters = 64
-
 ######## ######## ####### #######
 
 
@@ -119,66 +116,86 @@ def solveNewton(bf, bJf, x0) :
 #end def ####### ####### ########
 
 
-# Broyden Method: initial B0
-def initBroyden(bJf, x0) :
-	return bJf(x0)
+# # Broyden Method: initial B0
+# def initBroyden(bJf, x0) :
+# 	return bJf(x0)
 
-# Broyden Method: one iteration
-def iterBroyden(bf, xk, Bk) :
+# # Broyden Method: one iteration
+# def iterBroyden(bf, xk, Bk) :
 
-#TODO: a more accurate way to get sk ??
-	sklstsq = npl.lstsq( Bk, -bf(xk) )
-	sk = sklstsq[0]
-	# print(Bk)
-	# print(sk)
-	xk1 = np.add(xk, sk[0])
-	yk = bf(xk1) - bf(xk)
+# #TODO: a more accurate way to get sk ??
+# 	sklstsq = npl.lstsq( Bk, -bf(xk) )
+# 	sk = sklstsq[0]
+# 	# print(Bk)
+# 	# print(sk)
+# 	xk1 = np.add(xk, sk[0])
+# 	yk = bf(xk1) - bf(xk)
 
-	Btemp = np.subtract(yk, np.dot(Bk, sk))
-	stemp = np.dot(sk, sk)
+# 	Btemp = np.subtract(yk, np.dot(Bk, sk))
+# 	stemp = np.dot(sk, sk)
 
-	# catch a divide-by-zero error
-	if stemp == 0 :
-		Bk1 = np.add(Bk, np.inf)
-	else :
-		Bnumer = np.multiply(Btemp.reshape((Btemp.size,1)), sk.reshape((1,sk.size)))
-		Bk1 = Bk + np.divide( Bnumer, stemp )
-	#end if
+# 	# catch a divide-by-zero error
+# 	if stemp == 0 :
+# 		Bk1 = np.add(Bk, np.inf)
+# 	else :
+# 		Bnumer = np.multiply(Btemp.reshape((Btemp.size,1)), sk.reshape((1,sk.size)))
+# 		Bk1 = Bk + np.divide( Bnumer, stemp )
+# 	#end if
 
-	return xk1, Bk1
+# 	return xk1, Bk1
+# #end def ####### ####### ########
+
+# def solveBroyden( bf, bJf, bx0 ) :
+# 	# Broyden Method: initialization
+# 	BNew = initBroyden(bJf, x0)
+# 	xNew = x0
+# 	xDiff = 2
+
+# 	i = -1
+# 	errPrev = 0.0
+# 	err = 1
+# 	#while(err != errPrev) :
+# 	while(xDiff > errTol) :
+# 		# pass
+# 		# # print("||{} - {}|| = {:1.3e}".format(xNew, xstar, err))
+# 		i += 1
+# 		# errPrev = err
+
+# 		xOld = xNew
+# 		xNew, BNew = iterBroyden(bf, xNew, BNew)
+# 		xDiff = npl.norm( np.subtract(xNew, xOld), ord=2)
+
+# 		# err = la.norm( np.subtract(xNew, xstar), ord=2)
+# 		# # iB.append(i)
+# 		# # eB.append(err)
+
+# 		# print((i, xDiff))
+# 		if i >= numIters :
+# 			break
+# 	#end loop
+
+# 	print("Broyden iterations: {}, delta: {:.2e}".format(i, xDiff))
+# 	return xNew
+# #end def ####### ####### ########
+
+def g1(fx) :
+	fr = -f1(fx)
+	fg = np.multiply(0.5, np.dot(fr, fr))
+	return fg
 #end def ####### ####### ########
 
-def solveBroyden( bf, bJf, bx0 ) :
-	# Broyden Method: initialization
-	BNew = initBroyden(bJf, x0)
-	xNew = x0
-	xDiff = 2
+def g2(fx) :
+	fr = -f2(fx)
+	fg = np.multiply(0.5, np.dot(fr, fr))
+	return fg
+#end def ####### ####### ########
 
-	i = -1
-	errPrev = 0.0
-	err = 1
-	#while(err != errPrev) :
-	while(xDiff > errTol) :
-		# pass
-		# # print("||{} - {}|| = {:1.3e}".format(xNew, xstar, err))
-		i += 1
-		# errPrev = err
-
-		xOld = xNew
-		xNew, BNew = iterBroyden(bf, xNew, BNew)
-		xDiff = npl.norm( np.subtract(xNew, xOld), ord=2)
-
-		# err = la.norm( np.subtract(xNew, xstar), ord=2)
-		# # iB.append(i)
-		# # eB.append(err)
-
-		# print((i, xDiff))
-		if i >= numIters :
-			break
-	#end loop
-
-	print("Broyden iterations: {}, delta: {:.2e}".format(i, xDiff))
-	return xNew
+def printOutput(x0, xFound, yCalc) :
+	print("  using x0 = {}".format(x0))
+	print("  found x = [{:.4f}, {:.4f}]".format(xFound[0], xFound[1]))
+	print("  result f(x) = [{:.4f}, {:.4f}, {:.4f}]".format(
+		yCalc[0], yCalc[1], yCalc[2]))
+	return
 #end def ####### ####### ########
 
 
@@ -188,79 +205,132 @@ def solveBroyden( bf, bJf, bx0 ) :
 
 print("\n\n>>>> Part A >>>>")
 
+
 x0 = [2, 2]
-print("\nBroyden results ---------------------")
-xFinal = solveBroyden(f1, Jf1, x0)
-# print( (xFinal, f1(xFinal)) )
-fx = f1(xFinal)
-print("  using x0 = {}".format(x0))
-print("  found x = [{:.4f}, {:.4f}]".format(xFinal[0], xFinal[1]))
-print("  result f(x) = [{:.4f}, {:.4f}, {:.4f}]".format(fx[0], fx[1], fx[2]))
+# print("\nBroyden results ---------------------")
+# xFinal = solveBroyden(f1, Jf1, x0)
+# # print( (xFinal, f1(xFinal)) )
+# fx = f1(xFinal)
+# print("  using x0 = {}".format(x0))
+# print("  found x = [{:.4f}, {:.4f}]".format(xFinal[0], xFinal[1]))
+# print("  result f(x) = [{:.4f}, {:.4f}, {:.4f}]".format(fx[0], fx[1], fx[2]))
 
 print("\nNewton results ---------------------")
 xFinal = solveNewton(f1, Jf1, x0)
 # print( (xFinal, f1(xFinal)) )
-fx = f1(xFinal)
-print("  using x0 = {}".format(x0))
-print("  found x = [{:.4f}, {:.4f}]".format(xFinal[0], xFinal[1]))
-print("  result f(x) = [{:.4f}, {:.4f}, {:.4f}]".format(fx[0], fx[1], fx[2]))
+# fx = f1(xFinal)
+printOutput(x0, xFinal, f1(xFinal))
+# print("  using x0 = {}".format(x0))
+# print("  found x = [{:.4f}, {:.4f}]".format(xFinal[0], xFinal[1]))
+# print("  result f(x) = [{:.4f}, {:.4f}, {:.4f}]".format(fx[0], fx[1], fx[2]))
+
+result = sco.minimize(g1, x0)
+xFinal = result.x
+print("\nminimize from SciPy library --------")
+printOutput(x0, xFinal, f1(xFinal))
 
 
 x0 = [-1, -1]
-print("\nBroyden results ---------------------")
-xFinal = solveBroyden(f1, Jf1, x0)
-# print( (xFinal, f1(xFinal)) )
-fx = f1(xFinal)
-print("  using x0 = {}".format(x0))
-print("  found x = [{:.4f}, {:.4f}]".format(xFinal[0], xFinal[1]))
-print("  result f(x) = [{:.4f}, {:.4f}, {:.4f}]".format(fx[0], fx[1], fx[2]))
+# print("\nBroyden results ---------------------")
+# xFinal = solveBroyden(f1, Jf1, x0)
+# # print( (xFinal, f1(xFinal)) )
+# fx = f1(xFinal)
+# print("  using x0 = {}".format(x0))
+# print("  found x = [{:.4f}, {:.4f}]".format(xFinal[0], xFinal[1]))
+# print("  result f(x) = [{:.4f}, {:.4f}, {:.4f}]".format(fx[0], fx[1], fx[2]))
 
 print("\nNewton results ---------------------")
 xFinal = solveNewton(f1, Jf1, x0)
 # print( (xFinal, f1(xFinal)) )
-fx = f1(xFinal)
-print("  using x0 = {}".format(x0))
-print("  found x = [{:.4f}, {:.4f}]".format(xFinal[0], xFinal[1]))
-print("  result f(x) = [{:.4f}, {:.4f}, {:.4f}]".format(fx[0], fx[1], fx[2]))
+printOutput(x0, xFinal, f1(xFinal))
+# fx = f1(xFinal)
+# print("  using x0 = {}".format(x0))
+# print("  found x = [{:.4f}, {:.4f}]".format(xFinal[0], xFinal[1]))
+# print("  result f(x) = [{:.4f}, {:.4f}, {:.4f}]".format(fx[0], fx[1], fx[2]))
+
+result = sco.minimize(g1, x0)
+xFinal = result.x
+print("\nminimize from SciPy library --------")
+printOutput(x0, xFinal, f1(xFinal))
 
 
 print("\n\n>>>> Part B >>>>")
 
+
 x0 = [2, 2]
-print("\nBroyden results ---------------------")
-xFinal = solveBroyden(f2, Jf2, x0)
-fx = f1(xFinal)
-print("  using x0 = {}".format(x0))
-print("  found x = [{:.4f}, {:.4f}]".format(xFinal[0], xFinal[1]))
-print("  result f(x) = [{:.4f}, {:.4f}, {:.4f}]".format(fx[0], fx[1], fx[2]))
+# print("\nBroyden results ---------------------")
+# xFinal = solveBroyden(f2, Jf2, x0)
+# fx = f1(xFinal)
+# print("  using x0 = {}".format(x0))
+# print("  found x = [{:.4f}, {:.4f}]".format(xFinal[0], xFinal[1]))
+# print("  result f(x) = [{:.4f}, {:.4f}, {:.4f}]".format(fx[0], fx[1], fx[2]))
 
 print("\nNewton results ---------------------")
 xFinal = solveNewton(f2, Jf2, x0)
-fx = f1(xFinal)
-print("  using x0 = {}".format(x0))
-print("  found x = [{:.4f}, {:.4f}]".format(xFinal[0], xFinal[1]))
-print("  result f(x) = [{:.4f}, {:.4f}, {:.4f}]".format(fx[0], fx[1], fx[2]))
+printOutput(x0, xFinal, f1(xFinal))
+# fx = f1(xFinal)
+# print("  using x0 = {}".format(x0))
+# print("  found x = [{:.4f}, {:.4f}]".format(xFinal[0], xFinal[1]))
+# print("  result f(x) = [{:.4f}, {:.4f}, {:.4f}]".format(fx[0], fx[1], fx[2]))
+
+result = sco.minimize(g2, x0)
+xFinal = result.x
+print("\nminimize from SciPy library --------")
+printOutput(x0, xFinal, f1(xFinal))
 
 
 x0 = [1, -1]
-print("\nBroyden results ---------------------")
-xFinal = solveBroyden(f2, Jf2, x0)
-fx = f1(xFinal)
-print("  using x0 = {}".format(x0))
-print("  found x = [{:.4f}, {:.4f}]".format(xFinal[0], xFinal[1]))
-print("  result f(x) = [{:.4f}, {:.4f}, {:.4f}]".format(fx[0], fx[1], fx[2]))
+# print("\nBroyden results ---------------------")
+# xFinal = solveBroyden(f2, Jf2, x0)
+# fx = f1(xFinal)
+# print("  using x0 = {}".format(x0))
+# print("  found x = [{:.4f}, {:.4f}]".format(xFinal[0], xFinal[1]))
+# print("  result f(x) = [{:.4f}, {:.4f}, {:.4f}]".format(fx[0], fx[1], fx[2]))
 
 print("\nNewton results ---------------------")
 xFinal = solveNewton(f2, Jf2, x0)
-fx = f1(xFinal)
-print("  using x0 = {}".format(x0))
-print("  found x = [{:.4f}, {:.4f}]".format(xFinal[0], xFinal[1]))
-print("  result f(x) = [{:.4f}, {:.4f}, {:.4f}]".format(fx[0], fx[1], fx[2]))
+printOutput(x0, xFinal, f1(xFinal))
+# fx = f1(xFinal)
+# print("  using x0 = {}".format(x0))
+# print("  found x = [{:.4f}, {:.4f}]".format(xFinal[0], xFinal[1]))
+# print("  result f(x) = [{:.4f}, {:.4f}, {:.4f}]".format(fx[0], fx[1], fx[2]))
+
+result = sco.minimize(g2, x0)
+xFinal = result.x
+print("\nminimize from SciPy library --------")
+printOutput(x0, xFinal, f1(xFinal))
 
 
-# xFinal = root(f1, x0, method='broyden1', jac=Jf1)
+
+
+
+# x0 = [2, 2]
+# result = sco.minimize(g1, x0)
+# xFinal = result.x
+# print("\nminimize from SciPy library --------")
+# # print(xFinal)
 # print( (xFinal, f1(xFinal)) )
 
-# x0 = [2, 2, 0]
-# xFinal = broyden1( f1, x0 )
+# x0 = [-1, -1]
+# result = sco.minimize(g1, x0)
+# xFinal = result.x
+# print("\nminimize from SciPy library --------")
+# # print(xFinal)
 # print( (xFinal, f1(xFinal)) )
+
+# x0 = [2, 2]
+# result = sco.minimize(g2, x0)
+# xFinal = result.x
+# print("\nminimize from SciPy library --------")
+# # print(xFinal)
+# print( (xFinal, f1(xFinal)) )
+
+# x0 = [1, -1]
+# result = sco.minimize(g2, x0)
+# xFinal = result.x
+# print("\nminimize from SciPy library --------")
+# # print(xFinal)
+# print( (xFinal, f1(xFinal)) )
+
+
+print("\n")
