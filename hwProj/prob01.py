@@ -11,7 +11,7 @@ import matplotlib.lines as mlines
 ######## ######## ####### #######
 # PARAMETERS
 
-# positional data
+# positional data (input)
 xPos = np.array(
 	[1.02, 0.95, 0.87, 0.77, 0.67, 0.56, 0.44, 0.30, 0.16, 0.01] )
 yPos = np.array(
@@ -25,6 +25,7 @@ ptbRange = 0.005	# suggested = 0.005
 ######## ######## ####### #######
 # ANCILLARY FUNCTIONS
 
+# use input data to create system matrices
 def createABMatrices(xCoords, yCoords) :
 	A = np.ones( (len(xCoords), 5) )
 	A[:,0] = np.power(yCoords, 2)
