@@ -92,6 +92,45 @@ def getVofXT(fx, ft) :
 	return v_xt
 #end def ####### ####### ########
 
+# def f_Colloc(fx, ft) :
+# 	# know the first element of x
+# 	fx[0] = uofa
+# 	# fx[len(fx)-1] = 1
+
+# 	v_xt = getVofXT(fx, ft)
+
+# 	# # Force boundary conditions on u(t)
+# 	v_xt[0] = uofa
+# 	v_xt[len(v_xt)-1] = uofb
+# 	# v_xt[len(v_xt)-1] = np.linalg.norm(fx, ord=1)
+
+# 	# Get u''(t)
+# 	B = np.zeros( (len(ft), len(ft)) )
+# 	for col in range(2, len(ft)) :
+# 		B[:,col] = np.multiply( np.math.factorial(col), np.power(t, col-2))
+# 	fu_dp = np.dot(B, fx)
+
+# 	# print(B)
+# 	# print(fu_dp)
+
+# 	# Calculate solution to equation
+# 	# print(v_xt)
+# 	f_ut = np.subtract(fu_dp, np.multiply(3.0, v_xt))
+# 	# print(f_ut)
+# 	f_ut = np.subtract(f_ut, np.multiply(10.0, np.power(v_xt, 3.0)))
+# 	# print(f_ut)
+# 	f_ut = np.subtract(f_ut, np.power(ft, 2.0))
+# 	# print(f_ut)
+
+# 	# Force the endpoints = 0
+# 	#	b/c looking for where solution is a zero vector
+# 	#	and can't determine endpoints w/o +1/-1 data points
+# 	f_ut[0] = 0
+# 	f_ut[len(f_ut)-1] = 0
+
+# 	return f_ut
+# #end def ####### ####### ########
+
 def f_Colloc(fx, ft) :
 	# know the first element of x
 	fx[0] = uofa
@@ -99,10 +138,44 @@ def f_Colloc(fx, ft) :
 
 	v_xt = getVofXT(fx, ft)
 
-	# # Force boundary conditions on u(t)
+	# Force boundary conditions on u(t)
+	# v_xt[0] = uofa
+	# v_xt[len(v_xt)-1] = uofb
+	# # v_xt[len(v_xt)-1] = np.linalg.norm(fx, ord=1)
+
+	# resid = np.linalg.norm( np.subtract(
+	# 	[v_xt[0], v_xt[len(v_xt)-1]], [uofa, uofb] ) )
+	# errStop = 1e-8
+	# count = 0
+	# while resid > errStop :
+	# 	if count >= 5 :
+	# 		break
+	# 	count += 1
+	# 	# Force boundary conditions on u(t)
+	# 	v_xt[0] = uofa
+	# 	v_xt[len(v_xt)-1] = uofb
+	# 	# Back-solve for new array of x
+	# 	A = np.zeros( (len(ft), len(fx)) )
+	# 	for col in range(len(fx)) :
+	# 		A[:,col] = np.power(ft, col)
+	# 	result = np.linalg.lstsq(A, v_xt)
+	# 	fx = result[0]
+	# 	v_xt = getVofXT(fx, ft)
+	# 	resid = np.linalg.norm( np.subtract(
+	# 		[v_xt[0], v_xt[len(v_xt)-1]], [uofa, uofb] ) )
+	# 	print((count,resid))
+	# #end loop
+
+	# Force boundary conditions on u(t)
 	v_xt[0] = uofa
 	v_xt[len(v_xt)-1] = uofb
-	# v_xt[len(v_xt)-1] = np.linalg.norm(fx, ord=1)
+	# Back-solve for new x vector
+	A = np.zeros( (len(ft), len(fx)) )
+	for col in range(len(fx)) :
+		A[:,col] = np.power(ft, col)
+	result = np.linalg.lstsq(A, v_xt)
+	fx = result[0]
+	v_xt = getVofXT(fx, ft)
 
 	# Get u''(t)
 	B = np.zeros( (len(ft), len(ft)) )
@@ -181,10 +254,13 @@ for n in nValsCo :
 	# print((x0, fofut))
 
 	# # x0 = np.zeros(len(t))
-	xSol = fsolve(f_Colloc, x0, args=(t))
 	# xSol = np.divide(xSol, np.linalg.norm(xSol))
 	# print(xSol)
+
+	xSol = fsolve(f_Colloc, x0, args=(t))
 	fofut = f_Colloc(xSol, t)
+	# fofut, xSol = f_Colloc(x0, t)
+
 	# print("  {}".format(fofyt))
 	print("n = {:2d}, accuracy at t_i = {:.2e}".format( n,
 		np.linalg.norm(np.subtract(np.zeros(len(fofut)), fofut))))
