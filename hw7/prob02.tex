@@ -46,20 +46,17 @@ To use the shooting method ... starting guess for ... $u'(a)$ ... single step of
 \vspace{5mm}
 \begin{exercise}{1}
 	Using this approach, write out the resulting algebraic equation for the initial slope.
-\end{exercise} % \vspace{-10mm}
+\end{exercise} \vspace{-10mm}
 \begin{proof}[]
-	Suppose $u' = \lambda u$ \\
-	Applying Euler's method:
 	\begin{align*}
-		u_k+1 &= u_k + h(\lambda \, u_k) \\
-		u_b &= u_a + (b - a) (\lambda \, u_a) \\
-		\beta &= \alpha + (b - a) (\lambda \, \alpha) \\
-		\frac{\beta}{\alpha} &= 1 + \lambda (b - a) \\
-		\lambda &= \frac{\frac{\beta}{\alpha} - 1}{b - a} \\
-		\lambda = \frac{\beta - \alpha}{\alpha (b - a)}
+		\textnormal{Suppose \hspace{5mm}} u' &= \lambda u \\
+		\textnormal{Applying Euler's method: \hspace{5mm}} & \\
+		u_{k+1} &= u_k + h \, u_k'\\
+		u_{k+1} &= u_k + h(\lambda \, u_k) \\
+		u_k' = (\lambda \, u_k) &= \frac{u_{k+1} - u_k}{h} \\
 	\end{align*}
 	\textbf{Answer 1.} \vspace{-7mm} \\
-		\[ u'(a) = \lambda \, u(a) = \lambda \, \alpha \Rightarrow \boxed{ u'(a) = \frac{\beta - \alpha}{b - a} } \]
+		\[ \boxed{u_k' = (\lambda \, u_k) = \frac{u_{k+1} - u_k}{h}} \quad \textnormal{ \hspace{3mm}alternately: \hspace{1mm}} \lambda = \frac{u_{k+1} - u_k}{u_k \, h} \]
 \end{proof}
 
 \vspace{5mm}
@@ -68,9 +65,16 @@ To use the shooting method ... starting guess for ... $u'(a)$ ... single step of
 \end{exercise} \vspace{-10mm}
 \begin{proof}[]
 	\begin{align*}
+		\textnormal{Let \hspace{5mm}} &\begin{cases}
+			h = b - a \\
+			u_k = u(a) \\
+			u_{k+1} = u(b)
+		\end{cases}, \quad
+		u_k' = (\lambda u_k) = \frac{u_{k+1} - u_k}{h} \\[10pt]
+		\textnormal{Then \hspace{5mm}} u'(a) &= \frac{u(b) - u(a)}{b - a} \\
 	\end{align*}
-	%	\textbf{Answer 2.} \vspace{-7mm} \\
-	%		\[ \boxed{  } \]
+		\textbf{Answer 2.} \vspace{-7mm} \\
+			\[ \boxed{ u'(a) = \frac{\beta - \alpha}{b - a} } \]
 \end{proof}
 
 
