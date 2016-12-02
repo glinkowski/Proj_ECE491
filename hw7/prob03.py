@@ -50,11 +50,8 @@ def applyInitCond(fu, fx) :
 # apply conditions & solve for u(t,x)
 #	using the desired method
 def solve_u(fSolver, fdt, fdx) :
-
 	ft = np.arange(tMin, tMax+dt, dt)
 	fx = np.arange(xMin, xMax+dx, dx)
-	# fdt = ft[1] - ft[0]
-	# fdx = fx[1] - fx[0]
 	tLen = len(ft)
 	xLen = len(fx)
 	u_tx = np.zeros( (xLen, tLen) )
@@ -70,9 +67,7 @@ def plotMeshGrid(fFig, fu, fdt, fdx, fTitle) :
 	ft = np.arange(tMin, tMax+dt, dt)
 	fx = np.arange(xMin, xMax+dx, dx)
 	mt, mx = np.meshgrid(ft, fx)
-	# print(mx[20,50])
-	# print( (mx.shape, mt.shape, u_tx.shape))
-	fFig.plot_wireframe(mx, mt, fu, cstride=5)
+	fFig.plot_wireframe(mx, mt, fu, cstride=6)
 	fFig.set_xlabel('x-axis')
 	fFig.set_xlim([xMin, xMax])
 	fFig.set_ylabel('time')
@@ -87,8 +82,6 @@ def applyFiniDiff(fu, fdt, fdx) :
 	xLen, tLen = fu.shape
 	a = 1
 	b = xLen-1
-
-	# print(fu[a:b,0])
 
 	const = fdt / (fdx * fdx)
 	for ti in range(tLen-1) :
@@ -123,7 +116,11 @@ def applyBackEuler(fu, fdt, fdx) :
 		# k1Guess = np.add(k1Guess, np.multiply( (-2 * const), k1Guess ))
 		# k1Guess = np.add(k1Guess, np.multiply(const, fu[(a+1):(b+1),ti]))
 		# k1Guess = np.add(k1Guess, np.multiply(const, fu[(a-1):(b-1),ti]))
-		# print(k1Guess)
+		# k1GFull = np.copy(fu[:,ti])
+		# k1GFull[a:b] = k1Guess
+		# # print(k1Guess)
+
+#TODO: ?? Best way to create a guess of k+1 ??
 
 		# create a first guess at k+1
 		k1Guess = np.copy(fu[a:b,ti])
@@ -136,12 +133,14 @@ def applyBackEuler(fu, fdt, fdx) :
 		# print(k1GFull)
 		# print(k1Guess)
 
+#TODO: check this math
+
 		# # use the first guess to solve for k+1
 		# k1Col = fu[a:b,ti]
 		# k1Col = np.add(k1Col, np.multiply( (-2 * const), k1Col ))
 		# k1Col = np.add(k1Col, np.multiply(const, k1GFull[(a+1):(b+1)]))
 		# k1Col = np.add(k1Col, np.multiply(const, k1GFull[(a-1):(b-1)]))
-		# print(k1Col)
+		# # print(k1Col)
 
 		# use the first guess to solve for k+1
 		k1Col = np.copy(fu[a:b,ti])
@@ -266,42 +265,19 @@ def applySemiDiscreteSys(fu, fdt, fdx) :
 	a = 1
 	b = xLen-1
 
-	# u0 = fu[:,0]
-	# # u_prime = semiDisc_uPrime(u0, fdx)
-	# # print(u0)
-	# uNext = semiDisc_ut(u0, fdx)
-
-	# fu[:,1] = uNext
-	# print(fu)
-
 	u0 = fu[1,0]
 	u0 = fu[a:b,0]
-	# u0 = fu[:,0]
-	# print(u0)
 	ft = np.arange(tMin, tMax+fdt, fdt)
-	# print("Calling ODE")
-	u_x = sci.odeint(f, u0, ft)#, args=(fdx))
-	# print("Finished ODE")
-	# print(fu[0:2,:])
+	# print(fdx)
+	u_x = sci.odeint( f, u0, ft, args=(fdx,) )
 	u_x_T = np.transpose(u_x)
-	# print(u_x_T[0:2,:])
-	# print(u_x)
-
-	# ru = np.copy(fu)
-	# ru[a:b,:] = u_x_T
-	# print(ru)
-	
-	# return ru
 
 	fu[a:b,:] = u_x_T
 	return
 #end def ####### ####### ########
 
-def f(fu_x, ft0) :#, fdx) :
-
-	# print(ft0)
-
-	fdx = 0.05
+def f(fu_x, ft0, fdx) :
+	# fdx = 0.05
 	tLen = len(fu_x)
 
 	denom = (fdx * fdx)
@@ -310,58 +286,9 @@ def f(fu_x, ft0) :#, fdx) :
 	A = np.add(A, np.eye((tLen), k=-1))
 	u_prime = np.dot(A, fu_x)
 	u_prime = np.divide(u_prime, denom)
-	# print(u_prime)
 
 	return u_prime
 #end def ####### ####### ########
-
-# def semiDisc_uPrime(fu, fdx) :
-# 	print("started func")
-# 	xLen = fu.shape[0]
-# 	print(fu.shape)
-# 	a = 1
-# 	b = xLen-1
-
-# 	# solve for u'(t,x), based on present time at u(t,x)
-# 	u_prime = np.copy(fu)
-# 	denom = (2 * fdx * fdx)
-# 	# for ti in range(tLen) :
-
-# 	A = np.multiply( -2, np.eye(xLen-2) )
-# 	A = np.add(A, np.eye((xLen-2), k=1))
-# 	A = np.add(A, np.eye((xLen-2), k=-1))
-# 	u_prime[a:b] = np.dot(A, fu[a:b])
-# 	u_prime = np.divide(u_prime, denom)
-# 	print(u_prime)
-
-# 	# up_t = np.multiply( (-2), fu[a:b] )
-# 	# up_t = np.add(up_t, fu[(a+1):(b+1)])
-# 	# up_t = np.add(up_t, fu[(a-1):(b-1)])
-# 	# up_t = np.divide(up_t, denom)
-# 	# # #end loop
-# 	# u_prime[a:b] = up_t
-
-# 	return 
-# #end def ####### ####### ########
-
-# def semiDisc_ut(fu0, fdx) :
-# 	xLen = fu0.shape[0]
-# 	a = 1
-# 	b = xLen-1
-# 	print((a,b))
-
-# 	# tArray = np.repeat(ft, xLen)
-# 	dxArray = np.repeat(fdx, xLen)
-# 	print(dxArray)
-# 	tArray = [0,1]
-
-# 	print("calling func")
-# 	u_t = sci.odeint(semiDisc_uPrime, fu0, fdx)
-# 	print("returned")
-# 	print(u_t)
-
-# 	return u_t
-# #end def ####### ####### ########
 
 
 
@@ -374,57 +301,16 @@ fig = pt.figure(figsize=(11, 18))
 
 
 # Part 1: use Finite Diff w/ delta t = 0.0012 ------------
-
-# Create the function range
-# dx = 0.05
-# dt = 0.0012
-# x = np.arange(xMin, xMax+dx, dx)
-# t = np.arange(tMin, tMax+dt, dt)
-# xLen = len(x)
-# tLen = len(t)
-
-# u_tx = np.zeros( (xLen, tLen) )
-# # print(x)
-# applyBoundCond(u_tx)
-# # print(u_tx)
-
-# applyInitCond(u_tx, x)
-# # print(u_tx)
-
-# applyFiniDiff(u_tx, x, xDelta, tDelta)
-# # print(u_tx)
 dt = dt_Orig
 u_Part1 = solve_u(applyFiniDiff, dt, dx)
 
-# print(u_Part1[1:len(u_Part1)-1,1])
-
-# print((t.shape, x.shape, u_Part1.shape))
-
 # Figure 1: Finite Diff plot
 ax1 = fig.add_subplot(421, projection='3d')
-# mt, mx = np.meshgrid(t, x)
-# # print(mx[20,50])
-# # print( (mx.shape, mt.shape, u_tx.shape))
-# ax1.plot_wireframe(mx, mt, u_tx, cstride=10)
-# ax1.set_xlabel('x-axis')
-# ax1.set_xlim([xMin, xMax])
-# ax1.set_ylabel('time')
-# ax1.set_ylim([tMin, tMax])
-# ax1.set_zlabel('u(t,x)')
-# ax1.set_title('Heat Equation, using Finite Difference')
-figTit = 'Heat Equation, using Finite Diff, dt = {}'.format(dt)
+figTit = '... using Finite Diff, dt = {}'.format(dt)
 plotMeshGrid(ax1, u_Part1, dt, dx, figTit)
 
 
 # Part 2: use Finite Diff w/ delta t = 0.0013 ------------
-
-# Create the function range
-# dx = 0.05
-# dt = 0.0013
-# dt = 0.005
-# x = np.arange(xMin, xMax+dx, dx)
-# t = np.arange(tMin, tMax+dt, dt)
-
 dt = dt_Odd
 u_Part2 = solve_u(applyFiniDiff, dt, dx)
 
@@ -435,19 +321,8 @@ plotMeshGrid(ax2, u_Part2, dt, dx, figTit)
 
 
 # Part 3: use Backward Euler -----------------------------
-
-# Create the function range
-# dx = 0.05
-# dt = 0.005
-# dt = 0.0012
-# x = np.arange(xMin, xMax+dx, dx)
-# t = np.arange(tMin, tMax+dt, dt)
-
 dt = dt_Orig
 u_Part3 = solve_u(applyBackEuler, dt, dx)
-# print(u_Part3[:,0])
-
-# print((t.shape, x.shape, u_Part3.shape))
 
 # Figure 3: FD w/ different tDelta plot
 ax3 = fig.add_subplot(423, projection='3d')
@@ -455,18 +330,8 @@ figTit = '... using Backward Euler, dt = {}'.format(dt)
 plotMeshGrid(ax3, u_Part3, dt, dx, figTit)
 
 
-# Create the function range
-# dx = 0.05
-# dt = 0.005
-# dt = 0.0012
-# x = np.arange(xMin, xMax+dx, dx)
-# t = np.arange(tMin, tMax+dt, dt)
-
 dt = dt_Big
 u_Part3 = solve_u(applyBackEuler, dt, dx)
-# print(u_Part3[:,0])
-
-# print((t.shape, x.shape, u_Part3.shape))
 
 # Figure 3: FD w/ different tDelta plot
 ax3 = fig.add_subplot(424, projection='3d')
@@ -475,14 +340,6 @@ plotMeshGrid(ax3, u_Part3, dt, dx, figTit)
 
 
 # Part 4: use Crick-Nicolson -----------------------------
-
-# Create the function range
-# dx = 0.05
-# dt = 0.005
-# dt = 0.0012
-# x = np.arange(xMin, xMax+dx, dx)
-# t = np.arange(tMin, tMax+dt, dt)
-
 dt = dt_Orig
 u_Part4 = solve_u(applyCrankNic, dt, dx)
 
@@ -491,13 +348,6 @@ ax4 = fig.add_subplot(425, projection='3d')
 figTit = '... using Crank-Nicolson, dt = {}'.format(dt)
 plotMeshGrid(ax4, u_Part4, dt, dx, figTit)
 
-
-# Create the function range
-# dx = 0.05
-# dt = 0.005
-# dt = 0.0012
-# x = np.arange(xMin, xMax+dx, dx)
-# t = np.arange(tMin, tMax+dt, dt)
 
 dt = dt_Big
 u_Part4 = solve_u(applyCrankNic, dt, dx)
@@ -509,17 +359,8 @@ plotMeshGrid(ax4, u_Part4, dt, dx, figTit)
 
 
 # Part 5: use Crick-Nicolson w/ delta t = 0.005 ----------
-
-# Create the function range
-# dx = 0.05
-# dt = 0.005
-# x = np.arange(xMin, xMax+dx, dx)
-# t = np.arange(tMin, tMax+dt, dt)
-# dt = 0.0012
-
 dt = dt_Orig
 u_Part5 = solve_u(applySemiDiscreteSys, dt, dx)
-# print(u_Part5)
 
 # Figure 4: FD w/ different tDelta plot
 ax5 = fig.add_subplot(427, projection='3d')
@@ -527,11 +368,8 @@ figTit = '... using Semi Discrete, dt = {}'.format(dt)
 plotMeshGrid(ax5, u_Part5, dt, dx, figTit)
 
 
-# dt = 0.005
-
 dt = dt_Big
 u_Part5 = solve_u(applySemiDiscreteSys, dt, dx)
-# print(u_Part5)
 
 # Figure 4: FD w/ different tDelta plot
 ax5 = fig.add_subplot(428, projection='3d')
@@ -539,13 +377,8 @@ figTit = '... using Semi Discrete, dt = {}'.format(dt)
 plotMeshGrid(ax5, u_Part5, dt, dx, figTit)
 
 
-
-
-
-
-
-
-
-
-
+fig.suptitle("The Heat Equation")
 pt.show()
+
+
+print("\nDone.\n")
