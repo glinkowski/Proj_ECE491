@@ -106,53 +106,68 @@ def applyBackEuler(fu, fdt, fdx) :
 	a = 1
 	b = xLen-1
 
-	# print(fu[a:b,0])
+
+	# Will solve the system u^k = A * u^(k+1)
 	const = fdt / (fdx * fdx)
-	for ti in range(tLen-1) :
-
-		# # create a first guess at k+1
-		# const = fdt / (fdx * fdx)
-		# k1Guess = fu[a:b,ti]
-		# k1Guess = np.add(k1Guess, np.multiply( (-2 * const), k1Guess ))
-		# k1Guess = np.add(k1Guess, np.multiply(const, fu[(a+1):(b+1),ti]))
-		# k1Guess = np.add(k1Guess, np.multiply(const, fu[(a-1):(b-1),ti]))
-		# k1GFull = np.copy(fu[:,ti])
-		# k1GFull[a:b] = k1Guess
-		# # print(k1Guess)
-
-#TODO: ?? Best way to create a guess of k+1 ??
-
-		# create a first guess at k+1
-		k1Guess = np.copy(fu[a:b,ti])
-		# k1Guess = np.add(k1Guess, np.multiply( (-2 * const), k1Guess ))
-		k1Guess = np.add(k1Guess, np.multiply(const, fu[(a+1):(b+1),ti]))
-		k1Guess = np.add(k1Guess, np.multiply(const, fu[(a-1):(b-1),ti]))
-		k1Guess = np.divide( k1Guess, (1 + (2 * const)) )
-		k1GFull = np.copy(fu[:,ti])
-		k1GFull[a:b] = k1Guess
-		# print(k1GFull)
-		# print(k1Guess)
-
-#TODO: check this math
-
-		# # use the first guess to solve for k+1
-		# k1Col = fu[a:b,ti]
-		# k1Col = np.add(k1Col, np.multiply( (-2 * const), k1Col ))
-		# k1Col = np.add(k1Col, np.multiply(const, k1GFull[(a+1):(b+1)]))
-		# k1Col = np.add(k1Col, np.multiply(const, k1GFull[(a-1):(b-1)]))
-		# # print(k1Col)
-
-		# use the first guess to solve for k+1
-		k1Col = np.copy(fu[a:b,ti])
-		# k1Col = np.add(k1Col, np.multiply( (-2 * const), k1Col ))
-		k1Col = np.add(k1Col, np.multiply(const, k1GFull[(a+1):(b+1)]))
-		k1Col = np.add(k1Col, np.multiply(const, k1GFull[(a-1):(b-1)]))
-		k1Col = np.divide( k1Col, (1 + (2 * const)) )
-		# print(k1Col)
-
-		fu[a:b,(ti+1)] = k1Col
-
+	A = np.multiply( (1 + (2*const)), np.eye(xLen) )
+	A = np.add(A, np.multiply( -const, np.eye((xLen), k=1) ))
+	A = np.add(A, np.multiply( -const, np.eye((xLen), k=-1) ))
+	# print(fdt, fdx, const)
+	# print(A[0:4,0:4])
+	
 	# print(fu[a:b,0])
+	for ti in range(tLen-1) :
+	# for ti in range(2) :
+
+# 		# # create a first guess at k+1
+# 		# const = fdt / (fdx * fdx)
+# 		# k1Guess = fu[a:b,ti]
+# 		# k1Guess = np.add(k1Guess, np.multiply( (-2 * const), k1Guess ))
+# 		# k1Guess = np.add(k1Guess, np.multiply(const, fu[(a+1):(b+1),ti]))
+# 		# k1Guess = np.add(k1Guess, np.multiply(const, fu[(a-1):(b-1),ti]))
+# 		# k1GFull = np.copy(fu[:,ti])
+# 		# k1GFull[a:b] = k1Guess
+# 		# # print(k1Guess)
+
+# #TODO: ?? Best way to create a guess of k+1 ??
+
+# 		# create a first guess at k+1
+# 		k1Guess = np.copy(fu[a:b,ti])
+# 		# k1Guess = np.add(k1Guess, np.multiply( (-2 * const), k1Guess ))
+# 		k1Guess = np.add(k1Guess, np.multiply(const, fu[(a+1):(b+1),ti]))
+# 		k1Guess = np.add(k1Guess, np.multiply(const, fu[(a-1):(b-1),ti]))
+# 		k1Guess = np.divide( k1Guess, (1 + (2 * const)) )
+# 		k1GFull = np.copy(fu[:,ti])
+# 		k1GFull[a:b] = k1Guess
+# 		# print(k1GFull)
+# 		# print(k1Guess)
+
+# 		# k1GFull = np.copy(fu[:,ti])
+
+# #TODO: check this math
+
+# 		# # use the first guess to solve for k+1
+# 		# k1Col = fu[a:b,ti]
+# 		# k1Col = np.add(k1Col, np.multiply( (-2 * const), k1Col ))
+# 		# k1Col = np.add(k1Col, np.multiply(const, k1GFull[(a+1):(b+1)]))
+# 		# k1Col = np.add(k1Col, np.multiply(const, k1GFull[(a-1):(b-1)]))
+# 		# # print(k1Col)
+
+# 		# use the first guess to solve for k+1
+# 		k1Col = np.copy(fu[a:b,ti])
+# 		# k1Col = np.add(k1Col, np.multiply( (-2 * const), k1Col ))
+# 		k1Col = np.add(k1Col, np.multiply(const, k1GFull[(a+1):(b+1)]))
+# 		k1Col = np.add(k1Col, np.multiply(const, k1GFull[(a-1):(b-1)]))
+# 		k1Col = np.divide( k1Col, (1 + (2 * const)) )
+# 		# print(k1Col)
+
+		kPlus1Sol = np.linalg.solve(A, fu[:,ti])
+		# print(kPlus1Sol)
+		# k1Col = kPlus1Sol
+
+		fu[a:b,(ti+1)] = kPlus1Sol[a:b]
+
+	# print(fu[:,0:2])
 	return
 #end def ####### ####### ########
 
@@ -161,6 +176,7 @@ def applyCrankNic(fu, fdt, fdx) :
 	xLen, tLen = fu.shape
 	a = 1
 	b = xLen-1
+
 
 	# print((fdt, fdx))
 	# print("fu")
