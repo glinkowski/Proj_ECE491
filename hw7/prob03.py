@@ -177,100 +177,123 @@ def applyCrankNic(fu, fdt, fdx) :
 	a = 1
 	b = xLen-1
 
+	# print(fu[(a-1):(b-1),0])
 
-	# print((fdt, fdx))
-	# print("fu")
-	# print(fu[a:b,0])
-	cCN = fdt / (2 * fdx * fdx)
-	cFD = fdt / (fdx * fdx)
+	# Will solve the system u^k = A * u^(k+1)
+	const = fdt / (2 * fdx * fdx)
+	# const = fdt / (fdx * fdx)
+	A = np.multiply( (1 + (2*const)), np.eye(xLen-2) )
+	A = np.add(A, np.multiply( -const, np.eye((xLen-2), k=1) ))
+	A = np.add(A, np.multiply( -const, np.eye((xLen-2), k=-1) ))
+	# print(fdt, fdx, const)
+	# print(A[0:4,0:4])
+
+	# # print((fdt, fdx))
+	# # print("fu")
+	# # print(fu[a:b,0])
+	# cCN = fdt / (2 * fdx * fdx)
+	# cFD = fdt / (fdx * fdx)
 	for ti in range(tLen-1) :
 	# for ti in range(2) :
 
-		# create a first guess at k+1
-		k1Guess = np.copy(fu[a:b,ti])
-		k1Guess = np.add(k1Guess, np.multiply(cFD, fu[(a+1):(b+1),ti]))
-		k1Guess = np.add(k1Guess, np.multiply(cFD, fu[(a-1):(b-1),ti]))
-		# k1Guess = np.add(k1Guess, np.multiply( (-2 * cFD), fu[a:b,ti]))
-		k1Guess = np.divide( k1Guess, (1 + (2 * cFD)) )
-		k1GFull = np.copy(fu[:,ti])
-		k1GFull[a:b] = k1Guess
-		# print(k1GFull)
-		# print(k1Guess)
+		# uk = np.copy(fu[a:b,ti])
+		uk = np.multiply( (1 - (2 * const)), fu[a:b,ti] )
+		# print(b)
+		# print(ti)
+		# print(fu[(a-1):(b-1),ti])
+		uk = np.add(uk, np.multiply( const, fu[(a-1):(b-1),ti]))
+		uk = np.add(uk, np.multiply( const, fu[(a+1):(b+1),ti]))
+		# uk = np.add(b, np.multiply( (-2 * const), fu[a:b,ti] ))
 
-
-		# # Using exact same approach as FD
-		# const = cFD
-		# print(const)
-		# print("fu")
-		# print(fu[a:b,ti])
-		# k1Col = np.copy(fu[a:b,ti])
-		# coef1 = np.multiply(const, fu[(a+1):(b+1),ti])
-		# coef2 = np.multiply( (-2 * const), k1Col )
-		# coef3 = np.multiply(const, fu[(a-1):(b-1),ti])
-		# k1Col = np.add(k1Col, coef1)
-		# k1Col = np.add(k1Col, coef2)
-		# k1Col = np.add(k1Col, coef3)
-		# # fu[a:b,(ti+1)] = k1Col
-		# k1GFull = np.copy(fu[:,ti])
-		# k1GFull[a:b] = k1Col
-		# # print("fu")
-		# # print(fu[a:b,ti])
-		# print(k1Col)
+		kPlus1Sol = np.linalg.solve(A, uk)
+		fu[a:b,(ti+1)] = kPlus1Sol
 
 
 		# # create a first guess at k+1
-		# # k1Guess = np.copy(fu[a:b,ti])
-		# k1Guess = np.multiply( (1 - (2 * cFD)), fu[a:b,ti])
+		# k1Guess = np.copy(fu[a:b,ti])
 		# k1Guess = np.add(k1Guess, np.multiply(cFD, fu[(a+1):(b+1),ti]))
 		# k1Guess = np.add(k1Guess, np.multiply(cFD, fu[(a-1):(b-1),ti]))
 		# # k1Guess = np.add(k1Guess, np.multiply( (-2 * cFD), fu[a:b,ti]))
-		# # k1Guess = np.divide( k1Guess, (1 + (2 * cFD)) )
-		# k1GFull = np.copy(fu[:,ti])
-		# k1GFull[a:b] = k1Guess
-		# print("fu")
-		# print(fu[a:b,ti])
-		# print(k1Guess)
-
-
-		# # create a first guess at k+1
-		# # k1Guess = np.copy(fu[a:b,ti])
-		# k1Guess = np.multiply( (1 - (2 * cFD)), fu[a:b,ti])
-		# k1Guess = np.add(k1Guess, np.multiply(cFD, fu[(a+1):(b+1),ti]))
-		# k1Guess = np.add(k1Guess, np.multiply(cFD, fu[(a-1):(b-1),ti]))
-		# # k1Guess = np.add(k1Guess, np.multiply( (-2 * cFD), fu[a:b,ti]))
-		# # k1Guess = np.divide( k1Guess, (1 + (2 * cFD)) )
+		# k1Guess = np.divide( k1Guess, (1 + (2 * cFD)) )
 		# k1GFull = np.copy(fu[:,ti])
 		# k1GFull[a:b] = k1Guess
 		# # print(k1GFull)
-		# print(k1Guess)
-
-		# print("fu")
-		# print(fu[a:b,ti])
-		# k1Guess = np.copy(fu[a:b,ti])
-		# coef1 = np.multiply(cFD, fu[(a+1):(b+1),ti])
-		# coef2 = np.multiply( (-2 * cFD), k1Guess )
-		# coef3 = np.multiply(cFD, fu[(a-1):(b-1),ti])
-		# k1Guess = np.add(k1Guess, coef1)
-		# k1Guess = np.add(k1Guess, coef2)
-		# k1Guess = np.add(k1Guess, coef3)
-		# print(k1Guess)
-		# k1GFull = np.copy(fu[:,ti])
-		# k1GFull[a:b] = k1Guess
+		# # print(k1Guess)
 
 
-		# use the first guess as part of solution for k+1
-		k1Col = np.copy(fu[a:b,ti])
-		k1Col = np.add(k1Col, np.multiply(cCN, k1GFull[(a+1):(b+1)]))
-		k1Col = np.add(k1Col, np.multiply(cCN, k1GFull[(a-1):(b-1)]))
-		# k1Col = np.add(k1Col, np.multiply( (-2 * cCN), k1GFull[a:b]))
-		k1Col = np.add(k1Col, np.multiply(cCN, fu[(a+1):(b+1),ti]))
-		k1Col = np.add(k1Col, np.multiply( (-2 * cCN), fu[a:b,ti]))
-		k1Col = np.add(k1Col, np.multiply(cCN, fu[(a-1):(b-1),ti]))
-		k1Col = np.divide( k1Col, (1 + (2 * cCN)) )
-		# print(fu[a:b,0])
-		# print(k1Col)
+		# # # Using exact same approach as FD
+		# # const = cFD
+		# # print(const)
+		# # print("fu")
+		# # print(fu[a:b,ti])
+		# # k1Col = np.copy(fu[a:b,ti])
+		# # coef1 = np.multiply(const, fu[(a+1):(b+1),ti])
+		# # coef2 = np.multiply( (-2 * const), k1Col )
+		# # coef3 = np.multiply(const, fu[(a-1):(b-1),ti])
+		# # k1Col = np.add(k1Col, coef1)
+		# # k1Col = np.add(k1Col, coef2)
+		# # k1Col = np.add(k1Col, coef3)
+		# # # fu[a:b,(ti+1)] = k1Col
+		# # k1GFull = np.copy(fu[:,ti])
+		# # k1GFull[a:b] = k1Col
+		# # # print("fu")
+		# # # print(fu[a:b,ti])
+		# # print(k1Col)
 
-		fu[a:b,(ti+1)] = k1Col
+
+		# # # create a first guess at k+1
+		# # # k1Guess = np.copy(fu[a:b,ti])
+		# # k1Guess = np.multiply( (1 - (2 * cFD)), fu[a:b,ti])
+		# # k1Guess = np.add(k1Guess, np.multiply(cFD, fu[(a+1):(b+1),ti]))
+		# # k1Guess = np.add(k1Guess, np.multiply(cFD, fu[(a-1):(b-1),ti]))
+		# # # k1Guess = np.add(k1Guess, np.multiply( (-2 * cFD), fu[a:b,ti]))
+		# # # k1Guess = np.divide( k1Guess, (1 + (2 * cFD)) )
+		# # k1GFull = np.copy(fu[:,ti])
+		# # k1GFull[a:b] = k1Guess
+		# # print("fu")
+		# # print(fu[a:b,ti])
+		# # print(k1Guess)
+
+
+		# # # create a first guess at k+1
+		# # # k1Guess = np.copy(fu[a:b,ti])
+		# # k1Guess = np.multiply( (1 - (2 * cFD)), fu[a:b,ti])
+		# # k1Guess = np.add(k1Guess, np.multiply(cFD, fu[(a+1):(b+1),ti]))
+		# # k1Guess = np.add(k1Guess, np.multiply(cFD, fu[(a-1):(b-1),ti]))
+		# # # k1Guess = np.add(k1Guess, np.multiply( (-2 * cFD), fu[a:b,ti]))
+		# # # k1Guess = np.divide( k1Guess, (1 + (2 * cFD)) )
+		# # k1GFull = np.copy(fu[:,ti])
+		# # k1GFull[a:b] = k1Guess
+		# # # print(k1GFull)
+		# # print(k1Guess)
+
+		# # print("fu")
+		# # print(fu[a:b,ti])
+		# # k1Guess = np.copy(fu[a:b,ti])
+		# # coef1 = np.multiply(cFD, fu[(a+1):(b+1),ti])
+		# # coef2 = np.multiply( (-2 * cFD), k1Guess )
+		# # coef3 = np.multiply(cFD, fu[(a-1):(b-1),ti])
+		# # k1Guess = np.add(k1Guess, coef1)
+		# # k1Guess = np.add(k1Guess, coef2)
+		# # k1Guess = np.add(k1Guess, coef3)
+		# # print(k1Guess)
+		# # k1GFull = np.copy(fu[:,ti])
+		# # k1GFull[a:b] = k1Guess
+
+
+		# # use the first guess as part of solution for k+1
+		# k1Col = np.copy(fu[a:b,ti])
+		# k1Col = np.add(k1Col, np.multiply(cCN, k1GFull[(a+1):(b+1)]))
+		# k1Col = np.add(k1Col, np.multiply(cCN, k1GFull[(a-1):(b-1)]))
+		# # k1Col = np.add(k1Col, np.multiply( (-2 * cCN), k1GFull[a:b]))
+		# k1Col = np.add(k1Col, np.multiply(cCN, fu[(a+1):(b+1),ti]))
+		# k1Col = np.add(k1Col, np.multiply( (-2 * cCN), fu[a:b,ti]))
+		# k1Col = np.add(k1Col, np.multiply(cCN, fu[(a-1):(b-1),ti]))
+		# k1Col = np.divide( k1Col, (1 + (2 * cCN)) )
+		# # print(fu[a:b,0])
+		# # print(k1Col)
+
+		# fu[a:b,(ti+1)] = k1Col
 
 	# print(fu[a:b,0])
 	return
@@ -321,7 +344,7 @@ dt = dt_Orig
 u_Part1 = solve_u(applyFiniDiff, dt, dx)
 
 # Figure 1: Finite Diff plot
-ax1 = fig.add_subplot(421, projection='3d')
+ax1 = fig.add_subplot(321, projection='3d')
 figTit = '... using Finite Diff, dt = {}'.format(dt)
 plotMeshGrid(ax1, u_Part1, dt, dx, figTit)
 
@@ -331,64 +354,64 @@ dt = dt_Odd
 u_Part2 = solve_u(applyFiniDiff, dt, dx)
 
 # Figure 2: FD w/ different tDelta plot
-ax2 = fig.add_subplot(422, projection='3d')
+ax2 = fig.add_subplot(322, projection='3d')
 figTit = '... using Finite Diff, dt = {}'.format(dt)
 plotMeshGrid(ax2, u_Part2, dt, dx, figTit)
 
 
 # Part 3: use Backward Euler -----------------------------
-dt = dt_Orig
+# dt = dt_Orig
+# u_Part3 = solve_u(applyBackEuler, dt, dx)
+
+# # Figure 3: FD w/ different tDelta plot
+# ax3 = fig.add_subplot(423, projection='3d')
+# figTit = '... using Backward Euler, dt = {}'.format(dt)
+# plotMeshGrid(ax3, u_Part3, dt, dx, figTit)
+
+
+dt = dt_Big
 u_Part3 = solve_u(applyBackEuler, dt, dx)
 
-# Figure 3: FD w/ different tDelta plot
-ax3 = fig.add_subplot(423, projection='3d')
+# Figure 3
+ax3 = fig.add_subplot(323, projection='3d')
 figTit = '... using Backward Euler, dt = {}'.format(dt)
 plotMeshGrid(ax3, u_Part3, dt, dx, figTit)
 
 
-dt = dt_Big
-u_Part3 = solve_u(applyBackEuler, dt, dx)
+# Part 4: use Crank-Nicolson -----------------------------
+# dt = dt_Orig
+# u_Part4 = solve_u(applyCrankNic, dt, dx)
 
-# Figure 3: FD w/ different tDelta plot
-ax3 = fig.add_subplot(424, projection='3d')
-figTit = '... using Backward Euler, dt = {}'.format(dt)
-plotMeshGrid(ax3, u_Part3, dt, dx, figTit)
-
-
-# Part 4: use Crick-Nicolson -----------------------------
-dt = dt_Orig
-u_Part4 = solve_u(applyCrankNic, dt, dx)
-
-# Figure 4: FD w/ different tDelta plot
-ax4 = fig.add_subplot(425, projection='3d')
-figTit = '... using Crank-Nicolson, dt = {}'.format(dt)
-plotMeshGrid(ax4, u_Part4, dt, dx, figTit)
+# # Figure 4: FD w/ different tDelta plot
+# ax4 = fig.add_subplot(425, projection='3d')
+# figTit = '... using Crank-Nicolson, dt = {}'.format(dt)
+# plotMeshGrid(ax4, u_Part4, dt, dx, figTit)
 
 
 dt = dt_Big
 u_Part4 = solve_u(applyCrankNic, dt, dx)
 
-# Figure 4: FD w/ different tDelta plot
-ax4 = fig.add_subplot(426, projection='3d')
+# Figure 4
+ax4 = fig.add_subplot(324, projection='3d')
 figTit = '... using Crank-Nicolson, dt = {}'.format(dt)
 plotMeshGrid(ax4, u_Part4, dt, dx, figTit)
 
 
-# Part 5: use Crick-Nicolson w/ delta t = 0.005 ----------
-dt = dt_Orig
-u_Part5 = solve_u(applySemiDiscreteSys, dt, dx)
+# Part 5: use Semi-Discrete w/ delta t = 0.005 -----------
+# dt = dt_Orig
+# u_Part5 = solve_u(applySemiDiscreteSys, dt, dx)
 
-# Figure 4: FD w/ different tDelta plot
-ax5 = fig.add_subplot(427, projection='3d')
-figTit = '... using Semi Discrete, dt = {}'.format(dt)
-plotMeshGrid(ax5, u_Part5, dt, dx, figTit)
+# # Figure 5
+# ax5 = fig.add_subplot(427, projection='3d')
+# figTit = '... using Semi Discrete, dt = {}'.format(dt)
+# plotMeshGrid(ax5, u_Part5, dt, dx, figTit)
 
 
 dt = dt_Big
 u_Part5 = solve_u(applySemiDiscreteSys, dt, dx)
 
-# Figure 4: FD w/ different tDelta plot
-ax5 = fig.add_subplot(428, projection='3d')
+# Figure 5
+ax5 = fig.add_subplot(325, projection='3d')
 figTit = '... using Semi Discrete, dt = {}'.format(dt)
 plotMeshGrid(ax5, u_Part5, dt, dx, figTit)
 
