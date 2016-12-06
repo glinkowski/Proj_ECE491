@@ -1,0 +1,538 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% LaTeX Example: Project Report
+%
+% Source: http://www.howtotex.com
+%
+% Feel free to distribute this example, but please keep the referral
+% to howtotex.com
+% Date: March 2011 
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% How to use writeLaTeX: 
+%
+% You edit the source code here on the left, and the preview on the
+% right shows you the result within a few seconds.
+%
+% Bookmark this page and share the URL with your co-authors. They can
+% edit at the same time!
+%
+% You can upload figures, bibliographies, custom classes and
+% styles using the files menu.
+%
+% If you're new to LaTeX, the wikibook is a great place to start:
+% http://en.wikibooks.org/wiki/LaTeX
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Edit the title below to update the display in My Documents
+%\title{Project Report}
+%
+%%% Preamble
+\documentclass[paper=a4, fontsize=11pt]{scrartcl}
+\usepackage[T1]{fontenc}
+\usepackage{fourier}
+
+\usepackage[english]{babel}															% English language/hyphenation
+\usepackage[protrusion=true,expansion=true]{microtype}	
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+\usepackage[pdftex]{graphicx}	
+\usepackage{url}
+
+\usepackage{enumerate}
+\usepackage{babel,blindtext}
+
+
+%%% Custom sectioning
+\usepackage{sectsty}
+\allsectionsfont{\centering \normalfont\scshape}
+
+
+%%% Custom headers/footers (fancyhdr package)
+\usepackage{fancyhdr}
+\pagestyle{fancyplain}
+\fancyhead{}											% No page header
+\fancyfoot[L]{}											% Empty 
+\fancyfoot[C]{}											% Empty
+\fancyfoot[R]{\thepage}									% Pagenumbering
+\renewcommand{\headrulewidth}{0pt}			% Remove header underlines
+\renewcommand{\footrulewidth}{0pt}				% Remove footer underlines
+\setlength{\headheight}{13.6pt}
+
+
+%%% Equation and float numbering
+\numberwithin{equation}{section}		% Equationnumbering: section.eq#
+\numberwithin{figure}{section}			% Figurenumbering: section.fig#
+\numberwithin{table}{section}				% Tablenumbering: section.tab#
+
+
+%%% Maketitle metadata
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} 	% Horizontal rule
+
+\title{
+		%\vspace{-1in} 	
+		\usefont{OT1}{bch}{b}{n}
+		\normalfont \normalsize \textsc{Numerical Analysis, ECE 491 / CS 450} \\ [25pt]
+		\horrule{0.5pt} \\[0.4cm]
+		\huge Final Project Report \\
+		\horrule{2pt} \\[0.5cm]
+}
+\author{
+		\normalfont 								\normalsize
+        Gregory Linkowski, linkows2\\[-3pt]		\normalsize
+        \today
+}
+\date{}
+
+
+%%% Begin document
+\begin{document}
+% When finished, delete the junk below this line ...
+%--------------------------------------------------------------
+\maketitle
+\section{Heading on level 1 (section)}
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aliquam lorem ante, dapibus in, viverra quis, feugiat a, tellus:
+\begin{align} 
+	\begin{split}
+	(x+y)^3 	&= (x+y)^2(x+y)\\
+					&=(x^2+2xy+y^2)(x+y)\\
+					&=(x^3+2x^2y+xy^2) + (x^2y+2xy^2+y^3)\\
+					&=x^3+3x^2y+3xy^2+y^3
+	\end{split}					
+\end{align}
+Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean imperdiet. Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies 
+
+\subsection{Heading on level 2 (subsection)}
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. 
+\begin{align}
+	A = 
+	\begin{bmatrix}
+	A_{11} & A_{21} \\
+  	A_{21} & A_{22}
+	\end{bmatrix}
+\end{align}
+Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.
+
+\subsubsection{Heading on level 3 (subsubsection)}
+Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt. Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.
+
+\paragraph{Heading on level 4 (paragraph)}
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. 
+
+
+\section{Lists}
+
+\subsection{Example for list (3*itemize)}
+\begin{itemize}
+	\item First item in a list 
+		\begin{itemize}
+		\item First item in a list 
+			\begin{itemize}
+			\item First item in a list 
+			\item Second item in a list 
+			\end{itemize}
+		\item Second item in a list 
+		\end{itemize}
+	\item Second item in a list 
+\end{itemize}
+
+\subsection{Example for list (enumerate)}
+\begin{enumerate}
+	\item First item in a list 
+	\item Second item in a list 
+	\item Third item in a list
+\end{enumerate}
+
+
+
+
+
+\pagebreak
+% This is how you include a eps figure in your document. LaTeX only accepts EPS or TIFF files.
+\begin{figure}[!hbt]
+	% Center the figure.
+	\begin{center}
+		% Include the eps file, scale it such that it's width equals the column width. You can also put width=8cm for example...
+		\includegraphics[width=\columnwidth]{figs/p01_ptA}
+		% Create a subtitle for the figure.
+		\caption{Simulation results on the AWGN channel. Average throughput $k/n$ vs $E_s/N_0$.}
+		% Define the label of the figure. It's good to use 'fig:title', so you know that the label belongs to a figure.
+		\label{fig:p01_ptA-test}
+	\end{center}
+\end{figure}
+
+% You can reference tables and figure by using the \ref{label} command. Each table and figure needs to have a UNIQUE label.
+Figures and tables should be labeled and numbered, such as in Table~\ref{tab:simParameters} and Fig.~\ref{fig:p01_ptA}.
+	
+% This is how you define a table: the [!hbt] means that LaTeX is forced (by the !) to place the table exactly here (by h), or if that doesnt work because of a pagebreak or so, it tries to place the table to the bottom of the page (by b) or the top (by t).
+\begin{table}[!hbt]
+	% Center the table
+	\begin{center}
+		% Title of the table
+		\caption{Simulation Parameters}
+		\label{tab:simParameters}
+		% Table itself: here we have two columns which are centered and have lines to the left, right and in the middle: |c|c|
+		\begin{tabular}{|c|c|}
+			% To create a horizontal line, type \hline
+			\hline
+			% To end a column type &
+			% For a linebreak type \\
+			Information message length & $k=16000$ bit \\
+			\hline
+			Radio segment size & $b=160$ bit \\
+			\hline
+			Rate of component codes & $R_{cc}=1/3$\\
+			\hline
+			Polynomial of component encoders & $[1 , 33/37 , 25/37]_8$\\
+			\hline
+		\end{tabular}
+	\end{center}
+\end{table}
+	
+	
+\pagebreak
+% When finished, delete everything above here
+%---------------------------------------------------------------
+
+\maketitle
+\section{: Computer Problem 3.5}
+Given an elliptical orbit:
+\begin{align}
+	a \, y^2 + b \, x\, y + c\, x + d\, y + e = x^2
+\end{align}
+... and the positional observations below, solve for the parameters using the following specifications:
+\begin{table}[!hbt]
+	% Center the table
+	\begin{center}
+		% Title of the table
+		\caption{Observational input data for 3.5}
+		\label{tab:35input}
+		% the data
+		\begin{tabular}{ c|c c c c c }
+			x & 1.02 & 0.95 & 0.87 & 0.77 & 0.97 \\
+			y & 0.39 & 0.32 & 0.27 & 0.22 & 0.18 \\
+			\hline
+			x & 0.56 & 0.44 & 0.30 & 0.16 & 0.01 \\
+			y & 0.15 & 0.13 & 0.12 & 0.13 & 0.15 \\
+		\end{tabular}
+	\end{center}
+\end{table}
+
+\begin{enumerate}[(a)]
+	\item Use least squares to determine the parameters and plot  \vspace{-2mm}
+	\item Perturb the data slightly, then plot \vspace{-2mm}
+	\item Solve the system with varying tolerance values \vspace{-2mm}
+	\item Obtain the Eigenvalues using Singular Value Decomposition \vspace{-2mm}
+	\item Solve the system using successively more Eigenvalues, starting with the largest, then the two largest, the three largest, ... \vspace{-2mm}
+	\item Perturb the data, then repeat part (e) \vspace{-2mm}
+	\item Reformulate as a total least squares problem \vspace{-2mm}
+\end{enumerate}
+
+\vspace{4mm}
+\subsection{Figures}
+
+\begin{figure}[!hbt]
+	\minipage{0.32\columnwidth}
+		\includegraphics[width=\linewidth]{figs/p01_ptA}
+		\caption{Plot of the orbit derived from data}
+		\label{fig:3.5-a}
+	\endminipage\hfill
+	\minipage{0.32\columnwidth}
+		\includegraphics[width=\linewidth]{figs/p01_ptB-1}
+		\caption{One result from perturbed data}
+		\label{fig:p3.5-b1}
+	\endminipage\hfill
+	\minipage{0.32\columnwidth}
+		\includegraphics[width=\linewidth]{figs/p01_ptB-2}
+		\caption{Another perturbed result}
+		\label{fig:p3.5-b2}
+	\endminipage\hfill
+\end{figure}
+\begin{figure}[!hbt]
+	\minipage{0.48\columnwidth}
+		\includegraphics[width=\linewidth]{figs/p01_ptE}
+		\caption{Plots from SVD approach using k largest Eigenvalues}
+		\label{fig:3.5-e}
+	\endminipage\hfill
+	\minipage{0.48\columnwidth}
+		\includegraphics[width=\linewidth]{figs/p01_ptF}
+		\caption{Plots from SVD approach w/ perturbed data, using k Eigenvalues}
+		\label{fig:p3.5-f}
+	\endminipage\hfill
+\end{figure}
+
+\vspace{4mm}
+\subsection{Qualitative Analysis}
+
+\begin{enumerate}[(a)]
+	\item[a) Question] What values are found for the parameters? \vspace{-2mm}
+		\item[Answer] $a=-2.636, \; b=0.1437, \; c=0.5515, \; d=3.223, \; e=-0.4329$
+	\item[b) Question] What effect does this [random perturbation] have on the orbit? Can you explain this behavior? \vspace{-2mm}
+		\item[Answer] Depending on the average change in the original data, the minimization of error can cause the matched orbit to vary significantly. In  Fig.~\ref{fig:3.5-b1}, the middle points are relatively closer to (0.5, 0), causing the orbit to shrink, while in Fig.~\ref{fig:p3.5-b2}, they are relatively closer to the center of the orbit, causing wall of the calculated ellipse to be significantly flatter, leading to a much larger orbit.
+	\item[c) Question] What is the resulting rank of the matrix for each value of the tolerance? ... as the tolerance and rank vary? \vspace{-2mm}
+		\item[Answer] I tried a few different library routines that claimed to apply a tolerance to singular values, including one that applied SVD, but in no case was I able to change the rank of the matrix.
+	\item[c) Question] Which solution would you regard as better: one that fits the data more closely, or one that is less sensitive to small perturbations in the data? Why? \vspace{-2mm}
+		\item[Answer] Typically, it would be better to be less sensitive to noise in the data. Especially in the case where the measured data has relatively few significant digits, small changes can magnify the error in the outcome.
+	%TODO: more questions ??
+\end{enumerate}
+
+\vspace{4mm}
+\subsection{Terminal Output}
+\begin{verbatim}
+	>>>> Part A >>>>
+	Parameters: a=-2.6356, b=0.14365, c=0.55145, d=3.2229, e=-0.43289
+	
+	>>>> Part B >>>>
+	Parameters: a=0.019864, b=-1.128, c=0.7277, d=3.1294, e=-0.46705
+	
+	>>>> Part C >>>>
+	condition number of original matrix A: 688.4294468693159
+	Parameters: a=-2.6356, b=0.14365, c=0.55145, d=3.2229, e=-0.43289
+	tolerance 10^-12, rank(A^+) = 4
+	Mean Rel. error of Y observed vs calc: 1.219
+	tolerance 10^-6, rank(A^+) = 4
+	Mean Rel. error of Y observed vs calc: 1.219
+	tolerance 10^-3, rank(A^+) = 4
+	Mean Rel. error of Y observed vs calc: 1.219
+	tolerance 10^-1, rank(A^+) = 4
+	Mean Rel. error of Y observed vs calc: 1.219
+	tolerance 10^1, rank(A^+) = 4
+	Mean Rel. error of Y observed vs calc: 1.219
+	tolerance 10^3, rank(A^+) = 4
+	Mean Rel. error of Y observed vs calc: 1.219
+	
+	>>>> Part D >>>>
+	Resulting eigen values: [ 3.78603638  0.94492272  0.20891299  0.02304315  0.00549953]
+
+	>>>> Part E >>>>
+	Parameters for ...
+	k=1:    a=0.018956, b=0.054727, c=0.21173, d=0.073671, e=0.33612
+	k=2:    a=0.10442, b=0.34014, c=0.89179, d=0.20249, e=-0.17179
+	k=3:    a=0.41916, b=0.87687, c=0.52535, d=0.75614, e=-0.16745
+	k=4:    a=-0.65279, b=-0.94511, c=0.71682, d=3.261, e=-0.47997
+	k=5:    a=-2.6356, b=0.14365, c=0.55145, d=3.2229, e=-0.43289
+	
+	>>>> Part F >>>>
+	Resulting eigen values: [ 3.78472235  0.94249581  0.20531615  0.02398268  0.00531986]
+	Parameters for ...
+	k=1:    a=0.018802, b=0.054397, c=0.21122, d=0.07351, e=0.33571
+	k=2:    a=0.10254, b=0.33982, c=0.89651, d=0.19851, e=-0.17375
+	k=3:    a=0.42863, b=0.89833, c=0.51849, d=0.78225, e=-0.1725
+	k=4:    a=-0.42657, b=-0.73179, c=0.70291, d=2.9397, e=-0.44891
+	k=5:    a=-2.1607, b=0.17261, c=0.56266, d=2.9522, e=-0.41283
+	
+	>>>> Part G >>>>
+
+\end{verbatim}
+
+\vspace{4mm}
+\section{: Computer Problem 3.8}
+Create an ill-conditioned least squares problem with a small residual and fit it to the polynomial,
+\begin{align}
+	p_{n-1}(t) &= x_1 + x_2 t + x_3 t^2 + \dots + x_n t^{n-1}
+\end{align}
+... and compare Cholesky factorization to QR factorization for solving the problem.
+
+\vspace{4mm}
+\subsection{Qualitative Analysis}
+
+\begin{enumerate}[(a)]
+	\item[Question] For which method is the solution more sensitive to the perturbation we introduced into the data? \vspace{-2mm}
+		\item[Answer] In most cases, the Cholesky factorization had a slightly less mean error in the recovered $x$ vector (with $x_j$ entries) after perturbing the data. A notable exception was the final attempt, where the original $x$ vector was created from random noise.
+	\item[Question] Which method comes closer to recovering the $x$ that we used to generate the data? \vspace{-2mm}
+		\item[Answer] On unperturbed data, QR factorization came much closer to recovering the original $x$ vector than Cholesky, typically with a mean accuracy of up to nine decimal places.
+	\item[Question] Does the fact that the solutions differ affect our ability to fit the data points $(t_i, y_i)$ closely by the polynomial? Why? \vspace{-2mm}
+		\item[Answer] No. The most limiting factor in fitting the data is the nature of the Monomial basis created by the polynomial. Also, the introduction of evenly-distributed noise into the data points should have a relatively small result on the fit, if there are enough data points, as the fit tries to minimize the error across all the points, effectively smoothing the noise.
+\end{enumerate}
+
+\vspace{4mm}
+\subsection{Terminal Output}
+\begin{verbatim}
+----------------------------------------------------------
+Results for xj = 1
+Using QR factorization, rel error = 4.194813718605417e-09
+applied to perturbed data, error = 6.968947058103548
+
+Using Cholesky,    relative error = 0.16297710364142834
+applied to perturbed data, error = 7.036566937724132
+
+----------------------------------------------------------
+Results for xj = 2
+Using QR factorization, rel error = 4.194813718605417e-09
+applied to perturbed data, error = 0.9430992054072757
+
+Using Cholesky,    relative error = 0.16297710364142834
+applied to perturbed data, error = 0.5812272652237548
+
+----------------------------------------------------------
+Results for xj = -1.5
+Using QR factorization, rel error = 1.854586237668185e-09
+applied to perturbed data, error = 0.5017636159005733
+
+Using Cholesky,    relative error = 0.017440850176803257
+applied to perturbed data, error = 0.40578659794847444
+
+----------------------------------------------------------
+Results for xj = [ 1  2  3  4  5  6  7  8  9 10 11 12]
+Using QR factorization, rel error = 3.3553251170972185e-09
+applied to perturbed data, error = 0.20474350842647604
+
+Using Cholesky,    relative error = 0.1310150122172821
+applied to perturbed data, error = 0.0634397507887568
+
+----------------------------------------------------------
+Results for xj = [-0.69368289  0.60957607  0.16030713 -1.5216443   0.40465164 -1.3739347
+1.55291871  1.81075632 -0.13306472 -0.51321109 -1.41987016 -1.86089748]
+Using QR factorization, rel error = 2.244652684976526e-09
+applied to perturbed data, error = 0.43993053692418854
+
+Using Cholesky,    relative error = 0.4816971219755919
+applied to perturbed data, error = 0.7709796869516125
+\end{verbatim}
+
+\vspace{4mm}
+\section{: Computer Problem 3.13}
+What is the exact solution x to the following linear least squares problem as a function of $\epsilon$?
+\begin{align}
+	\begin{bmatrix}
+		1 & 1 & 1 \\ \epsilon & 0 & 0 \\ 0 & \epsilon & 0 \\ 0 & 0 & \epsilon
+	\end{bmatrix}
+	\begin{bmatrix}
+		x_1 \\ x_2 \\ x_3
+	\end{bmatrix}
+	&\approx
+	\begin{bmatrix}
+		1 \\ 0 \\ 0 \\ 0
+	\end{bmatrix}
+\end{align}
+Solve the system using each of the following methods while experimenting with $\epsilon$:
+\begin{enumerate}[(a)]
+	\item Normal equations \vspace{-2mm}
+	\item Augmented system \vspace{-2mm}
+	\item Householder QR \vspace{-2mm}
+	\item Givens QR \vspace{-2mm}
+	\item Classical Gram-Schmidt orthogonalization \vspace{-2mm}
+	\item Modified Gram-Schmidt orthogonalization \vspace{-2mm}
+	\item Classical Gram-Schmidt with iterative refinement \vspace{-2mm}
+	\item Singular value decomposition \vspace{-2mm}
+\end{enumerate}
+
+\vspace{4mm}
+\subsection{Qualitative Analysis}
+What is the exact solution for $x_i$ as a function of $\epsilon$?
+\begin{align}
+	x_i &= \frac{1}{e^2 + 3} \\
+	\label{eq:3.8-truex}
+	\textnormal{where \hspace{5mm}} x &= [x_i, x_i, x_i]^T	
+\end{align}
+
+\vspace{4mm}
+\subsection{Data Output to File}
+Table: error values output to file, Fig.~\ref{fig:3.8}
+\begin{center}
+	\begin{figure}[!h]
+		\includegraphics[width=\columnwidth]{figs/p03_table}
+		\caption{Table of results output from 3.8: error for each method in calculated value of $x_i$ as a function of $\epsilon$. Error displayed is the sum of the relative error for each calculated $x_i$ vs the $x_i$ found in Eq.~\ref{eq:3.8-truex} }
+		\label{fig:3.8}
+	\end{figure}
+\end{center}
+
+\vspace{4mm}
+\subsection{Terminal Output}
+\begin{verbatim}
+Using epsilon = 5.0
+x as a function of epsilon: [ 0.03571429  0.03571429  0.03571429]
+Relative error ...
+Normal:      1.49e-07         Augmented: 1.34e-07
+Householder: 7.75e-07         Givens:    0.00e+00
+G-S Classic: 1.49e-07         G-S Mod:   1.49e-07
+G-S Iter:    1.49e-07         SVD:       1.34e-07
+
+Using epsilon = 3.0
+x as a function of epsilon: [ 0.08333333  0.08333333  0.08333333]
+Relative error ...
+Normal:      1.49e-07         Augmented: 8.94e-08
+Householder: 5.66e-07         Givens:    0.00e+00
+G-S Classic: 1.49e-07         G-S Mod:   1.49e-07
+G-S Iter:    1.49e-07         SVD:       1.79e-07
+
+Using epsilon = 2.0
+x as a function of epsilon: [ 0.14285714  0.14285714  0.14285714]
+Relative error ...
+Normal:      1.64e-07         Augmented: 1.34e-07
+Householder: 3.43e-07         Givens:    0.00e+00
+G-S Classic: 2.68e-07         G-S Mod:   2.68e-07
+G-S Iter:    2.68e-07         SVD:       1.34e-07
+
+Using epsilon = 1.0
+x as a function of epsilon: [ 0.25  0.25  0.25]
+Relative error ...
+Normal:      1.19e-07         Augmented: 0.00e+00
+Householder: 2.98e-07         Givens:    0.00e+00
+G-S Classic: 2.38e-07         G-S Mod:   4.17e-07
+G-S Iter:    2.38e-07         SVD:       1.79e-07
+
+Using epsilon = 0.5
+x as a function of epsilon: [ 0.30769231  0.30769231  0.30769231]
+Relative error ...
+Normal:      3.28e-07         Augmented: 1.12e-07
+Householder: 5.22e-07         Givens:    0.00e+00
+G-S Classic: 8.34e-07         G-S Mod:   1.10e-06
+G-S Iter:    8.34e-07         SVD:       1.79e-07
+
+Using epsilon = 0.05
+x as a function of epsilon: [ 0.33305579  0.33305579  0.33305579]
+Relative error ...
+Normal:      6.35e-05         Augmented: 6.66e-08
+Householder: 6.66e-08         Givens:    0.00e+00
+G-S Classic: 2.14e-05         G-S Mod:   4.28e-05
+G-S Iter:    2.14e-05         SVD:       6.66e-08
+
+Using epsilon = 0.005
+x as a function of epsilon: [ 0.33333056  0.33333056  0.33333056]
+Relative error ...
+Normal:      5.00e-05         Augmented: 1.24e-07
+Householder: 3.09e-07         Givens:    0.00e+00
+G-S Classic: 2.77e-03         G-S Mod:   5.53e-03
+G-S Iter:    2.77e-03         SVD:       1.24e-07
+
+Using epsilon = 0.00048828125
+x as a function of epsilon: [ 0.33333331  0.33333331  0.33333331]
+Relative error ...
+Normal:      7.35e-07         Augmented: 5.96e-08
+Householder: 2.88e-07         Givens:    0.00e+00
+G-S Classic: 6.46e-07         G-S Mod:   9.14e-07
+G-S Iter:    6.46e-07         SVD:       2.09e-07
+
+Using epsilon = 0.00034526698300124393
+x as a function of epsilon: [ 0.33333332  0.33333332  0.33333332]
+Relative error ...
+Normal:      2.00e+00         Augmented: 5.96e-08
+Householder: 1.09e-07         Givens:    0.00e+00
+G-S Classic: 4.00e+00         G-S Mod:   4.00e+00
+G-S Iter:    4.00e+00         SVD:       5.96e-08
+
+Using epsilon = 0.00024526698300124394
+x as a function of epsilon: [ 0.33333333  0.33333333  0.33333333]
+Relative error ...
+Normal:      2.00e+00         Augmented: 1.19e-07
+Householder: 2.29e-07         Givens:    0.00e+00
+G-S Classic: 4.00e+00         G-S Mod:   4.00e+00
+G-S Iter:    4.00e+00         SVD:       1.19e-07
+\end{verbatim}
+
+
+
+
+
+
+
+
+
+
+
+
+
+%TODO: appendix w/ all code [python] & coloring?
+% https://www.sharelatex.com/learn/Code_listing
+
+%%% End document
+\end{document}

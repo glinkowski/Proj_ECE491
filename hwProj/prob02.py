@@ -110,7 +110,7 @@ for xjOrig in xjList :
 	print("Results for xj = {}".format(xjOrig))
 	print("Using QR factorization, rel error = {}".format(qrMeanErr))
 	print(" applied to perturbed data, error = {}".format(qrpMeanErr))
-	print("            for a difference of ... {}".format(qrpDiff))
+	# print("            for a difference of ... {}".format(qrpDiff))
 
 
 
@@ -139,7 +139,7 @@ for xjOrig in xjList :
 	print("")
 	print("Using Cholesky,    relative error = {}".format(chMeanErr))
 	print(" applied to perturbed data, error = {}".format(chpMeanErr))
-	print("            for a difference of ... {}".format(chpDiff))
+	# print("            for a difference of ... {}".format(chpDiff))
 
 #end loop
 

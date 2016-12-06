@@ -132,19 +132,57 @@ print("Parameters: a={:.5}, b={:.5}, c={:.5}, d={:.5}, e={:.5}".format(
 	pmA, pmB, pmC, pmD, pmE))
 
 # compare solving with different tolerance values
-for k in range(1, 6) :
-	tVal = np.power(10, -k)
-#TODO: find worse routine for rank-deficient matrix ?
-	# pmX = so.lsq_linear(mxA, mxB, tol=tVal)
-	# # print(pmX.x)
-	# pmA, pmB, pmC, pmD, pmE = pmX.x
-	pmX = spl.lsmr(mxA, mxB, damp=tVal, atol=tVal, btol=tVal)
-	pmA, pmB, pmC, pmD, pmE = pmX[0]
-	condA = pmX[6]
-	print("tolerance 10^-{}, cond(A) = {}".format(
-		k, condA ))
-	print("Parameters: a={:.5}, b={:.5}, c={:.5}, d={:.5}, e={:.5}".format(
-	pmA, pmB, pmC, pmD, pmE))
+k_range = [-12, -6, -3, -1, 1, 3]
+# for kVal in range(-1, 4) :
+	# tVal = np.power(10, -kVal)
+for kVal in k_range :
+	tVal = np.power(10, kVal)
+
+#TODO: find a worse routine for rank-deficient matrix ?
+
+	# pmX = spl.lsmr(mxA, mxB, damp=tVal, atol=tVal, btol=tVal)
+	# print(pmX)
+	# pmA, pmB, pmC, pmD, pmE = pmX[0]
+	# condA = pmX[6]
+	# rankA = np.linalg.matrix_rank(A)
+	# print("tolerance 10^-{}, cond(A) = {}".format(k, condA ))
+	# # print("tolerance 10^-{}, rank(A) = {}".format(k, condA ))
+	# print("Parameters: a={:.5}, b={:.5}, c={:.5}, d={:.5}, e={:.5}".format(
+	# pmA, pmB, pmC, pmD, pmE))
+
+	# fitY = np.dot(mxA, pmX)
+	# relErr = np.abs(np.divide(np.subtract(fitY, yPos), yPos))
+	# print("  Relative error of Y observed & calc: {}".format(relErr))
+
+
+#NOTE: Trying the svd approach, can set a tolerance
+#  for singular values
+#HOWEVER, no matter what I set my tolerance,
+#  it finds the same eigenvalues
+	U, s, Vt = spl.svds(mxA, k=(min(mxA.shape)-1), tol=tVal)
+	# print(s)
+	V = np.transpose(Vt)
+	sigmaInv = np.zeros( (len(s), len(s)) )
+	for i in range(len(s)) :
+		sigmaInv[i,i] = 1 / s[i]
+	Ut = np.transpose(U)
+	# create the pseudoinverse of A
+	temp = np.dot( V, sigmaInv )
+	pseudoInvA = np.dot( temp, Ut )
+	# get parameters from SVD
+	pmX = np.dot(pseudoInvA, mxB)
+	pmA, pmB, pmC, pmD, pmE = pmX
+
+	rankA = np.linalg.matrix_rank(pseudoInvA)
+	print("tolerance 10^{}, rank(A^+) = {}".format(kVal, rankA ))
+	# print("Parameters: a={:.5}, b={:.5}, c={:.5}, d={:.5}, e={:.5}".format(
+	# pmA, pmB, pmC, pmD, pmE))
+
+	fitY = np.dot(mxA, pmX)
+	relErr = np.abs(np.divide(np.subtract(fitY, yPos), yPos))
+	print("  Mean Rel. error of Y observed vs calc: {:.3f}".format(
+		np.mean(relErr)))
+
 #end loop
 
 
@@ -194,9 +232,10 @@ xe = np.linspace(-10, 10, 200)
 ye = np.linspace(-10, 10, 200)
 xe, ye = np.meshgrid(xe, ye)
 useColors = ['c', 'y', 'g', 'm', 'r']
+print("Parameters for ... ")
 for i in range(5) :
 	pmA, pmB, pmC, pmD, pmE = pmX[:,i]
-	print("Parameters for k={}:\n   a={:.5}, b={:.5}, c={:.5}, d={:.5}, e={:.5}".format(
+	print("k={}:    a={:.5}, b={:.5}, c={:.5}, d={:.5}, e={:.5}".format(
 		i+1, pmA, pmB, pmC, pmD, pmE))
 
 	Ye = pmA * np.power(ye, 2) + (pmB * xe * ye) + (pmC * xe) + (pmD * ye) + pmE
@@ -266,9 +305,10 @@ ax.contour(x, y, (X - Y), [0], colors='b')
 # y = np.linspace(-10, 10, 200)
 # x, y = np.meshgrid(x, y)
 useColors = ['c', 'y', 'g', 'm', 'r']
+print("Parameters for ... ")
 for i in range(5) :
 	pmA, pmB, pmC, pmD, pmE = pmX[:,i]
-	print("Parameters for k={}:\n   a={:.5}, b={:.5}, c={:.5}, d={:.5}, e={:.5}".format(
+	print("k={}:    a={:.5}, b={:.5}, c={:.5}, d={:.5}, e={:.5}".format(
 		i+1, pmA, pmB, pmC, pmD, pmE))
 
 	Yf = pmA * np.power(ye, 2) + (pmB * xe * ye) + (pmC * xe) + (pmD * ye) + pmE
@@ -290,6 +330,14 @@ ax.set_ylim([-1, 7])
 ax.set_title('Q 3.5, part F -- perturbed orbit from SVD')
 figf.savefig('figs/p01_ptF.png')
 pt.show()
+
+
+
+# Part G ######## ####### #######
+print("\n>>>> Part G >>>>")
+
+#TODO: THIS!!!
+
 
 
 print("\n")
