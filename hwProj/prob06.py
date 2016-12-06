@@ -31,6 +31,8 @@ def f(fx, ft) :
 	return fy
 #end def ####### ####### ########
 
+
+# for Part A ### ####### ######## ########
 # Residual defined as (y_true - f(x))
 def f_residual(fx, ft, fy) :
 	fr = np.subtract(fy, f(fx, ft))
@@ -47,33 +49,58 @@ def g(fx, ft, fy) :
 	return fg
 #end def ####### ####### ########
 
+# for Part B ### ####### ######## ########
+# The Jacobian of f(x, t)
+def Jf(fx, ft) :
+	# col 1 = 1
+	fJ = np.ones( (len(ft), len(fx)) )
+	# col 2 = t
+	fJ[:,1] = ft
+	# col 3 = t^2
+	fJ[:,2] = np.power(ft, 2)
+	# col 4 = e^(x5 t)
+	fJ[:,3] = np.exp( np.multiply(fx[4], ft) )
+	# col 5 = t x4 e^(x5 t)
+	fJ[:,4] = np.multiply(ft, fx[3])
+	fJ[:,4] = np.multiply( fJ[:,4], fJ[:,3] )
+	return fJ
+#end def ####### ####### ########
+
 # estimate the gradient of g(x)
 def g_gradient(fx, ft, fy) :
-	delta = 1e-3
+	# delta = 1e-3
 
-	# print(fx)
+	# # print(fx)
 
-	grad = np.zeros( len(fx), dtype=np.float64 )
-	for i in range(len(fx)) :
-		fxPlus = fx
-		fxPlus[i] = fx[i] + delta
-		fxMinus = fx
-		fxMinus[i] = fx[i] - delta
+	# grad = np.zeros( len(fx), dtype=np.float64 )
+	# for i in range(len(fx)) :
+	# 	fxPlus = fx
+	# 	fxPlus[i] = fx[i] + delta
+	# 	fxMinus = fx
+	# 	fxMinus[i] = fx[i] - delta
 
-		# print((f(fxPlus, ft), f(fxMinus, ft)))
-		grad[i] = (g(fxPlus, ft, fy) - g(fxMinus, ft, fy)) / (2*delta)
-	#end loop
+	# 	# print((f(fxPlus, ft), f(fxMinus, ft)))
+	# 	grad[i] = (g(fxPlus, ft, fy) - g(fxMinus, ft, fy)) / (2*delta)
+	# #end loop
 
-	# print(grad)
+	# # print(grad)
+
+	# fJ = Jf_hardcode(fx)
+	fJ = Jf(fx, ft)
+	fJt = np.transpose(fJ)
+
+	fr = f_residual(fx, ft, fy)
+
+	grad = np.dot(fJt, fr)
 
 	return grad
 #end def ####### ####### ########
 
-def solve_partB(fx, ft, fy) :
-	deriv = scm.derivative(g, fx, args=(ft, fy))
-	# print(grad)
-	return np.abs(deriv)
-#end def ####### ####### ########
+# def solve_partB(fx, ft, fy) :
+# 	deriv = scm.derivative(g, fx, args=(ft, fy))
+# 	# print(grad)
+# 	return np.abs(deriv)
+# #end def ####### ####### ########
 
 # for Part C ### ####### ######## ########
 # Solve with linear least squares for x[0:4], given x[4]
@@ -99,6 +126,17 @@ def solve_PartC(fx5, ft, fy) :
 
 	# return the one-dimension residual
 	fg = g(fx, ft, fy)
+	return fg
+#end def ####### ####### ########
+
+# for Part D ### ####### ######## ########
+# The function to minimize for part D
+def solve_PartD(fx5, ft, fy) :
+	# solve for full x vector from fx5
+	fx = f_linearLstsqSolve(fx5, ft, fy)
+
+	# return the one-dimension residual
+	fg = g_gradient(fx, ft, fy)
 	return fg
 #end def ####### ####### ########
 
@@ -264,18 +302,30 @@ print("\n\n>>>> Part B >>>>")
 x0 = [5, 4, 3, 2, 1]
 # x0 = [-500, -400, -300, 200, 1]
 
-# result = sco.root(g_gradient, x0, args=(tVals, yVals))
-result = sco.minimize(solve_partB, x0, args=(tVals, yVals))
-x_partB = result.x
-# y_partB = f(x_partB, tVals)
+# # result = sco.root(g_gradient, x0, args=(tVals, yVals))
+# result = sco.minimize(solve_partB, x0, args=(tVals, yVals))
+# x_partB = result.x
+# # y_partB = f(x_partB, tVals)
+# print("\nwith estimated gradient of g(x) ---------------------")
+# # print("  using x0 = {}".format(x0))
+# # print("  found x  = [{:.2f}, {:.2f}, {:.2f}, {:.2f}, {:.2f}]".format(
+# # 	x_partB[0], x_partB[1], x_partB[2], x_partB[3], x_partB[4]))
+# # print("  final y = f(t,x) = {}".format(y_partB))
+# # print("  max relative error (y, f(t,x)):  {:.3e}".format(
+# # 	getMaxRelErr(yVals, y_partB) ))
+# printOutput(x0, x_partB, tVals, yVals)
+
+result = sco.root(g_gradient, x0, args=(tVals, yVals))
 print("\nwith estimated gradient of g(x) ---------------------")
-# print("  using x0 = {}".format(x0))
-# print("  found x  = [{:.2f}, {:.2f}, {:.2f}, {:.2f}, {:.2f}]".format(
-# 	x_partB[0], x_partB[1], x_partB[2], x_partB[3], x_partB[4]))
-# print("  final y = f(t,x) = {}".format(y_partB))
-# print("  max relative error (y, f(t,x)):  {:.3e}".format(
-# 	getMaxRelErr(yVals, y_partB) ))
+x_partB = result.x
 printOutput(x0, x_partB, tVals, yVals)
+
+# print("")
+# x0 = np.add(x_partA, np.random.uniform(-1,1))
+# result = sco.root(g_gradient, x0, args=(tVals, yVals))
+# print("\nwith estimated gradient of g(x) ---------------------")
+# x_partB = result.x
+# printOutput(x0, x_partB, tVals, yVals)
 
 
 print("\n\n>>>> Part C >>>>")
@@ -296,6 +346,16 @@ print("\nwith linear least squares ---------------------------")
 # 	getMaxRelErr(yVals, y_partC) ))
 printOutput(x0, x_partC, tVals, yVals)
 
+
+print("\n\n>>>> Part D >>>>")
+
+x0 = [1]
+
+result = sco.root(solve_PartD, x0, args=(tVals, yVals))
+print("\nwith estimated gradient of g(x) ---------------------")
+x_partD = f_linearLstsqSolve(result.x, tVals, yVals)
+# x_partD = result.x
+printOutput(x0, x_partD, tVals, yVals)
 
 
 #TODO: ?? What is part D ??
