@@ -255,7 +255,7 @@ Given an elliptical orbit:
 	\minipage{0.48\columnwidth}
 		\includegraphics[width=\linewidth]{figs/p01_ptF}
 		\caption{Plots from SVD approach w/ perturbed data, using k Eigenvalues}
-		\label{fig:p3.5-f}
+		\label{fig:3.5-f}
 	\endminipage\hfill
 \end{figure}
 
@@ -520,6 +520,159 @@ G-S Iter:    4.00e+00         SVD:       1.19e-07
 \end{verbatim}
 
 
+\vspace{4mm}
+\section{: Computer Problem 6.13}
+Find least squares solutions to the following overdetermined systems of nonlinear equations:
+\begin{enumerate}[(a)]
+	\item \begin{align*}
+		x_1^2 + x_2^2 \; &= \; 2 \\
+		(x_1 - 2)^2 + x_2^2 \; &= \; 2 \\
+		(x_1 - 1)^2 + x_2^2 \; &= \; 9
+	\end{align*}
+	\item \begin{align*}
+		x_1^2 + x_2^2 + x_1 x_2 \; &= \; 0 \\
+		sin^2(x_1) \; &= \; 0 \\
+		cos^2(x_2) \; &= \; 0
+	\end{align*}
+\end{enumerate}
+
+\vspace{4mm}
+\subsection{Qualitative Analysis}
+\par As seen in the plots (Fig.~\ref{fig:6.13plotA}, Fig.~\ref{fig:6.13plotB}), the equations in the system don't all overlap at a single point, if at all. Two methods were used to attempt to find the optimal solution for $[x_1, \; x_2]^T$: a hand-coded implementation of the Gauss-Newton method, and the SciPy minimize routine, with a default implementation of BFGS. The equations were rearranged such that the expected result was a zero vector, thus the residual minus the result was simply $-f(x)$. \\
+\par The routines were each run with different $x_0$ starting vectors, and the results found for part (a) were identical. However, for part (b), one of the results diverged significantly between the Gauss-Newton and SciPy implementations. It should be noted that the Gauss-Newton implementation had difficulty converging for part (b), unless some non-zero value was added to the right-hand side of the equations. For instance, when all equations were set equal to 0.5, both implementations had the same results. \\
+\par The results are easy to explain for part (a), in that the optimal solutions were found midway between the point where the two inner circles meet, and the outer circle (see Fig.~\ref{fig:6.13plotA}). Explaining part (b) is more difficult, as one might reasonably expect the minimal optimum to be $[x_1, \; x_2]^T = [0, \; \pm \frac{\pi}{4}]^T$, as that would lie midway between (0, 0) and (0, $\pm \frac{\pi}{2}$). However, it appears the optimum is influenced by the angle of the ellipse, even as it approaches its limit. \\
+
+
+\vspace{4mm}
+\subsection{Figures}
+\par The following figures show plots of the given equations. Note that in Fig.~\ref{fig:6.17plotB}, as the values on the right of the equations approach zero, the coordinates approach (0,0), (0,$x_2$), ($x_1$,$\frac{\pi}{2}$), respectively. \\
+\begin{figure}[!hbt]
+	\minipage{0.55\columnwidth}
+		\includegraphics[width=\linewidth]{figs/p04_plotA}
+		\caption{Over-determined curves for part (a)}
+		\label{fig:6.13plotA}
+	\endminipage\hfill
+	\minipage{0.44\columnwidth}
+		\includegraphics[width=\linewidth]{figs/p04_plotB2}
+		\caption{Over-determined curves for part (b), shown progressively approaching zero.}
+		\label{fig:6.13plotB}
+	\endminipage\hfill
+\end{figure}
+
+\vspace{4mm}
+\subsection{Terminal Output}
+\begin{verbatim}
+>>>> Part A >>>>
+
+Newton results ---------------------
+Newton iterations: 5, delta: 3.14e-16
+using x0 = [2, 2]
+found x = [1.0000, 1.9149]
+result f(x) = [2.6667, 2.6667, -5.3333]
+
+minimize from SciPy library --------
+using x0 = [2, 2]
+found x = [1.0000, 1.9149]
+result f(x) = [2.6667, 2.6667, -5.3333]
+
+Newton results ---------------------
+Newton iterations: 7, delta: 2.22e-16
+using x0 = [-1, -1]
+found x = [1.0000, -1.9149]
+result f(x) = [2.6667, 2.6667, -5.3333]
+
+minimize from SciPy library --------
+using x0 = [-1, -1]
+found x = [1.0000, -1.9149]
+result f(x) = [2.6667, 2.6667, -5.3333]
+
+
+>>>> Part B >>>>
+
+Newton results ---------------------
+Newton iterations: 64, delta: 1.54e+00
+using x0 = [2, 2]
+found x = [0.1410, 1.6200]
+result f(x) = [0.6443, 4.0804, -5.6376]
+
+minimize from SciPy library --------
+using x0 = [2, 2]
+found x = [0.3149, -0.7593]
+result f(x) = [-1.3244, 1.4160, -7.9542]
+
+Newton results ---------------------
+Newton iterations: 64, delta: 2.26e-01
+using x0 = [1, -1]
+found x = [0.4723, -0.7812]
+result f(x) = [-1.1667, 0.9442, -8.1112]
+
+minimize from SciPy library --------
+using x0 = [1, -1]
+found x = [0.3149, -0.7593]
+result f(x) = [-1.3244, 1.4160, -7.9542]
+\end{verbatim}
+
+
+\vspace{4mm}
+\section{: Computer Problem 6.16}
+Given the Michaelis-Menten equation:
+\begin{align*}
+	v_0 &= \frac{V}{1 + K_m/S}
+\end{align*}
+... and the data below, try to optimize $V$ and $K_m$ to fit the measured data. Then, for part (b), compare several algebraic rearrangements that reformulate the equation into a linear least squares problem.
+\begin{table}[!hbt]
+	% Center the table
+	\begin{center}
+		% Title of the table
+		\caption{Measured input data for 6.16}
+		\label{tab:6.16input}
+		% the data
+		\begin{tabular}{ c|c c c }
+			S & 2.5 & 5.0 & 10.0\\
+			$v_0$ & 0.024 & 0.036 & 0.053 \\
+			\hline
+			S & 15.0 & 20.0 & \\
+			$v_0$ & 0.060 & 0.064 & \\
+		\end{tabular}
+	\end{center}
+\end{table}
+
+\vspace{4mm}
+\subsection{Qualitative Analysis}
+\par For part (a), the variables $V \; \& \; K_m$ were placed into the vector $x = [V, \; K_m]^T$, which was passed to the equation. The residual was defined as $v_0 - f(S, x)$. These were used along with the 5x2 Jacobian so solve the Gauss-Newton optimization. Values were found for $x$ which best fit the data in Tab.~\ref{tab:6.16input}. These found values were then passed back into the equation and the $L_2$ norm between the original and resulting $v_0$ was calculated as a measure of the difference. Another measure was the maximum relative difference between the measured and calculated $v_0$. \\
+\par As seen in the output below, the resulting $v_0(S)$ contained one entry that differed by 13\% from the original, while the other entries were much closer. The normed distance between the two vectors was 0.009, suggesting that the results are fairly accurate, given the potential for error in the measured data. \\
+
+\vspace{4mm}
+\subsection{Terminal Output}
+\begin{verbatim}
+>>>> Part A >>>>
+
+Newton results -----------------------
+Newton iterations: 12, delta: 8.88e-16
+using x0 = [2, 2]
+found x  = [0.07610, 5.34854]
+final v0(S) = [ 0.02423932  0.03676717  0.0600408   0.05609542  0.0600408 ]
+diff b/t this and expected: 0.00901
+max relative error in v0(S): 0.13285
+final:
+V = 0.07609734198278333
+Km = 5.348544452628809
+
+
+>>>> Part B >>>>
+
+Lineweaver & Burk rearrangement --------
+V = 0.07596,  relative error = 1.84e-03
+Km = 5.42706,  relative error = 1.47e-02
+
+Dixon rearrangement --------------------
+V = 0.07401,  relative error = 2.74e-02
+Km = 5.01001,  relative error = 6.33e-02
+
+Eadie & Hofstee rearrangement ----------
+V = 0.07591,  relative error = 2.50e-03
+Km = 5.34840,  relative error = 2.67e-05
+\end{verbatim}
 
 
 
@@ -529,6 +682,33 @@ G-S Iter:    4.00e+00         SVD:       1.19e-07
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+\vspace{4mm}
+\section{: Computer Problem 3.13}
+
+\vspace{4mm}
+\subsection{Qualitative Analysis}
+
+\vspace{4mm}
+\subsection{Figures}
+
+\vspace{4mm}
+\subsection{Data Output to File}
+
+\vspace{4mm}
+\subsection{Terminal Output}
+\begin{verbatim}
+\end{verbatim}
 
 
 %TODO: appendix w/ all code [python] & coloring?
