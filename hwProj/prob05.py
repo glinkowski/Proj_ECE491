@@ -112,8 +112,10 @@ v0_approx = f_v0ofS(xFinal)
 print("  using x0 = {}".format(x0))
 print("  found x  = [{:.5f}, {:.5f}]".format(xFinal[0], xFinal[1]))
 print("  final v0(S) = {}".format(v0_approx))
-print("  diff b/t this and expected: {:.3e}".format(
+print("  diff b/t this and expected: {:.5f}".format(
 	npl.norm( np.subtract(v0_approx, v0Vals), ord=2) ))
+print("  max relative error in v0(S): {:.5f}".format(
+	np.amax( np.abs(np.divide(np.subtract(v0_approx, v0Vals), v0Vals))) ))
 print("final:\n  V = {}\n Km = {}".format(xFinal[0], xFinal[1]))
 
 
@@ -133,8 +135,8 @@ KmLB = xLB[1] / xLB[0]
 
 # display results
 print("\nLineweaver & Burk rearrangement --------")
-print("  V = {:.5f},  error = {:.2e}".format(VLB, getRelErr(xFinal[0], VLB)))
-print(" Km = {:.5f},  error = {:.2e}".format(KmLB, getRelErr(xFinal[0], KmLB)))
+print("  V = {:.5f},  relative error = {:.2e}".format(VLB, getRelErr(xFinal[0], VLB)))
+print(" Km = {:.5f},  relative error = {:.2e}".format(KmLB, getRelErr(xFinal[1], KmLB)))
 
 
 # The Dixon approximation ------------------------
@@ -150,8 +152,8 @@ KmDx = xDx[0] / xDx[1]
 
 # display results
 print("\nDixon rearrangement --------------------")
-print("  V = {:.5f},  error = {:.2e}".format(VDx, getRelErr(xFinal[0], VDx)))
-print(" Km = {:.5f},  error = {:.2e}".format(KmDx, getRelErr(xFinal[0], KmDx)))
+print("  V = {:.5f},  relative error = {:.2e}".format(VDx, getRelErr(xFinal[0], VDx)))
+print(" Km = {:.5f},  relative error = {:.2e}".format(KmDx, getRelErr(xFinal[1], KmDx)))
 
 
 # The Eadie & Hofstee approximation --------------
@@ -167,8 +169,8 @@ KmEH = xEH[1]
 
 # display results
 print("\nEadie & Hofstee rearrangement ----------")
-print("  V = {:.5f},  error = {:.2e}".format(VEH, getRelErr(xFinal[0], VEH)))
-print(" Km = {:.5f},  error = {:.2e}".format(KmEH, getRelErr(xFinal[0], KmEH)))
+print("  V = {:.5f},  relative error = {:.2e}".format(VEH, getRelErr(xFinal[0], VEH)))
+print(" Km = {:.5f},  relative error = {:.2e}".format(KmEH, getRelErr(xFinal[1], KmEH)))
 
 
 print("\n")
