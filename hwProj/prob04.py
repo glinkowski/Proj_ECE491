@@ -46,9 +46,9 @@ def Jf1(x) :
 
 # The second function f(x)
 def f2(x) :
-	f1 = x[0]**2 + x[1]**2 + (x[0] * x[1]) - 2
-	f2 = math.sin(x[0])**2 - 0.5
-	f3 = math.cos(x[1])**2 - 0.1
+	f1 = x[0]**2 + x[1]**2 + (x[0] * x[1])# - 0.5
+	f2 = math.sin(x[0])**2# - 0.5
+	f3 = math.cos(x[1])**2# - 0.5
 
 	return np.array( [f1, f2, f3] )
 #end def ####### ####### ########
@@ -60,12 +60,12 @@ def Jf2(x) :
 	J12 = 2 * x[1] + x[0]
 
 	# row 2
-	J21 = 2 * (math.cos(x[0])) * math.sin(x[0])
+	J21 = 2 * math.cos(x[0]) * math.sin(x[0])
 	J22 = 0.0
 
 	# row 3
 	J31 = 0.0
-	J32 = -2 * (math.cos(x[1])) * math.sin(x[1])
+	J32 = -2 * math.cos(x[1]) * math.sin(x[1])
 
 	return np.array( [[J11, J12], [J21, J22], [J31, J32]] )
 #end def ####### ####### ########
@@ -205,6 +205,17 @@ def printOutput(x0, xFound, yCalc) :
 
 print("\n\n>>>> Part A >>>>")
 
+# x0 = [1, 0.5]
+
+# print("\nNewton results ---------------------")
+# xFinal = solveNewton(f1, Jf1, x0)
+# printOutput(x0, xFinal, f1(xFinal))
+
+# result = sco.minimize(g1, x0)
+# xFinal = result.x
+# print("\nminimize from SciPy library --------")
+# printOutput(x0, xFinal, f1(xFinal))
+
 
 x0 = [2, 2]
 # print("\nBroyden results ---------------------")
@@ -255,6 +266,18 @@ printOutput(x0, xFinal, f1(xFinal))
 
 
 print("\n\n>>>> Part B >>>>")
+
+
+# x0 = [0, 0]
+
+# print("\nNewton results ---------------------")
+# xFinal = solveNewton(f2, Jf2, x0)
+# printOutput(x0, xFinal, f1(xFinal))
+
+# result = sco.minimize(g2, x0)
+# xFinal = result.x
+# print("\nminimize from SciPy library --------")
+# printOutput(x0, xFinal, f1(xFinal))
 
 
 x0 = [2, 2]
