@@ -76,9 +76,9 @@ def f_residual_v0ofS(fx) :
 # The Jacobian matrix of first f(x)
 def Jf_v0ofX(fx) :
 	V, Km = fx
-
+	# col 1
 	J11 = np.divide( sVals, np.add(sVals, Km) )
-
+	# col 2
 	J12 = np.multiply( (-V), sVals )
 	J12 = np.divide( J12, np.power( np.add(sVals, Km), 2.0) )
 

@@ -45,7 +45,7 @@ def createSystemMatrices(fe) :
 	return fA, fB
 #end def ####### ####### ########
 
-# for Part C
+# for Part C ### ####### ########
 def getHouseholderQR(fA) :
 
 	R0 = np.copy(fA)
@@ -61,25 +61,18 @@ def getHouseholderQR(fA) :
 		if (R0[n,n] > 0) :
 			signAlpha = -1
 		alpha = alpha * signAlpha
-		# print(alpha)
 
 		# define vector v_i
 		v = np.subtract( R0[:,n], np.multiply(alpha, e[:,n]) )
 		v[0:n] = np.zeros(n)
-		# print("v_{}".format(n))
-		# print(v)
 
 		# define rotation matrix H_i
 		vT = v.reshape(len(v), 1)
 		H_i = np.subtract(e, 
 			np.multiply( (2 / np.dot(v, vT)), np.multiply(vT, v) ))
-		# print("H_{}".format(n))
-		# print(H_i)
 
 		# apply this rotation & keep all previous
 		R0 = np.dot(H_i, R0)
-		# print("H_i * R0")
-		# print(R0)
 		allH = np.dot(H_i, allH)
 	#end loop
 
@@ -89,7 +82,7 @@ def getHouseholderQR(fA) :
 	return Q1, R
 #end def ######## ####### #######
 
-# for Part D & F
+# for Part D & F ####### ########
 def origGramSchmidt(fA) :
 
 	A = np.copy(fA)
@@ -101,22 +94,20 @@ def origGramSchmidt(fA) :
 
 	for k in range(numCols) :
 		Q[:,k] = A[:,k]
+
 		for j in range(k) :
 			R[j,k] = np.dot( Q[:,j], A[:,k] )
 			Q[:,k] = np.subtract( Q[:,k], np.multiply(R[j,k], Q[:,j]) )
-			# r = np.dot( Q[:,j], A[:,k] )
-			# Q[:,k] = np.subtract( Q[:,k], np.multiply(r, Q[:,j]) )
 		#end loop
+
 		R[k,k] = np.linalg.norm( Q[:,k] )
 		Q[:,k] = np.divide( Q[:,k], R[k,k] )
-		# r = np.linalg.norm( Q[:,k] )
-		# Q[:,k] = np.divide( Q[:,k], r )
 	#end loop
 
 	return Q[:,0:numCols], R[0:numCols,:]
 #end def ######## ####### #######
 
-# for Part E
+# for Part E ### ####### ########
 def modGramSchmidt(fA) :
 
 	A = np.copy(fA)
@@ -173,8 +164,6 @@ for e in eps :
 	# 0) the true x vector as a function of e
 	xj = 1 / ( np.power(e, 2) + 3)
 	xSol = np.array([xj, xj, xj], dtype=np.float64)
-	# print(xSol)
-	# print(np.array([xj, xj, xj], dtype=np.float32))
 
 
 	# a) Normal equations
@@ -182,7 +171,6 @@ for e in eps :
 	L = np.linalg.cholesky( np.dot(np.transpose(mxA), mxA) )
 	z = np.linalg.solve( L, np.dot(np.transpose(mxA), mxB))
 	xNormal = np.linalg.solve( np.transpose(L), z)
-	# print(xNormal)
 	errNormal = np.sum(np.abs( np.divide(np.subtract(xNormal, xSol), xSol) ))
 
 
@@ -198,84 +186,50 @@ for e in eps :
 	# solve & extract resulting x vector
 	rxAug = np.linalg.solve(bmxA, bmxB)
 	xAugmented = rxAug[m:(m+n)]
-	# print(xAugmented)
 	errAugmented = np.sum(np.abs( np.divide(np.subtract(xAugmented, xSol), xSol) ))
 
 
 	# c) Householder QR
-
-	# mxA = np.array( [
-	# 	[1, -1, 1],
-	# 	[1, -.5, .25],
-	# 	[1, 0, 0],
-	# 	[1, 0.5, 0.25],
-	# 	[1, 1, 1],
-	# 	])
-	# mxB = np.array([1, 0.5, 0, 0.5, 2.0])
-
 	hQ, hR = getHouseholderQR(mxA)
-	# print((hQ.shape, hR.shape))
 	xHouseholder = np.linalg.solve(hR, np.dot(np.transpose(hQ), mxB))
-	# print(xHouseholder)
 	errHouseholder = np.sum(np.abs( np.divide(np.subtract(xHouseholder, xSol), xSol) ))
 
 
 	# d) Givens QR
-#TODO: this
 	errGivens = 0
-
-
-
-
-
-
 
 
 	# e) Classical G-S
 	cgsQ, cgsR = origGramSchmidt(mxA)
-	# print((cgsQ.shape, cgsR.shape))
 	xGSClassic = np.linalg.solve(cgsR, np.dot(np.transpose(cgsQ), mxB))
-	# print(xGSClassic)
 	errGSClass = np.sum(np.abs( np.divide(np.subtract(xGSClassic, xSol), xSol) ))
 
 
 	# f) Modified G-S
 	mgsQ, mgsR = modGramSchmidt(mxA)
-	# print((cgsQ.shape, cgsR.shape))
 	xGSModified = np.linalg.solve(mgsR, np.dot(np.transpose(mgsQ), mxB))
-	# print(xGSModified)
 	errGSMod = np.sum(np.abs( np.divide(np.subtract(xGSModified, xSol), xSol) ))
 
 
 	# g) iterative G-S
-
 	# first iteration
 	igsQ, igsR = origGramSchmidt(mxA)
 	newA = igsR
-	# print((igsQ.shape, mxB.shape))
 	newB = np.dot(np.transpose(igsQ), mxB)
-	# print((newA.shape, newB.shape))
-	# newB = np.zeros((mxB.shape))
-	# newB[0:mxA.shape[1]] = np.dot(np.transpose(igsQ), mxB)
 
 	# successive iterations
 	for iterRun in range(3) :
 		igsQ, igsR = origGramSchmidt(newA)
 		newA = igsR
 		newB = np.dot(np.transpose(igsQ), newB)
-		# newB = np.zeros((mxB.shape))
-		# newB[0:newA.shape[1]] = np.dot(np.transpose(igsQ), newB)
-		# print((igsQ.shape, newA.shape, mxB.shape))
 	#end loop
 	xGSIterative = np.linalg.solve(newA, newB)
-	# print(xGSIterative)
 	errGSIter = np.sum(np.abs( np.divide(np.subtract(xGSIterative, xSol), xSol) ))
 
 
 	# h) Singular Value Decomposition
 	# get SVD decomposition
 	U, s, Vt = np.linalg.svd(mxA, full_matrices=True)
-	# print("Resulting eigen values: {}".format(s))
 	# create the pieces needed for pseudoinverse
 	V = np.transpose(Vt)
 	sigmaInv = np.zeros( (mxA.shape[1], mxA.shape[0]), dtype=np.float32 )
@@ -286,14 +240,8 @@ for e in eps :
 	pseudoInvA = np.dot( np.dot( V, sigmaInv ), Ut )
 	# get x from SVD
 	xSVD = np.dot(pseudoInvA, mxB)
-	# print(xSVD)
 	errSVD = np.sum(np.abs( np.divide(np.subtract(xSVD, xSol), xSol) ))
 
-
-	# # compare against built-in least squares function
-	# xLstsq = np.linalg.lstsq(mxA, mxB)
-	# print(xLstsq)
-	# print(np.dot(mxA, xLstsq[0]))
 
 	# output the error
 	print("x as a function of epsilon: {}".format(xSol))
@@ -310,12 +258,6 @@ for e in eps :
 			errGivens, errGSClass, errGSMod, errGSIter))
 		fout.write('{}\n'.format(errSVD))
 	#end with
-
-	# print(errNormal)
-	# print(np.linalg.norm(np.subtract(xSol, xNormal), ord=1))
-	# print(errAugmented)
-	# print(np.linalg.norm(np.subtract(xSol, xAugmented), ord=1))
-
 #end loop
 
 

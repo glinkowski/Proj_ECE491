@@ -64,8 +64,8 @@ x, y = np.meshgrid(x, y)
 Y = pmA * np.power(y, 2) + (pmB * x * y) + (pmC * x) + (pmD * y) + pmE
 X = np.power(x, 2)
 
+# plot the results & save figure
 pt.contour(x, y, (X - Y), [0])
-# pt.legend(['projected orbit'])
 pt.scatter(xPos, yPos)
 pt.legend(['original data'])
 pt.xlabel('x position')
@@ -73,21 +73,15 @@ pt.xlim([-.75, 1.25])
 pt.ylabel('y position')
 pt.ylim([-.25, 1.5])
 pt.title('Q 3.5, part A -- planet\'s orbit')
-# pt.legend(['original data', 'projected orbit'])
 pt.savefig('figs/p01_ptA.png')
-# pt.show()
-
 
 
 # Part B ######## ####### #######
 print("\n>>>> Part B >>>>")
 
+# create A matrix & b vector from perturbed data
 xPosb = np.add(xPos, np.random.uniform(-ptbRange, ptbRange, len(xPos)))
 yPosb = np.add(yPos, np.random.uniform(-ptbRange, ptbRange, len(yPos)))
-# print(xPos)
-# print(xPosb)
-
-# create the A matrix & b vector
 mxAb, mxBb = createABMatrices(xPosb, yPosb)
 
 # solve for parameters a, b, c, d, e
@@ -102,6 +96,7 @@ print("Parameters: a={:.5}, b={:.5}, c={:.5}, d={:.5}, e={:.5}".format(
 Yb = pmA * np.power(y, 2) + (pmB * x * y) + (pmC * x) + (pmD * y) + pmE
 Xb = np.power(x, 2)
 
+# plot the results & save figure
 figb = pt.figure()
 ax = figb.add_subplot(111)
 ax.contour(x, y, (X - Y), [0], colors='b', width=2 )
@@ -115,8 +110,6 @@ ax.set_ylabel('y position')
 ax.set_ylim([-.25, 1.5])
 ax.set_title('Q 3.5, part B -- perturbed orbit')
 figb.savefig('figs/p01_ptB.png')
-# pt.show()
-
 
 
 # Part C ######## ####### #######
@@ -160,7 +153,6 @@ for kVal in k_range :
 #HOWEVER, no matter what I set my tolerance,
 #  it finds the same eigenvalues
 	U, s, Vt = spl.svds(mxA, k=(min(mxA.shape)-1), tol=tVal)
-	# print(s)
 	V = np.transpose(Vt)
 	sigmaInv = np.zeros( (len(s), len(s)) )
 	for i in range(len(s)) :
@@ -182,9 +174,7 @@ for kVal in k_range :
 	relErr = np.abs(np.divide(np.subtract(fitY, yPos), yPos))
 	print("  Mean Rel. error of Y observed vs calc: {:.3f}".format(
 		np.mean(relErr)))
-
 #end loop
-
 
 
 # Part D ######## ####### #######
@@ -202,7 +192,6 @@ for i in range(len(s)) :
 	# sigma[i,i] = s[i]
 	sigmaInv[i,i] = 1 / s[i]
 Ut = np.transpose(U)
-
 
 
 # Part E ######## ####### #######
@@ -223,7 +212,7 @@ for k in range(5) :
 	pmX[:,k] = np.dot(pseudoInvA, mxB)
 #end loop
 
-# draw the results
+# plot the results & save figure
 fige = pt.figure()
 ax = fige.add_subplot(111)
 ax.contour(x, y, (X - Y), [0], colors='b')
@@ -233,6 +222,7 @@ ye = np.linspace(-10, 10, 200)
 xe, ye = np.meshgrid(xe, ye)
 useColors = ['c', 'y', 'g', 'm', 'r']
 print("Parameters for ... ")
+# add a contour for each set of k eigenvalues
 for i in range(5) :
 	pmA, pmB, pmC, pmD, pmE = pmX[:,i]
 	print("k={}:    a={:.5}, b={:.5}, c={:.5}, d={:.5}, e={:.5}".format(
@@ -256,18 +246,14 @@ ax.set_ylabel('y position')
 ax.set_ylim([-1, 7])
 ax.set_title('Q 3.5, part E -- orbit from SVD')
 fige.savefig('figs/p01_ptE.png')
-# pt.show()
-
 
 
 # Part F ######## ####### #######
 print("\n>>>> Part F >>>>")
 
-# perturb the data
+# create the A matrix & b vector from perturbed data
 xPosf = np.add(xPos, np.random.uniform(-ptbRange, ptbRange, len(xPos)))
 yPosf = np.add(yPos, np.random.uniform(-ptbRange, ptbRange, len(yPos)))
-
-# create the A matrix & b vector
 mxAf, mxBf = createABMatrices(xPosf, yPosf)
 
 # get SVD
@@ -275,10 +261,8 @@ U, s, Vt = np.linalg.svd(mxAf, full_matrices=True)
 print("Resulting eigen values: {}".format(s))
 # convert the parts needed for next step
 V = np.transpose(Vt)
-# sigma = np.zeros( (10, 5) )
 sigmaInv = np.zeros( (5, 10) )
 for i in range(len(s)) :
-	# sigma[i,i] = s[i]
 	sigmaInv[i,i] = 1 / s[i]
 Ut = np.transpose(U)
 
@@ -296,16 +280,14 @@ for k in range(5) :
 	pmX[:,k] = np.dot(pseudoInvA, mxBf)
 #end loop
 
-# draw the resulting ellipses
+# plot the resulting ellipses & save figure
 figf = pt.figure()
 ax = figf.add_subplot(111)
 ax.contour(x, y, (X - Y), [0], colors='b')
 
-# x = np.linspace(-10, 10, 200)
-# y = np.linspace(-10, 10, 200)
-# x, y = np.meshgrid(x, y)
 useColors = ['c', 'y', 'g', 'm', 'r']
 print("Parameters for ... ")
+# add a contour for each set of k eigenvalues
 for i in range(5) :
 	pmA, pmB, pmC, pmD, pmE = pmX[:,i]
 	print("k={}:    a={:.5}, b={:.5}, c={:.5}, d={:.5}, e={:.5}".format(
@@ -335,10 +317,9 @@ figf.savefig('figs/p01_ptF.png')
 # Part G ######## ####### #######
 print("\n>>>> Part G >>>>")
 
-
 def applyTotalLeastSquares(fA, fB) :
 	n = fA.shape[1]
-	
+
 	# Apply SVD to the augmented matrix [A, B]
 	newB = np.reshape(fB, (len(fB), 1))
 	augMx = np.hstack( (fA, newB) )
@@ -354,70 +335,27 @@ def applyTotalLeastSquares(fA, fB) :
 	return params
 #end def ####### ####### ########
 
-# # Use the Total Least Squares approach
-# n = mxA.shape[1]
-
-# # 1) apply SVD to the augmented matrix [A, B]
-# mxB = np.reshape(mxB, (len(mxB), 1))
-# augMx = np.hstack( (mxA, mxB) )
-# U, s, Vt = np.linalg.svd(augMx, full_matrices=True)
-# V = np.transpose(Vt)
-
-# # Parameters = -V12 / V22 (blocks of V)
-# V12 = V[0:n,n:V.shape[1]]
-# V22 = V[n:V.shape[0],n:V.shape[1]]
-# pmXg = np.divide( np.multiply( -1, V12), V22)
-# pmXg = pmXg.reshape( (len(pmXg),))
-
+# use TLS on original data, draw contour
 pmXg = applyTotalLeastSquares(mxA, mxB)
-
 pmAg, pmBg, pmCg, pmDg, pmEg = pmXg
+Yg = pmAg * np.power(y, 2) + (pmBg * x * y) + (pmCg * x) + (pmDg * y) + pmEg
+Xg = np.power(x, 2)
 # print the parameter values
 print("Applying TLS to original data ...")
 print("Parameters: a={:.5f}, b={:.5f}, c={:.5f}, d={:.5f}, e={:.5f}".format(
 	pmAg, pmBg, pmCg, pmDg, pmEg))
 
-# draw the data points & the final ellipse equation
-# x = np.linspace(-2, 2, 200)
-# y = np.linspace(0, 2, 200)
-# x, y = np.meshgrid(x, y)
-Yg = pmAg * np.power(y, 2) + (pmBg * x * y) + (pmCg * x) + (pmDg * y) + pmEg
-Xg = np.power(x, 2)
-
-
-
-# # Apply SVD to the augmented matrix [A, B]
-# mxBb = np.reshape(mxBb, (len(mxBb), 1))
-# augMx = np.hstack( (mxAb, mxBb) )
-# U, s, Vt = np.linalg.svd(augMx, full_matrices=True)
-# V = np.transpose(Vt)
-
-# # Parameters = -V12 / V22 (blocks of V)
-# V12 = V[0:n,n:V.shape[1]]
-# V22 = V[n:V.shape[0],n:V.shape[1]]
-# pmXgp = np.divide( np.multiply( -1, V12), V22)
-# pmXgp = pmXg.reshape( (len(pmXgp),))
-
+# use TLS on perturbed data, draw contour
 pmXgp = applyTotalLeastSquares(mxAb, mxBb)
-
-
 pmAgp, pmBgp, pmCgp, pmDgp, pmEgp = pmXgp
+Ygp = pmAgp * np.power(y, 2) + (pmBgp * x * y) + (pmCgp * x) + (pmDgp * y) + pmEgp
+Xgp = np.power(x, 2)
 # print the parameter values
 print("\nApplying TLS to perturbed data from part B ...")
 print("Parameters: a={:.5f}, b={:.5f}, c={:.5f}, d={:.5f}, e={:.5f}".format(
 	pmAgp, pmBgp, pmCgp, pmDgp, pmEgp))
 
-# draw the data points & the final ellipse equation
-# x = np.linspace(-2, 2, 200)
-# y = np.linspace(0, 2, 200)
-# x, y = np.meshgrid(x, y)
-Ygp = pmAgp * np.power(y, 2) + (pmBgp * x * y) + (pmCgp * x) + (pmDgp * y) + pmEgp
-Xgp = np.power(x, 2)
-
-# # draw the data points & the final ellipse equation
-# Yb = pmA * np.power(y, 2) + (pmB * x * y) + (pmC * x) + (pmD * y) + pmE
-# Xb = np.power(x, 2)
-
+# plot the resulting ellipses & save figure
 figg = pt.figure()
 pt.contour(x, y, (X - Y), [0], colors='b')
 pt.contour(x, y, (Xg - Yg), [0], colors='y', linewidths=5)
@@ -438,8 +376,6 @@ pt.ylabel('y position')
 pt.ylim([-.25, 1.5])
 pt.title('Q 3.5, part G -- planet\'s orbit')
 pt.savefig('figs/p01_ptG.png')
-
-
 
 
 pt.show()

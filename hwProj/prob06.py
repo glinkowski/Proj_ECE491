@@ -14,6 +14,9 @@ import warnings
 # input data
 tVals = [0.00, 0.25, 0.50, 0.75, 1.00, 1.25, 1.50, 1.75, 2.00]
 yVals = [20.00, 51.58, 68.73, 75.46, 74.36, 67.09, 54.73, 37.98, 17.28]
+
+# starting guess
+x0 = [5, 4, 3, 2, 1]
 ######## ######## ####### #######
 
 
@@ -68,23 +71,6 @@ def Jf(fx, ft) :
 
 # estimate the gradient of g(x)
 def g_gradient(fx, ft, fy) :
-	# delta = 1e-3
-
-	# # print(fx)
-
-	# grad = np.zeros( len(fx), dtype=np.float64 )
-	# for i in range(len(fx)) :
-	# 	fxPlus = fx
-	# 	fxPlus[i] = fx[i] + delta
-	# 	fxMinus = fx
-	# 	fxMinus[i] = fx[i] - delta
-
-	# 	# print((f(fxPlus, ft), f(fxMinus, ft)))
-	# 	grad[i] = (g(fxPlus, ft, fy) - g(fxMinus, ft, fy)) / (2*delta)
-	# #end loop
-
-	# # print(grad)
-
 	# fJ = Jf_hardcode(fx)
 	fJ = Jf(fx, ft)
 	fJt = np.transpose(fJ)
@@ -95,12 +81,6 @@ def g_gradient(fx, ft, fy) :
 
 	return grad
 #end def ####### ####### ########
-
-# def solve_partB(fx, ft, fy) :
-# 	deriv = scm.derivative(g, fx, args=(ft, fy))
-# 	# print(grad)
-# 	return np.abs(deriv)
-# #end def ####### ####### ########
 
 # for Part C ### ####### ######## ########
 # Solve with linear least squares for x[0:4], given x[4]
@@ -123,7 +103,6 @@ def f_linearLstsqSolve(fx5, ft, fy) :
 def solve_PartC(fx5, ft, fy) :
 	# solve for full x vector from fx5
 	fx = f_linearLstsqSolve(fx5, ft, fy)
-
 	# return the one-dimension residual
 	fg = g(fx, ft, fy)
 	return fg
@@ -134,7 +113,6 @@ def solve_PartC(fx5, ft, fy) :
 def solve_PartD(fx5, ft, fy) :
 	# solve for full x vector from fx5
 	fx = f_linearLstsqSolve(fx5, ft, fy)
-
 	# return the one-dimension residual
 	fg = g_gradient(fx, ft, fy)
 	return fg
@@ -149,16 +127,15 @@ def f_residual_hardcode(fx) :
 
 # The Jacobian matrix of f(x)
 def Jf_hardcode(fx) :
-	# Create each column of the jacobian
-
+	# col 1
 	Jc0 = np.ones(len(tVals))
-
+	# col 2
 	Jc1 = tVals
-
+	# col 3
 	Jc2 = np.power(tVals, 2.0)
-
+	# col 4
 	Jc3 = np.exp( np.multiply(tVals, fx[4]) )
-
+	# col 5
 	Jc4 = np.multiply(tVals, fx[3])
 	Jc4 = np.multiply(Jc4, Jc3)
 
@@ -173,13 +150,6 @@ def Jf_hardcode(fx) :
 
 # Newton Method: one iteration
 def iterNewton(bfr, bJf, xk) :
-	# print(xk)
-	# print(bJf(xk))
-
-	# q, r = npl.qr( bJf(xk) )
-	# # print(np.dot( np.transpose(q), bfr(xk)))
-	# sk = npl.solve(r, np.dot( np.transpose(q), bfr(xk)) )
-
 	sklstsq = npl.lstsq( bJf(xk), bfr(xk) )
 	sk = sklstsq[0]
 
@@ -242,10 +212,6 @@ def printOutput(fx0, xFound, ft, yOrig) :
 		count += 1
 	stringOut = stringOut + ']'
 	print(stringOut)
-	# print("  final y = f(t,x) = [{:.2f}, {:.2f}, {:.2f}, {:.2f}, {:.2f}]".format(
-	# 	yCalc[0], yCalc[1], yCalc[2], yCalc[3], yCalc[4] ))
-	# print("  max relative error (y, f(t,x)):  {:.3e}".format(
-	# 	getMaxRelErr(yOrig, yCalc) ))
 	err = getMaxRelErr(yOrig, yCalc)
 	percErr = err * 100
 	if percErr > 1.0 :
@@ -275,98 +241,39 @@ with warnings.catch_warnings():
 	warnings.simplefilter("ignore")
 	warfunc()
 
-	# x0 = [1, 2, 3, 4, 5]
-	x0 = [5, 4, 3, 2, 1]
-
 	result = sco.minimize(g, x0, args=(tVals, yVals))
 	x_partA = result.x
-	# y_partA = f(x_partA, tVals)
-	# print(x_partA)
-	# print(f(result.x, tVals))
 	print("\nwith objective function g(x) ------------------------")
-	# print("  using x0 = {}".format(x0))
-	# print("  found x  = [{:.2f}, {:.2f}, {:.2f}, {:.2f}, {:.2f}]".format(
-	# 	x_partA[0], x_partA[1], x_partA[2], x_partA[3], x_partA[4]))
-	# print("  final y = f(t,x) = {}".format(y_partA))
-	# # print("  norm diff b/t this and expected: {:.3e}".format(
-	# # 	npl.norm( np.subtract(yVals, y_partA), ord=2) ))
-	# print("  max relative error (y, f(t,x)):  {:.3e}".format(
-	# 	getMaxRelErr(yVals, y_partA) ))
 	printOutput(x0, x_partA, tVals, yVals)
 #end with
 
 
 print("\n\n>>>> Part B >>>>")
-#TODO: try gradient of f(t,x) ??
-
-x0 = [5, 4, 3, 2, 1]
-# x0 = [-500, -400, -300, 200, 1]
-
-# # result = sco.root(g_gradient, x0, args=(tVals, yVals))
-# result = sco.minimize(solve_partB, x0, args=(tVals, yVals))
-# x_partB = result.x
-# # y_partB = f(x_partB, tVals)
-# print("\nwith estimated gradient of g(x) ---------------------")
-# # print("  using x0 = {}".format(x0))
-# # print("  found x  = [{:.2f}, {:.2f}, {:.2f}, {:.2f}, {:.2f}]".format(
-# # 	x_partB[0], x_partB[1], x_partB[2], x_partB[3], x_partB[4]))
-# # print("  final y = f(t,x) = {}".format(y_partB))
-# # print("  max relative error (y, f(t,x)):  {:.3e}".format(
-# # 	getMaxRelErr(yVals, y_partB) ))
-# printOutput(x0, x_partB, tVals, yVals)
 
 result = sco.root(g_gradient, x0, args=(tVals, yVals))
 print("\nwith estimated gradient of g(x) ---------------------")
 x_partB = result.x
 printOutput(x0, x_partB, tVals, yVals)
 
-# print("")
-# x0 = np.add(x_partA, np.random.uniform(-1,1))
-# result = sco.root(g_gradient, x0, args=(tVals, yVals))
-# print("\nwith estimated gradient of g(x) ---------------------")
-# x_partB = result.x
-# printOutput(x0, x_partB, tVals, yVals)
-
 
 print("\n\n>>>> Part C >>>>")
 
-x0 = [1]
-
-result = sco.minimize(solve_PartC, x0, args=(tVals, yVals))
+result = sco.minimize(solve_PartC, x0[4], args=(tVals, yVals))
 x5 = result.x
 x_partC = f_linearLstsqSolve(x5, tVals, yVals)
-# y_partC = f(x_partC, tVals)
 print("\nwith linear least squares ---------------------------")
-# print("  using x5 = {}".format(x0))
-# print("  found x  = [{:.2f}, {:.2f}, {:.2f}, {:.2f}, {:.2f}]".format(
-# 	x_partC[0], x_partC[1], x_partC[2], x_partC[3], x_partC[4] ))
-# print("  final y = f(t,x) = [{:.2f}, {:.2f}, {:.2f}, {:.2f}, {:.2f}]".format(
-# 	y_partC[0], y_partC[1], y_partC[2], y_partC[3], y_partC[4] ))
-# print("  max relative error (y, f(t,x)):  {:.3e}".format(
-# 	getMaxRelErr(yVals, y_partC) ))
 printOutput(x0, x_partC, tVals, yVals)
 
 
 print("\n\n>>>> Part D >>>>")
 
-x0 = [1]
-
-result = sco.root(solve_PartD, x0, args=(tVals, yVals))
+result = sco.root(solve_PartD, x0[4], args=(tVals, yVals))
 print("\nwith estimated gradient of g(x) ---------------------")
 x_partD = f_linearLstsqSolve(result.x, tVals, yVals)
-# x_partD = result.x
 printOutput(x0, x_partD, tVals, yVals)
 
 
-#TODO: ?? What is part D ??
-
-
-
-
-
 print("\n\n>>>> Part E >>>>")
-
-x0 = [5, 4, 3, 2, 1]
 
 result = solveNewton(f_residual_hardcode, Jf_hardcode, x0)
 x_partE = result
