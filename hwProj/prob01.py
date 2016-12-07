@@ -329,15 +329,120 @@ ax.set_ylabel('y position')
 ax.set_ylim([-1, 7])
 ax.set_title('Q 3.5, part F -- perturbed orbit from SVD')
 figf.savefig('figs/p01_ptF.png')
-pt.show()
 
 
 
 # Part G ######## ####### #######
 print("\n>>>> Part G >>>>")
 
-#TODO: THIS!!!
 
+def applyTotalLeastSquares(fA, fB) :
+	n = fA.shape[1]
+	
+	# Apply SVD to the augmented matrix [A, B]
+	newB = np.reshape(fB, (len(fB), 1))
+	augMx = np.hstack( (fA, newB) )
+	U, s, Vt = np.linalg.svd(augMx, full_matrices=True)
+	V = np.transpose(Vt)
+
+	# Parameters = -V12 / V22 (blocks of V)
+	V12 = V[0:n,n:V.shape[1]]
+	V22 = V[n:V.shape[0],n:V.shape[1]]
+	params = np.divide( np.multiply( -1, V12), V22)
+	params = params.reshape( (len(params),))
+
+	return params
+#end def ####### ####### ########
+
+# # Use the Total Least Squares approach
+# n = mxA.shape[1]
+
+# # 1) apply SVD to the augmented matrix [A, B]
+# mxB = np.reshape(mxB, (len(mxB), 1))
+# augMx = np.hstack( (mxA, mxB) )
+# U, s, Vt = np.linalg.svd(augMx, full_matrices=True)
+# V = np.transpose(Vt)
+
+# # Parameters = -V12 / V22 (blocks of V)
+# V12 = V[0:n,n:V.shape[1]]
+# V22 = V[n:V.shape[0],n:V.shape[1]]
+# pmXg = np.divide( np.multiply( -1, V12), V22)
+# pmXg = pmXg.reshape( (len(pmXg),))
+
+pmXg = applyTotalLeastSquares(mxA, mxB)
+
+pmAg, pmBg, pmCg, pmDg, pmEg = pmXg
+# print the parameter values
+print("Applying TLS to original data ...")
+print("Parameters: a={:.5f}, b={:.5f}, c={:.5f}, d={:.5f}, e={:.5f}".format(
+	pmAg, pmBg, pmCg, pmDg, pmEg))
+
+# draw the data points & the final ellipse equation
+# x = np.linspace(-2, 2, 200)
+# y = np.linspace(0, 2, 200)
+# x, y = np.meshgrid(x, y)
+Yg = pmAg * np.power(y, 2) + (pmBg * x * y) + (pmCg * x) + (pmDg * y) + pmEg
+Xg = np.power(x, 2)
+
+
+
+# # Apply SVD to the augmented matrix [A, B]
+# mxBb = np.reshape(mxBb, (len(mxBb), 1))
+# augMx = np.hstack( (mxAb, mxBb) )
+# U, s, Vt = np.linalg.svd(augMx, full_matrices=True)
+# V = np.transpose(Vt)
+
+# # Parameters = -V12 / V22 (blocks of V)
+# V12 = V[0:n,n:V.shape[1]]
+# V22 = V[n:V.shape[0],n:V.shape[1]]
+# pmXgp = np.divide( np.multiply( -1, V12), V22)
+# pmXgp = pmXg.reshape( (len(pmXgp),))
+
+pmXgp = applyTotalLeastSquares(mxAb, mxBb)
+
+
+pmAgp, pmBgp, pmCgp, pmDgp, pmEgp = pmXgp
+# print the parameter values
+print("\nApplying TLS to perturbed data from part B ...")
+print("Parameters: a={:.5f}, b={:.5f}, c={:.5f}, d={:.5f}, e={:.5f}".format(
+	pmAgp, pmBgp, pmCgp, pmDgp, pmEgp))
+
+# draw the data points & the final ellipse equation
+# x = np.linspace(-2, 2, 200)
+# y = np.linspace(0, 2, 200)
+# x, y = np.meshgrid(x, y)
+Ygp = pmAgp * np.power(y, 2) + (pmBgp * x * y) + (pmCgp * x) + (pmDgp * y) + pmEgp
+Xgp = np.power(x, 2)
+
+# # draw the data points & the final ellipse equation
+# Yb = pmA * np.power(y, 2) + (pmB * x * y) + (pmC * x) + (pmD * y) + pmE
+# Xb = np.power(x, 2)
+
+figg = pt.figure()
+pt.contour(x, y, (X - Y), [0], colors='b')
+pt.contour(x, y, (Xg - Yg), [0], colors='y', linewidths=5)
+pt.contour(x, y, (Xb - Yb), [0], colors='r')
+pt.contour(x, y, (Xgp - Ygp), [0], colors='k', linewidths=1.5)
+pt.scatter(xPos, yPos, c='b', marker='o')
+pt.scatter(xPosb, yPosb, c='r', marker='x')
+legData = ([ 
+	mlines.Line2D([], [], color='b', marker='o', label='original data'),
+	mlines.Line2D([], [], color='y', label='Total Lst Sqr'),
+	mlines.Line2D([], [], color='r', marker='x', label='perturbed data'),
+	mlines.Line2D([], [], color='k', label='Perturbed TLS')
+	])
+pt.legend(handles=legData)
+pt.xlabel('x position')
+pt.xlim([-.75, 1.25])
+pt.ylabel('y position')
+pt.ylim([-.25, 1.5])
+pt.title('Q 3.5, part G -- planet\'s orbit')
+pt.savefig('figs/p01_ptG.png')
+
+
+
+
+pt.show()
 
 
 print("\n")
