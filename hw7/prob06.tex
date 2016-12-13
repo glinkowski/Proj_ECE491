@@ -1,0 +1,107 @@
+\documentclass[12pt]{article}
+ 
+\usepackage[margin=1in]{geometry} 
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{bm} % for bold math symbols
+\usepackage{amstext} % for \text macro
+\usepackage{array}   % for \newcolumntype macro
+\newcolumntype{L}{>{$}l<{$}} % math-mode version of "l" column type
+\newcolumntype{C}{>{$}c<{$}} % math-mode version of "c" column type
+\newcolumntype{R}{>{$}r<{$}} % math-mode version of "r" column type
+
+\usepackage{graphicx}	
+ 
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{exercise}[2][Exercise]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{reflection}[2][Reflection]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\begin{document}
+
+
+
+\noindent
+\large\textbf{HW 7, Problem 06} \hfill \textbf{Gregory Linkowski} \\
+\normalsize CS 450 / ECE 491 \hfill linkows2 \\
+Michael Heath \hfill due 12/7/16 \\
+
+
+\vspace{5mm}
+Consider the Laplace eq.
+\[ u_{xx} + u_{yy} = 0 \quad 0 \leq x \leq 1, \quad 0 \leq y \leq 1 \]
+Draw pictures to illustrate the nonzero pattern of the matrix resulting from a finite difference discretization of the Laplace equation on a $d$-dimensional grid, with $k$ grid points in each dimension, for $d$ = 1, 2, and 3. \dots
+\vspace{-2mm} \\
+
+\vspace{5mm}
+\begin{exercise}{1}
+	Draw pictures for each value of $d$ with sufficiently large $k$.
+\end{exercise}% \vspace{-10mm}
+\textbf{Answer 1.} For $\bm{A u} = \bm{b}$, the following images represent $\bm{A}$
+\begin{center}
+	\includegraphics[width=1.25\columnwidth]{prob06.png}
+%	\caption{Note: in three dimensions, the color representing a value of 1 is dim.}
+\end{center}
+
+\vspace{5mm}
+\begin{exercise}{2}
+	Describe the numerical values of the nonzero entries.
+\end{exercise}% \vspace{-10mm}
+\textbf{Answer 2.} \\
+Pattern of middle-row values for $d$ = 1
+\begin{align*}
+	u_{xx} &= 0 \\
+	\frac{1}{h^2}(u_{i-1} - 2u_i + u_{i+1}) &= 0 \\
+\end{align*}
+\[	\textnormal{middle row values: \hspace{5mm}} \boxed{ \frac{1}{h^2} 
+[0 \dotsm 0 \quad 1 \quad -2 \quad 1 \quad 0 \dotsm 0] } \] \\
+Pattern of middle-row values for $d$ = 2
+\begin{align*}
+u_{xx} + u_{yy} &= 0 \\
+\frac{1}{h^2}(u_{i-1,j} - 2u_{i,j} + u_{i+1,j} + u_{i,j-1} - 2u_{i,j} + u_{i,j+1}) &= 0 \\
+\frac{1}{h^2}(u_{i-1,j} + u_{i,j-1} - 4u_{i,j} + u_{i,j+1} + u_{i+1,j}) &= 0 \\[10pt]
+\textnormal{indexing in 1-D: \hspace{10mm}} p(i,j) &= i*k + j \\
+	p(i-1,j) &= (i*k - k) + j = p(i,j) - k \\
+	p(i, j-1) &= i*k + (j - 1) = p(i,j) - 1 \\[10pt]
+\textnormal{such that: \hspace{10mm}} \bm{u} &= \begin{bmatrix}
+	u_{0,0}& \\ u_{0,1} & \\  \vdots & \downarrow \times k \\ u_{1,0} & \\ u_{1,1} & \\ \vdots &	\end{bmatrix} \\
+\end{align*}
+\[ \textnormal{middle row values: \hspace{5mm}} \boxed{ \frac{1}{h^2} 
+[0 \dotsm 0 \quad 1 \quad 0 \dotsm 0 \quad 1 \quad -4 \quad 1 \quad 0 \dotsm 0 \quad 1 \quad 0 \dotsm 0]  } \] \\
+Pattern of middle-row values for $d$ = 4
+\begin{align*}
+u_{xx} + u_{yy} + u_{zz} &= 0 \\
+\frac{1}{h^2} \left(  \begin{matrix}
+	u_{i-1,j,z} - 2u_{i,j,z} + u_{i+1,j,z} \\
+	\; + u_{i,j-1,z} - 2u_{i,j,z} + u_{i,j+1,z} \\
+	\; + u_{i,j,z-1} - 2u_{i,j,z} + u_{i,j,z+1}
+\end{matrix} \right)  &= 0 \\
+\frac{1}{h^2} \left( \begin{matrix}
+	u_{i-1,j,z} + u_{i+1,j,z} + u_{i,j-1,z} + u_{i,j+1,z} \\
+	\; + u_{i,j,z-1} + u_{i,j,z+1} - 6u_{i,j,z}
+\end{matrix} \right) &= 0 \\[10pt]
+\textnormal{indexing in 1-D: \hspace{10mm}} p(i,j,z) &= i*k^2 + j * k + z \\
+	p(i-1,j,z) &= (i*k^2 - k^2) + j*k + z = p(i,j,z) - k^2 \\
+	p(i,j-1,z) &= i*k^2 + (j*k - k) + z = p(i,j,z) - k \\
+	p(i,j,z-1) &= i*k^2 + j*k + (z-1) = p(i,j,z) - 1 \\[10pt]
+\textnormal{such that: \hspace{10mm}} \bm{u} &= \begin{bmatrix}
+	u_{0,0,0} & \\ u_{0,0,1} & \\  \vdots & \downarrow \times k	\\
+	u_{0,1,0} & \\ u_{0,1,1} & \\ \vdots & \Downarrow \times k^2 \\
+	u_{1,0,0} & \\ u_{1,0,1} & \\ \vdots	\end{bmatrix} \\
+\end{align*}
+\[ \textnormal{middle row values: \hspace{5mm}} \boxed{ \frac{1}{h^2} 
+	[0 \dotsm 0 \quad 1 \quad 0 \dotsm 0 \quad 1 \quad 0 \dotsm 0 \quad 1 \quad -6 \quad 1 \quad 0 \dotsm 0 \quad 1 \quad 0 \dotsm 0 \quad 1 \quad 0 \dotsm 0]  } \] \\
+
+
+
+\end{document}
