@@ -178,7 +178,6 @@ for item in plotFD[::-1] :
 	legendHandles.append('n = {:d}'.format( len(item[0])-2 ))
 ax1.set_title("using Finite Difference")
 ax1.set_xlabel("time (t)")
-ax2.set_xlim([a,b])
 ax1.set_ylabel("u(t)")
 ax1.legend( legendHandles, loc=0 )
 
