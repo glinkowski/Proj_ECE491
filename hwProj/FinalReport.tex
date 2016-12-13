@@ -108,11 +108,12 @@
 
 NOTE: All code can be found in the appendix, or at \\ \url{https://github.com/glinkowski/Proj_ECE491/tree/master/hwProj}
 
+\vspace{4mm}
 \section{: Computer Problem 3.5}
 Given an elliptical orbit
-\begin{align}
+\begin{align*}
 	a \, y^2 + b \, x\, y + c\, x + d\, y + e = x^2
-\end{align}
+\end{align*}
 and the positional observations below, solve for the parameters using the following specifications:
 \begin{table}[!hbt]
 	\begin{center}
@@ -150,12 +151,12 @@ and the positional observations below, solve for the parameters using the follow
 	\minipage{0.32\columnwidth}
 		\includegraphics[width=\linewidth]{figs/use/p01_ptB-1}
 		\caption{One result from perturbed data}
-		\label{fig:p3.5-b1}
+		\label{fig:3.5-b1}
 	\endminipage\hfill
 	\minipage{0.32\columnwidth}
 		\includegraphics[width=\linewidth]{figs/use/p01_ptB-2}
 		\caption{Another perturbed result}
-		\label{fig:p3.5-b2}
+		\label{fig:3.5-b2}
 	\endminipage\hfill
 \end{figure}
 \begin{figure}[!hbt]
@@ -185,16 +186,16 @@ and the positional observations below, solve for the parameters using the follow
 	\item[a) Question] What values are found for the parameters? \vspace{-2mm}
 		\item[Answer] $a=-2.636, \; b=0.1437, \; c=0.5515, \; d=3.223, \; e=-0.4329$
 	\item[b) Question] What effect does this [random perturbation] have on the orbit? Can you explain this behavior? \vspace{-2mm}
-		\item[Answer] Depending on the average change in the original data, the minimization of error can cause the matched orbit to vary significantly. In  Fig.~\ref{fig:3.5-b1}, the middle points are relatively closer to (0.5, 0), causing the orbit to shrink, while in Fig.~\ref{fig:p3.5-b2}, they are relatively closer to the center of the orbit, causing wall of the calculated ellipse to be significantly flatter, leading to a much larger orbit.
+		\item[Answer] Depending on the average change in the original data, the minimization of error can cause the matched orbit to vary significantly. In Fig.~\ref{fig:3.5-b1}, the middle points are relatively closer to (0.5, 0), causing the orbit to shrink, while in Fig.~\ref{fig:3.5-b2}, they are relatively closer to the center of the orbit, causing wall of the calculated ellipse to be significantly flatter, leading to a much larger orbit.
 	\item[c) Question] What is the resulting rank of the matrix for each value of the tolerance? ... as the tolerance and rank vary? \vspace{-2mm}
 		\item[Answer] I tried a few different library routines that claimed to apply a tolerance to singular values, including one that applied SVD, but in no case was I able to change the rank of the matrix.
 	\item[c) Question] Which solution would you regard as better: one that fits the data more closely, or one that is less sensitive to small perturbations in the data? Why? \vspace{-2mm}
 		\item[Answer] Typically, it would be better to be less sensitive to noise in the data. Especially in the case where the measured data has relatively few significant digits, small changes can magnify the error in the outcome.
 	\item[f) Question] What effect does this [random perturbation] have on the plot of the orbits? Can you explain this behavior? \vspace{-2mm}
-		\item[Answer] As can be seen in Figs.~\ref{fig:3.5-e} \& ~\ref{fig:3.5-e}, the orbits built from only one or two largest Eigenvalues are too erroneous to be useful. In fact, for $k={1, 2, 3}$, it is difficult to describe the effect of the perturbation. However, for $k=4$, the orbit has grown wider, while for the full $k=5$, it has shrunk. This orbit appears similar to the one in Fig.~\ref{fig:p3.5-b1}, and the explanation is similar: if one considers the mean squared error as a sort of center of gravity of the points, then as that center moves outwards, it skews towards a tighter orbit.
+		\item[Answer] As can be seen in Figs.~\ref{fig:3.5-e} \& ~\ref{fig:3.5-e}, the orbits built from only one or two largest Eigenvalues are too erroneous to be useful. In fact, for $k={1, 2, 3}$, it is difficult to describe the effect of the perturbation. However, for $k=4$, the orbit has grown wider, while for the full $k=5$, it has shrunk. This orbit appears similar to the one in Fig.~\ref{fig:3.5-b1}, and the explanation is similar: if one considers the mean squared error as a sort of center of gravity of the points, then as that center moves outwards, it skews towards a tighter orbit.
 	\item[f) Question] Which solution would you regard as better: one that fits the data more closely, or one that is less sensitive to small perturbations in the data? Why? \vspace{-2mm}
 		\item[Answer] Similarly to (c), it would generally be good to have some tolerance of noise in the data. At the same time, one would want as true a fit as possible. So the best approach is probably to have a high tolerance for noise, and then collect as many data points as possible in an effort to reduce the mean effect of the noise.
-	\item[g)] Regarding the question of fitting noisy data, the total least-squares approach in Fig.~\ref{fig:3.5-g} does a better job of fitting to the noisy data from part (b) that resulted in the abnormally large orbit.
+	\item[g)] Regarding the question of fitting noisy data, the total least-squares approach in Fig.~\ref{fig:3.5-g} does a better job of fitting to the noisy data from part (b). As seen in part (b), the typical least squares fit resulted in an abnormally large orbit, one that was clearly erroneous. However, the total least squares approach resulted in a much more believable orbit -- one that was much closer to the one found from the original data.
 \end{enumerate}
 
 \vspace{4mm}
@@ -243,16 +244,21 @@ k=4:    a=-0.42657, b=-0.73179, c=0.70291, d=2.9397, e=-0.44891
 k=5:    a=-2.1607, b=0.17261, c=0.56266, d=2.9522, e=-0.41283
 
 >>>> Part G >>>>
+Applying TLS to original data ...
+Parameters: a=-3.26929, b=0.45859, c=0.50240, d=3.24555, e=-0.42249
+
+Applying TLS to perturbed data from part B ...
+Parameters: a=-3.94337, b=1.05614, c=0.41942, d=2.98241, e=-0.37108
 
 \end{verbatim}
 
-\vspace{4mm}
+\pagebreak
 \section{: Computer Problem 3.8}
 Create an ill-conditioned least squares problem with a small residual and fit it to the polynomial
-\begin{align}
+\begin{align*}
 	p_{n-1}(t) &= x_1 + x_2 t + x_3 t^2 + \dots + x_n t^{n-1}
-\end{align}
-and compare Cholesky factorization to QR factorization for solving the problem.
+\end{align*}
+Compare Cholesky factorization to QR factorization for solving the problem.
 
 \vspace{4mm}
 \subsection{Qualitative Analysis}
@@ -311,10 +317,11 @@ Using Cholesky,    relative error = 0.4816971219755919
 applied to perturbed data, error = 0.7709796869516125
 \end{verbatim}
 
-\vspace{4mm}
+
+\pagebreak
 \section{: Computer Problem 3.13}
 What is the exact solution x to the following linear least squares problem as a function of $\epsilon$?
-\begin{align}
+\begin{align*}
 	\begin{bmatrix}
 		1 & 1 & 1 \\ \epsilon & 0 & 0 \\ 0 & \epsilon & 0 \\ 0 & 0 & \epsilon
 	\end{bmatrix}
@@ -325,7 +332,7 @@ What is the exact solution x to the following linear least squares problem as a 
 	\begin{bmatrix}
 		1 \\ 0 \\ 0 \\ 0
 	\end{bmatrix}
-\end{align}
+\end{align*}
 Solve the system using each of the following methods while experimenting with $\epsilon$:
 \begin{enumerate}[(a)]
 	\item Normal equations \vspace{-2mm}
@@ -342,16 +349,19 @@ Solve the system using each of the following methods while experimenting with $\
 \subsection{Qualitative Analysis}
 What is the exact solution for $x_i$ as a function of $\epsilon$?
 \begin{align}
-	x_i &= \frac{1}{e^2 + 3}  \label{eq:3.8-truex} \\
-	\textnormal{where \hspace{5mm}} x &= [x_i, x_i, x_i]^T	
+	x_i &= \frac{1}{e^2 + 3}  \label{eq:3.8-truex}
 \end{align}
+\begin{align*}
+	\textnormal{where \hspace{5mm}} x &= [x_i, \; x_i, \; x_i]^T	
+\end{align*} \vspace{-3mm}
 \par Error for each calculation was found by comparing the resulting $x$ vector against that calculated in Eq.~\ref{eq:3.8-truex}. As seen in Fig.~\ref{fig:3.8}, error as a function of $\epsilon$ held fairly steady until the last three entries, which represent values approaching $\sqrt{\epsilon_{mach}} \; \& \; \epsilon_{mach}$. (Smaller values were attempted but the methods completely broke down.) As can be seen, error jumped significantly at the bottom values for most of the methods. The three strongest methods appear to be the Augmented system, Householder QR, and SVD. \\ 
+\par The implementation of Givens QR remains incomplete. A hand-coded version was non-functional, and a pre-existing library routing that explicitly used Givens rotations couldn't be found. \\
 
 \vspace{4mm}
 \subsection{Data Output to File}
 Error values were output to a file, displayed in Fig.~\ref{fig:3.8}.
 \begin{center}
-	\begin{figure}[!h]
+	\begin{figure}[!htb]
 		\includegraphics[width=\columnwidth]{figs/use/p03_table}
 		\caption{Table of results output from 3.8: error for each method in calculated value of $x_i$ as a function of $\epsilon$. Error displayed is the sum of the relative error for each calculated $x_i$ vs the $x_i$ found in Eq.~\ref{eq:3.8-truex} }
 		\label{fig:3.8}
@@ -443,7 +453,7 @@ G-S Iter:    4.00e+00         SVD:       1.19e-07
 \end{verbatim}
 
 
-\vspace{4mm}
+\pagebreak
 \section{: Computer Problem 6.13}
 Find least squares solutions to the following overdetermined systems of nonlinear equations:
 \begin{enumerate}[(a)]
@@ -468,7 +478,7 @@ Find least squares solutions to the following overdetermined systems of nonlinea
 
 \vspace{4mm}
 \subsection{Figures}
-\par The following figures show plots of the given equations. Note that in Fig.~\ref{fig:6.17plotB}, as the values on the right of the equations approach zero, the coordinates approach (0,0), (0,$x_2$), ($x_1$,$\frac{\pi}{2}$), respectively. \\
+\par The following figures show plots of the given equations. Note that in Fig.~\ref{fig:6.13plotB}, as the values on the right of the equations approach zero, the coordinates approach (0,0), (0,$x_2$), ($x_1$,$\frac{\pi}{2}$), respectively. \\
 \begin{figure}[!hbt]
 	\minipage{0.55\columnwidth}
 		\includegraphics[width=\linewidth]{figs/use/p04_plotA}
@@ -536,7 +546,7 @@ result f(x) = [-1.3244, 1.4160, -7.9542]
 \end{verbatim}
 
 
-\vspace{4mm}
+\pagebreak
 \section{: Computer Problem 6.16}
 Given the Michaelis-Menten equation
 \begin{align*}
@@ -597,7 +607,7 @@ Km = 5.34840,  relative error = 2.67e-05
 \end{verbatim}
 
 
-\vspace{4mm}
+\pagebreak
 \section{: Computer Problem 6.17}
 Fit the model function
 \begin{align*}
